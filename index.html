@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NYH's Artworks</title>
+    <meta
+      name="description"
+      content="동화적이고 서정적인 감성으로 채워진 NYH의 작품을 소개하는 온라인 갤러리"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="site-header">
+        <a class="brand" href="#top">
+          <span class="brand-mark"></span>
+          <span class="brand-text">
+            <strong>NYH's Artworks</strong>
+            <small>Online Gallery</small>
+          </span>
+        </a>
+
+        <button
+          class="menu-toggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="site-nav"
+        >
+          Menu
+        </button>
+
+        <nav class="site-nav" id="site-nav" aria-label="주요 메뉴">
+          <a href="#gallery">Gallery</a>
+          <a href="#about">About</a>
+          <a href="#notes">World</a>
+          <a href="#contact">Contact</a>
+        </nav>
+      </header>
+
+      <main id="top">
+        <section class="hero">
+          <div class="hero-copy reveal">
+            <p class="eyebrow">Dreaming Gallery for NYH</p>
+            <h1>
+              조용한 바다와
+              <br />
+              상상의 별빛을 담은 작품 세계
+            </h1>
+            <p class="hero-body">
+              NYH's Artworks는 따뜻한 색과 몽환적인 장면으로 감정을 그려내는
+              온라인 전시 공간입니다. 작품 한 점씩 천천히 머물러 볼 수 있도록
+              여백과 흐름을 중심으로 구성했습니다.
+            </p>
+
+            <div class="hero-actions">
+              <a class="button button-primary" href="#gallery">작품 감상하기</a>
+              <a class="button button-secondary" href="#about">작가 소개 보기</a>
+            </div>
+
+            <ul class="hero-notes" aria-label="작품 키워드">
+              <li>Sea</li>
+              <li>Dream</li>
+              <li>Stars</li>
+              <li>Comfort</li>
+            </ul>
+          </div>
+
+          <div class="hero-visual reveal">
+            <article class="floating-card floating-card-main">
+              <img src="artworks/DSC_0377.jpg" alt="거북이가 헤엄치는 작품" />
+            </article>
+            <article class="floating-card floating-card-top">
+              <img src="artworks/DSC_0189.jpg" alt="푸른 배경 위에 인물이 등장하는 작품" />
+            </article>
+            <article class="floating-card floating-card-bottom">
+              <img src="artworks/DSC_0370.jpg" alt="밤하늘과 별을 담은 작품" />
+            </article>
+          </div>
+        </section>
+
+        <section class="section highlights reveal" aria-labelledby="highlights-title">
+          <div class="section-heading">
+            <p class="eyebrow">Selected Works</p>
+            <h2 id="highlights-title">대표 작품 미리보기</h2>
+          </div>
+
+          <div class="highlight-grid">
+            <article class="highlight-card">
+              <img src="artworks/DSC_0179.jpg" alt="바다 속 인물과 생명체를 담은 작품" />
+              <div>
+                <p>Soft tides and companionship</p>
+                <strong>Underwater Embrace</strong>
+              </div>
+            </article>
+            <article class="highlight-card">
+              <img src="artworks/DSC_0378.jpg" alt="해파리 위에 앉은 인물을 그린 작품" />
+              <div>
+                <p>Quiet movement across the sea</p>
+                <strong>Jellyfish Ride</strong>
+              </div>
+            </article>
+            <article class="highlight-card">
+              <img src="artworks/DSC_0182.jpg" alt="밤하늘 속 고래 형상을 담은 작품" />
+              <div>
+                <p>Night skies with a sense of wonder</p>
+                <strong>Whale of the Night</strong>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="section gallery-section" id="gallery" aria-labelledby="gallery-title">
+          <div class="section-heading reveal">
+            <p class="eyebrow">Gallery</p>
+            <h2 id="gallery-title">작품 아카이브</h2>
+            <p>
+              현재 등록된 24점의 작품을 한 자리에서 감상할 수 있습니다. 카드를
+              누르면 큰 화면으로 확대해서 볼 수 있습니다.
+            </p>
+          </div>
+
+          <div class="gallery-toolbar reveal">
+            <span class="pill">24 Works</span>
+            <span class="pill">Acrylic on Canvas</span>
+            <span class="pill">Archive Edition</span>
+          </div>
+
+          <div class="gallery-grid" id="gallery-grid"></div>
+        </section>
+
+        <section class="section about-section" id="about" aria-labelledby="about-title">
+          <div class="about-layout">
+            <div class="about-copy reveal">
+              <p class="eyebrow">About the Artist</p>
+              <h2 id="about-title">작은 생명과 상상의 장면을 그리는 NYH</h2>
+              <p>
+                NYH는 바다, 별, 동행, 휴식 같은 감각을 바탕으로 화면 안에
+                조용한 위로를 담아냅니다. 관람자는 작품 속 존재들과 시선을
+                나누며 잠시 쉬어갈 수 있고, 각 장면은 꿈과 기억 사이의 풍경처럼
+                느껴집니다.
+              </p>
+              <p>
+                이 홈페이지는 작품 포트폴리오이자 온라인 전시 공간으로
+                설계되었습니다. 이후 실제 작품명, 연도, 전시 이력, 판매 가능
+                여부를 순차적으로 확장할 수 있도록 구조를 단순하게 유지했습니다.
+              </p>
+            </div>
+
+            <aside class="about-panel reveal">
+              <h3>Site Tone</h3>
+              <ul>
+                <li>넓은 여백과 전시형 레이아웃</li>
+                <li>바다빛 블루와 크림 계열의 부드러운 색감</li>
+                <li>모바일에서도 작품이 먼저 보이는 구조</li>
+                <li>추후 다국어 및 전시 소식 확장 가능</li>
+              </ul>
+            </aside>
+          </div>
+        </section>
+
+        <section class="section notes-section" id="notes" aria-labelledby="notes-title">
+          <div class="section-heading reveal">
+            <p class="eyebrow">World of NYH</p>
+            <h2 id="notes-title">작품을 관통하는 감정의 키워드</h2>
+          </div>
+
+          <div class="note-grid">
+            <article class="note-card reveal">
+              <h3>Sea</h3>
+              <p>
+                바다는 화면 속에서 가장 큰 공간이자 감정을 감싸는 배경입니다.
+                작품 전체에 고요한 호흡을 만들어 줍니다.
+              </p>
+            </article>
+            <article class="note-card reveal">
+              <h3>Companionship</h3>
+              <p>
+                사람과 생명체가 나란히 머무는 장면은 낯설면서도 다정한 관계를
+                떠올리게 합니다.
+              </p>
+            </article>
+            <article class="note-card reveal">
+              <h3>Stars</h3>
+              <p>
+                우주와 별빛의 모티프는 작은 캔버스를 더 넓은 상상의 공간으로
+                확장시킵니다.
+              </p>
+            </article>
+            <article class="note-card reveal">
+              <h3>Comfort</h3>
+              <p>
+                선명한 자극보다 잔잔한 위로를 전달하는 것이 이 작업 세계의
+                핵심입니다.
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <section class="section contact-section" id="contact" aria-labelledby="contact-title">
+          <div class="contact-box reveal">
+            <div>
+              <p class="eyebrow">Contact</p>
+              <h2 id="contact-title">작품 문의와 협업 제안을 받을 준비가 되어 있습니다</h2>
+              <p>
+                현재 페이지는 첫 공개 버전입니다. 아래 연락처 영역은 실제 이메일,
+                인스타그램, 전시 이력 정보로 쉽게 교체할 수 있게 구성했습니다.
+              </p>
+            </div>
+
+            <div class="contact-actions">
+              <a class="button button-primary" href="mailto:contact@nyhartworks.com">
+                Email Inquiry
+              </a>
+              <a class="button button-secondary" href="https://instagram.com/" target="_blank" rel="noreferrer">
+                Instagram
+              </a>
+            </div>
+
+            <p class="contact-caption">
+              현재 연락처는 임시 값입니다. `script.js`와 `index.html`의 텍스트만
+              바꾸면 실제 정보로 바로 반영됩니다.
+            </p>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-label="작품 확대 보기">
+      <button class="lightbox-close" type="button" aria-label="닫기">Close</button>
+      <div class="lightbox-content">
+        <img id="lightbox-image" alt="" />
+        <div class="lightbox-meta">
+          <p id="lightbox-index"></p>
+          <h3 id="lightbox-title"></h3>
+          <p id="lightbox-description"></p>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
