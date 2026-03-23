@@ -25,10 +25,10 @@ const artworks = [
   "DSC_0379.jpg",
 ].map((fileName, index) => ({
   fileName,
-  title: `Artwork ${String(index + 1).padStart(2, "0")}`,
-  subtitle: `Archive ${String(index + 1).padStart(2, "0")}`,
+  title: `작품 ${String(index + 1).padStart(2, "0")}`,
+  subtitle: `아카이브 ${String(index + 1).padStart(2, "0")}`,
   description:
-    "현재는 임시 아카이브 표기입니다. 실제 작품명, 제작년도, 재료 정보가 확정되면 이 데이터만 바꿔서 바로 반영할 수 있습니다.",
+    "현재 올라간 작품은 10x10 캔버스에 아크릴로 작업한 작품입니다. 이후 다른 크기와 형식의 작품이 추가될 수 있으며, 현재는 임시 아카이브 표기라 실제 작품명과 제작년도 정보가 확정되면 이 데이터만 바꿔서 바로 반영할 수 있습니다.",
 }));
 
 const galleryGrid = document.querySelector("#gallery-grid");
