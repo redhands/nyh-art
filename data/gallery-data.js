@@ -1,5 +1,5 @@
 window.__NYH_GALLERY__ = {
-  "generatedAt": "2026-03-25T09:05:33.418Z",
+  "generatedAt": "2026-03-25T09:54:08.878Z",
   "total": 44,
   "galleries": [
     {
@@ -8,6 +8,7 @@ window.__NYH_GALLERY__ = {
       "description": "현재 올라간 작품은 10x10 캔버스에 아크릴로 작업한 작품입니다.",
       "total": 24,
       "order": "1",
+      "thumbnailSize": "icon",
       "artworks": [
         {
           "fileName": "DSC_0179.jpg",
@@ -281,6 +282,7 @@ window.__NYH_GALLERY__ = {
       "description": "인스타그램에 포스팅한 작업 중 홈페이지에 함께 소개할 작품을 모아두는 시리즈입니다.",
       "total": 20,
       "order": "3",
+      "thumbnailSize": "default",
       "artworks": [
         {
           "fileName": "2025-04-15-DIdzu9Npe9x-01.jpg",

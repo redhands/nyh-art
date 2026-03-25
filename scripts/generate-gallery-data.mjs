@@ -116,6 +116,7 @@ const galleries = (
       description: galleryMarkdown.body || "",
       total: artworks.length,
       order: galleryMeta.order || String(galleryIndex + 1),
+      thumbnailSize: galleryMeta.thumbnailSize || "default",
       artworks
     };
   })

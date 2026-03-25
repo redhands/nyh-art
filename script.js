@@ -2,6 +2,7 @@ let galleries = [];
 let artworks = [];
 let visibleGalleries = [];
 let visibleArtworks = [];
+let revealObserver;
 
 const galleryGroupsContainer = document.querySelector("#gallery-groups-container");
 const galleryCount = document.querySelector("#gallery-count");
@@ -20,42 +21,57 @@ const lightboxClose = document.querySelector(".lightbox-close");
 const menuToggle = document.querySelector(".menu-toggle");
 const siteNav = document.querySelector(".site-nav");
 
-function createGalleryCard(artwork, index) {
-  const card = document.createElement("button");
-  card.className = "gallery-card reveal";
-  card.type = "button";
-  card.setAttribute("aria-label", `${artwork.title} 확대 보기`);
-  const loadingMode = index < 8 ? "eager" : "lazy";
+function getGalleryBySlug(slug) {
+  return galleries.find((gallery) => gallery.slug === slug) || null;
+}
 
-  card.innerHTML = `
-    <img src="artworks/${artwork.imagePath}" alt="${artwork.title}" loading="${loadingMode}" decoding="async" />
-    <div class="gallery-meta">
-      <p>${artwork.subtitle}</p>
-      <h3>${artwork.title}</h3>
+function getThumbnailSizeClass(artwork) {
+  const gallery = getGalleryBySlug(artwork.folder);
+  const thumbnailSize = gallery?.thumbnailSize || "default";
+  return `thumbnail-size-${thumbnailSize}`;
+}
+
+function getArtworkThumbnailMarkup(artwork, eager = false) {
+  const loadingMode = eager ? "eager" : "lazy";
+  const thumbnailSizeClass = getThumbnailSizeClass(artwork);
+
+  return `
+    <div class="thumbnail-frame ${thumbnailSizeClass}">
+      <img
+        src="artworks/${artwork.imagePath}"
+        alt="${artwork.title}"
+        loading="${loadingMode}"
+        decoding="async"
+      />
     </div>
   `;
+}
 
-  card.addEventListener("click", () => openLightbox(index));
+function createGalleryCard(artwork, index) {
+  const card = document.createElement("button");
+  const thumbnailSizeClass = getThumbnailSizeClass(artwork);
+  card.className = `gallery-card reveal ${thumbnailSizeClass}`;
+  card.type = "button";
+  card.setAttribute("aria-label", `${artwork.title} 확대 보기`);
+
+  card.innerHTML = getArtworkThumbnailMarkup(artwork, index < 8);
+
+  card.addEventListener("click", () => openLightboxForArtwork(artwork));
   return card;
 }
 
 function createArchivePreviewCard(artwork) {
   const card = document.createElement("a");
-  card.className = "archive-preview-card reveal";
+  const thumbnailSizeClass = getThumbnailSizeClass(artwork);
+  card.className = `archive-preview-card reveal ${thumbnailSizeClass}`;
   card.href = `gallery.html?series=${encodeURIComponent(artwork.folder)}#gallery-group-${artwork.folder}`;
-  card.innerHTML = `
-    <img src="artworks/${artwork.imagePath}" alt="${artwork.title}" loading="eager" decoding="async" />
-    <div class="archive-preview-meta">
-      <p>${artwork.subtitle}</p>
-      <h3>${artwork.title}</h3>
-      <span>${artwork.folder}</span>
-    </div>
-  `;
+  card.setAttribute("aria-label", `${artwork.title}이 있는 ${artwork.folder} 시리즈로 이동`);
+  card.innerHTML = getArtworkThumbnailMarkup(artwork, true);
   return card;
 }
 
-function pickRandomArtworks(count) {
-  const shuffled = [...artworks];
+function pickRandomArtworks(count, source = artworks) {
+  const shuffled = [...source];
 
   for (let index = shuffled.length - 1; index > 0; index -= 1) {
     const randomIndex = Math.floor(Math.random() * (index + 1));
@@ -68,7 +84,10 @@ function pickRandomArtworks(count) {
 function renderHeroImages() {
   if (!heroImageMain || !heroImageTop || !heroImageBottom) return;
 
-  const selected = pickRandomArtworks(3);
+  const heroCandidates = artworks.filter(
+    (artwork) => getThumbnailSizeClass(artwork) !== "thumbnail-size-icon"
+  );
+  const selected = pickRandomArtworks(3, heroCandidates.length ? heroCandidates : artworks);
   const targets = [heroImageMain, heroImageTop, heroImageBottom];
 
   selected.forEach((artwork, index) => {
@@ -101,11 +120,62 @@ function renderArchivePreview() {
   archivePreviewGrid.innerHTML = "";
   const fragment = document.createDocumentFragment();
 
-  pickRandomArtworks(8).forEach((artwork) => {
+  const selectedArtworks = pickRandomArtworks(8).sort((left, right) => {
+    const leftIsIcon = getThumbnailSizeClass(left) === "thumbnail-size-icon";
+    const rightIsIcon = getThumbnailSizeClass(right) === "thumbnail-size-icon";
+
+    if (leftIsIcon === rightIsIcon) {
+      return 0;
+    }
+
+    return leftIsIcon ? 1 : -1;
+  });
+
+  selectedArtworks.forEach((artwork) => {
     fragment.appendChild(createArchivePreviewCard(artwork));
   });
 
   archivePreviewGrid.appendChild(fragment);
+  bindPreviewMasonry(archivePreviewGrid);
+}
+
+function layoutPreviewMasonryItem(grid, item) {
+  const computedStyle = window.getComputedStyle(grid);
+  const rowHeight = Number.parseFloat(computedStyle.getPropertyValue("grid-auto-rows"));
+  const rowGap = Number.parseFloat(computedStyle.getPropertyValue("gap"));
+
+  if (!rowHeight) return;
+
+  item.style.gridRowEnd = "auto";
+  const contentHeight = item.getBoundingClientRect().height;
+  const rowSpan = Math.max(1, Math.ceil((contentHeight + rowGap) / (rowHeight + rowGap)));
+  item.style.gridRowEnd = `span ${rowSpan}`;
+}
+
+function bindPreviewMasonry(grid) {
+  if (!grid) return;
+
+  const items = Array.from(grid.children);
+  const relayout = () => {
+    items.forEach((item) => layoutPreviewMasonryItem(grid, item));
+  };
+
+  items.forEach((item) => {
+    const image = item.querySelector("img");
+    if (!image) return;
+
+    if (image.complete) {
+      layoutPreviewMasonryItem(grid, item);
+      return;
+    }
+
+    image.addEventListener("load", () => layoutPreviewMasonryItem(grid, item), { once: true });
+    image.addEventListener("error", () => layoutPreviewMasonryItem(grid, item), { once: true });
+  });
+
+  requestAnimationFrame(relayout);
+  window.setTimeout(relayout, 120);
+  window.addEventListener("resize", relayout, { passive: true });
 }
 
 function renderSeriesFilter() {
@@ -167,11 +237,16 @@ function renderGallery() {
           </a>
         </div>
       </div>
-      <div class="gallery-grid"></div>
+      <div class="gallery-grid ${gallery.thumbnailSize === "icon" ? "gallery-grid-icon" : ""}"></div>
     `;
 
     const grid = section.querySelector(".gallery-grid");
-    gallery.artworks.forEach((artwork) => {
+    const displayedArtworks =
+      gallery.thumbnailSize === "icon"
+        ? pickRandomArtworks(gallery.artworks.length, gallery.artworks)
+        : gallery.artworks;
+
+    displayedArtworks.forEach((artwork) => {
       grid.appendChild(createGalleryCard(artwork, artworkIndex));
       artworkIndex += 1;
     });
@@ -200,9 +275,7 @@ function updateGallerySummary() {
   }
 }
 
-function openLightbox(index) {
-  const artworkSource = galleryGroupsContainer ? visibleArtworks : artworks;
-  const artwork = artworkSource[index];
+function openLightboxForArtwork(artwork) {
   if (!artwork) return;
 
   lightboxImage.src = `artworks/${artwork.imagePath}`;
@@ -256,28 +329,48 @@ function bindReveal() {
   const revealElements = document.querySelectorAll(".reveal");
   if (!revealElements.length) return;
 
-  const observer = new IntersectionObserver(
+  const revealVisibleElements = () => {
+    revealElements.forEach((element) => {
+      const rect = element.getBoundingClientRect();
+      const isInViewport =
+        rect.top < window.innerHeight * 1.08 &&
+        rect.bottom > window.innerHeight * -0.12;
+
+      if (isInViewport) {
+        element.classList.add("is-visible");
+        revealObserver?.unobserve(element);
+      }
+    });
+  };
+
+  if (!("IntersectionObserver" in window)) {
+    revealElements.forEach((element) => element.classList.add("is-visible"));
+    return;
+  }
+
+  revealObserver?.disconnect();
+  revealObserver = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
-        if (entry.isIntersecting) {
+        if (entry.isIntersecting || entry.intersectionRatio > 0) {
           entry.target.classList.add("is-visible");
-          observer.unobserve(entry.target);
+          revealObserver?.unobserve(entry.target);
         }
       });
     },
-    { threshold: 0.18 }
+    {
+      threshold: [0, 0.12, 0.24],
+      rootMargin: "20% 0px 20% 0px"
+    }
   );
 
-  revealElements.forEach((element) => observer.observe(element));
+  revealElements.forEach((element) => revealObserver.observe(element));
 
-  requestAnimationFrame(() => {
-    revealElements.forEach((element) => {
-      const rect = element.getBoundingClientRect();
-      if (rect.top < window.innerHeight * 0.92) {
-        element.classList.add("is-visible");
-      }
-    });
-  });
+  requestAnimationFrame(revealVisibleElements);
+  window.setTimeout(revealVisibleElements, 160);
+  window.addEventListener("load", revealVisibleElements, { once: true });
+  window.addEventListener("pageshow", revealVisibleElements);
+  window.addEventListener("resize", revealVisibleElements, { passive: true });
 }
 
 async function loadGallery() {
