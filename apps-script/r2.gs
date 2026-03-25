@@ -1,4 +1,10 @@
 function uploadFileToR2(objectPath, blob, contentType, config) {
+  logInfo_("Uploading file to R2", {
+    path: objectPath,
+    contentType: contentType,
+    bytes: blob.getBytes().length
+  });
+
   const url = buildR2ApiUrl_(objectPath, config);
   const bodyBytes = blob.getBytes();
   const headers = buildR2SignedHeaders_("PUT", objectPath, contentType, bodyBytes, config);
@@ -15,7 +21,55 @@ function uploadFileToR2(objectPath, blob, contentType, config) {
     throw new Error("R2 upload failed: " + response.getResponseCode() + " " + response.getContentText());
   }
 
+  logInfo_("R2 upload complete", {
+    path: objectPath,
+    status: response.getResponseCode()
+  });
+
   return config.r2PublicBaseUrl + "/" + objectPath;
+}
+
+function fetchJsonFromR2(objectPath, config) {
+  const url = config.r2PublicBaseUrl + "/" + objectPath;
+  const response = UrlFetchApp.fetch(url, {
+    method: "get",
+    muteHttpExceptions: true
+  });
+
+  if (response.getResponseCode() === 404) {
+    logWarn_("Previous gallery JSON not found on R2", {
+      path: objectPath
+    });
+    return null;
+  }
+
+  if (response.getResponseCode() >= 300) {
+    throw new Error("R2 json fetch failed: " + response.getResponseCode() + " " + response.getContentText());
+  }
+
+  return JSON.parse(response.getContentText());
+}
+
+function objectExistsInR2(objectPath, config) {
+  const url = buildR2ApiUrl_(objectPath, config);
+  const headers = buildR2SignedHeaders_("GET", objectPath, "", [], config);
+  const response = UrlFetchApp.fetch(url, {
+    method: "get",
+    muteHttpExceptions: true,
+    headers: Object.assign({}, headers, {
+      Range: "bytes=0-0"
+    })
+  });
+
+  if (response.getResponseCode() === 404) {
+    return false;
+  }
+
+  if (response.getResponseCode() >= 300 && response.getResponseCode() !== 206) {
+    throw new Error("R2 object check failed: " + response.getResponseCode() + " " + response.getContentText());
+  }
+
+  return true;
 }
 
 function uploadJsonToR2(objectPath, payload, config) {
@@ -25,6 +79,10 @@ function uploadJsonToR2(objectPath, payload, config) {
 }
 
 function deleteFileFromR2(objectPath, config) {
+  logInfo_("Deleting file from R2", {
+    path: objectPath
+  });
+
   const url = buildR2ApiUrl_(objectPath, config);
   const headers = buildR2SignedHeaders_("DELETE", objectPath, "", [], config);
 
@@ -37,6 +95,11 @@ function deleteFileFromR2(objectPath, config) {
   if (response.getResponseCode() >= 300 && response.getResponseCode() !== 404) {
     throw new Error("R2 delete failed: " + response.getResponseCode() + " " + response.getContentText());
   }
+
+  logInfo_("R2 delete complete", {
+    path: objectPath,
+    status: response.getResponseCode()
+  });
 }
 
 function buildR2ApiUrl_(objectPath, config) {

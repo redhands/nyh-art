@@ -1,85 +1,74 @@
 # Instagram Gallery Workflow
 
-인스타그램 게시물을 홈페이지 갤러리로 옮길 때는 다음 구조를 사용합니다.
+현재 인스타그램 작업은 로컬 `artworks` 폴더가 아니라 `Google Drive -> Apps Script -> R2` 흐름으로 반영합니다.
 
-## 폴더 구조
+## 기본 흐름
+
+1. 인스타그램 게시물을 로컬로 수집
+2. 이미지와 같은 이름의 `.txt` 설명 파일 확인
+3. Google Drive의 `instagram` 시리즈 폴더에 업로드
+4. Apps Script가 R2와 `gallery.json`에 자동 반영
+
+## 수집 스크립트
+
+최근 1년치 게시물을 로컬 준비 폴더로 내려받으려면 아래처럼 실행합니다.
+
+```bash
+python3 -m pip install instaloader
+npm run instagram:collect
+```
+
+기본 저장 위치는 `imports/instagram`입니다.
+
+생성 결과 예:
 
 ```text
-artworks/
+imports/
   instagram/
-    artworks.md
-    post-2026-03-25-01.jpg
-    post-2026-03-25-01.md
+    2026-03-25-CODE.jpg
+    2026-03-25-CODE.txt
 ```
 
-## 시리즈 정보
+각 포스팅에서는 첫 번째 이미지 1장만 내려받습니다. 인스타그램 캡션 내용은 같은 이름의 `.txt` 본문 설명으로 그대로 들어갑니다.
 
-`artworks/instagram/artworks.md`는 시리즈 제목과 설명을 정의합니다.
+`.txt` 파일 예:
 
-```md
----
-gallery: 인스타그램 아카이브
-order: 3
----
-
-인스타그램에 포스팅한 작업 중 홈페이지에 함께 소개할 작품을 모아두는 시리즈입니다.
-```
-
-## 작품 정보
-
-이미지와 같은 이름의 `.md` 파일을 만들고 frontmatter + 본문을 작성합니다.
-
-```md
----
+```txt
 title: 작품 제목
-subtitle: 인스타그램 기록 01
-size: 디지털
-medium: Procreate
+subtitle: 인스타그램 기록 2026.03.25
+size: 인스타그램 원본
+medium: 디지털
 year: 2026
-description: 짧은 요약 설명
----
 
 홈페이지에서 보여줄 작품 설명 본문.
 ```
 
-## 반영 방법
+## 로그인 세션 사용 예시
 
-루트 폴더에서 아래 명령을 실행하면 갤러리 데이터가 갱신됩니다.
-
-```bash
-npm run build:data
-```
-
-작품이 없는 하위 폴더는 사이트에서 자동으로 숨겨집니다.
-
-## 인스타그램 다운로드 스크립트
-
-최근 1년치 게시물을 `artworks/instagram` 폴더로 내려받으려면 아래처럼 실행합니다.
-
-```bash
-python3 -m pip install instaloader
-```
-
-`python3 -m instaloader --load-cookies chrome nyh_doodles` 가 이미 성공했다면, 보통 세션 파일이 저장되어 있으므로 아래처럼 세션 사용자명만 넘겨서 실행하는 쪽이 더 안정적입니다.
+세션 파일을 재사용하려면:
 
 ```bash
 python3 scripts/download_instagram_last_year.py --username nyh_doodles --session-user YOUR_INSTAGRAM_ID
 ```
 
-세션 파일 경로를 직접 지정하고 싶다면 이렇게 실행합니다.
+세션 파일 경로를 직접 지정하려면:
 
 ```bash
 python3 scripts/download_instagram_last_year.py --username nyh_doodles --sessionfile ~/.config/instaloader/session-YOUR_INSTAGRAM_ID --session-user YOUR_INSTAGRAM_ID
 ```
 
-브라우저 쿠키를 직접 읽는 방식도 사용할 수 있습니다.
+브라우저 쿠키를 직접 읽는 방식:
 
 ```bash
 python3 scripts/download_instagram_last_year.py --username nyh_doodles --days 365 --load-cookies chrome
 ```
 
-다운로드가 끝나면 아래 명령으로 갤러리 데이터를 다시 만듭니다.
+특정 연도만 받고 싶다면:
 
 ```bash
-npm run build:data
+python3 scripts/download_instagram_last_year.py --username nyh_doodles --year 2025 --load-cookies chrome
 ```
+
+## 업로드 이후
+
+로컬에서 별도 빌드 명령은 필요하지 않습니다. 정리된 이미지와 `.txt`를 Google Drive의 `instagram` 폴더에 올리면, Apps Script 동기화 후 사이트에 반영됩니다.

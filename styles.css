@@ -392,7 +392,7 @@ main {
 .archive-preview-card {
   display: block;
   border: 0;
-  border-radius: 1rem;
+  border-radius: 0.72rem;
   padding: 0;
   background: transparent;
   box-shadow: none;
@@ -417,14 +417,14 @@ main {
 .thumbnail-frame {
   width: 100%;
   display: block;
-  border-radius: 0.95rem;
+  border-radius: 0.68rem;
   background: rgba(255, 255, 255, 0.84);
   overflow: hidden;
 }
 
 .archive-preview-card .thumbnail-frame {
   padding: 0;
-  border-radius: 1rem;
+  border-radius: 0.72rem;
   background: rgba(255, 255, 255, 0.72);
 }
 
@@ -573,7 +573,7 @@ main {
   padding: 0;
   text-align: left;
   overflow: hidden;
-  border-radius: 1rem;
+  border-radius: 0.72rem;
   background: transparent;
   box-shadow: none;
   break-inside: avoid;
@@ -591,18 +591,18 @@ main {
   width: 100%;
   padding: 0;
   box-sizing: border-box;
-  border-radius: 1rem;
+  border-radius: 0.72rem;
   background: rgba(255, 255, 255, 0.78);
 }
 
 .gallery-card > .thumbnail-frame img {
-  border-radius: 1rem;
+  border-radius: 0.72rem;
 }
 
 .gallery-card.thumbnail-size-icon {
   padding: 0;
   margin: 0 0 0.28rem;
-  border-radius: 0.78rem;
+  border-radius: 0.54rem;
   background: transparent;
   box-shadow: none;
 }
@@ -615,12 +615,12 @@ main {
 
 .gallery-card.thumbnail-size-icon > .thumbnail-frame {
   padding: 0;
-  border-radius: 0.78rem;
+  border-radius: 0.54rem;
   background: rgba(255, 255, 255, 0.72);
 }
 
 .gallery-card.thumbnail-size-icon > .thumbnail-frame img {
-  border-radius: 0.78rem;
+  border-radius: 0.54rem;
   object-fit: contain;
 }
 

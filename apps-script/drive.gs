@@ -16,6 +16,11 @@ function listGalleryFolders(rootFolderId) {
     return left.name.localeCompare(right.name);
   });
 
+  logInfo_("Drive gallery folders loaded", {
+    rootFolderId: rootFolderId,
+    count: folders.length
+  });
+
   return folders;
 }
 
@@ -30,12 +35,21 @@ function readTextFileFromFolder(folder, fileName) {
 
 function readGalleryMetadata(folder) {
   const parsed = parseTextMetadata(readTextFileFromFolder(folder, "artworks.txt"));
-  return {
+  const metadata = {
     title: parsed.attributes.gallery || parsed.attributes.title || folder.getName(),
     description: parsed.body || "",
     order: parsed.attributes.order || "",
     thumbnailSize: parsed.attributes.thumbnailSize || "default"
   };
+
+  logInfo_("Gallery metadata loaded", {
+    folder: folder.getName(),
+    title: metadata.title,
+    order: metadata.order || "",
+    thumbnailSize: metadata.thumbnailSize
+  });
+
+  return metadata;
 }
 
 function listArtworkPairs(folder) {
@@ -56,7 +70,10 @@ function listArtworkPairs(folder) {
     if (isImageExtension_(extension)) {
       pairs[basename] = pairs[basename] || { basename: basename };
       pairs[basename].imageFile = file;
+      pairs[basename].imageFileId = file.getId();
       pairs[basename].imageName = name;
+      pairs[basename].imageSize = file.getSize();
+      pairs[basename].imageMimeType = file.getMimeType();
       pairs[basename].imageUpdatedAt = file.getLastUpdated().toISOString();
       continue;
     }
@@ -64,21 +81,33 @@ function listArtworkPairs(folder) {
     if (extension === "txt") {
       pairs[basename] = pairs[basename] || { basename: basename };
       pairs[basename].textFile = file;
+      pairs[basename].textFileId = file.getId();
       pairs[basename].textName = name;
+      pairs[basename].textSize = file.getSize();
       pairs[basename].textUpdatedAt = file.getLastUpdated().toISOString();
     }
   }
 
-  return Object.keys(pairs)
+  const result = Object.keys(pairs)
     .map(function(key) { return pairs[key]; })
     .filter(function(pair) { return !!pair.imageFile; })
     .sort(function(left, right) {
       return left.basename.localeCompare(right.basename);
     });
+
+  logInfo_("Artwork pairs loaded", {
+    folder: folder.getName(),
+    artworks: result.length
+  });
+
+  return result;
 }
 
 function readArtworkMetadata(pair) {
   if (!pair.textFile) {
+    logWarn_("Artwork metadata missing text file", {
+      imageName: pair.imageName
+    });
     return { attributes: {}, body: "" };
   }
 

@@ -3,44 +3,97 @@ function runSyncNow() {
 }
 
 function runSync() {
+  logInfo_("Sync started");
+
   const config = getConfig();
+  const previousPayload = fetchJsonFromR2(config.r2GalleryJsonPath, config) || { galleries: [] };
+  const previousArtworkMap = buildPreviousArtworkMap_(previousPayload);
+  const previousGalleryMap = buildPreviousGalleryMap_(previousPayload);
   const previousManifest = normalizeManifest_(JSON.parse(config.syncManifestJson || "[]"));
   const previousManifestMap = buildManifestMap_(previousManifest);
   const galleries = [];
+  const processedGalleryMap = {};
   const currentManifest = [];
   const galleryFolders = listGalleryFolders(config.driveRootFolderId);
   let uploadedAssets = 0;
+  let skippedAssets = 0;
+  let reusedMetadataAssets = 0;
+  let reusedExistingR2Assets = 0;
+
+  logInfo_("Sync configuration ready", {
+    galleryJsonPath: config.r2GalleryJsonPath,
+    publicBaseUrl: config.r2PublicBaseUrl,
+    previousManifestCount: previousManifest.length
+  });
 
   galleryFolders.forEach(function(galleryFolder, galleryIndex) {
+    logInfo_("Processing gallery", {
+      gallery: galleryFolder.name,
+      index: galleryIndex + 1,
+      total: galleryFolders.length
+    });
+
     const galleryMeta = readGalleryMetadata(galleryFolder.folder);
     const pairs = listArtworkPairs(galleryFolder.folder);
     const artworks = [];
 
     pairs.forEach(function(pair, artworkIndex) {
-      const metadata = readArtworkMetadata(pair);
       const imageName = pair.imageName;
       const objectPath = galleryFolder.name + "/" + imageName;
-      const contentType = pair.imageFile.getBlob().getContentType() || guessContentType_(imageName);
       const previousEntry = previousManifestMap[objectPath];
+      const previousArtwork = previousArtworkMap[objectPath] || null;
       const currentEntry = {
         path: objectPath,
+        imageFileId: pair.imageFileId || "",
+        imageSize: String(pair.imageSize || ""),
         imageUpdatedAt: pair.imageUpdatedAt || "",
+        textFileId: pair.textFileId || "",
+        textSize: String(pair.textSize || ""),
         textUpdatedAt: pair.textUpdatedAt || ""
       };
-      let imageUrl = config.r2PublicBaseUrl + "/" + objectPath;
+      const imageChanged = hasArtworkImageChanged_(previousEntry, currentEntry);
+      const metadataChanged = hasArtworkMetadataChanged_(previousEntry, currentEntry);
+      let imageUrl = previousArtwork && previousArtwork.imageUrl
+        ? previousArtwork.imageUrl
+        : config.r2PublicBaseUrl + "/" + objectPath;
 
-      if (hasArtworkChanged_(previousEntry, currentEntry)) {
-        const imageBlob = pair.imageFile.getBlob();
-        imageUrl = uploadFileToR2(objectPath, imageBlob, contentType, config);
-        uploadedAssets += 1;
+      if (imageChanged) {
+        if (!previousEntry && objectExistsInR2(objectPath, config)) {
+          reusedExistingR2Assets += 1;
+          skippedAssets += 1;
+          logInfo_("Existing R2 object found, skipping re-upload", {
+            path: objectPath
+          });
+        } else {
+          const contentType = pair.imageMimeType || guessContentType_(imageName);
+          const imageBlob = pair.imageFile.getBlob();
+          imageUrl = uploadFileToR2(objectPath, imageBlob, contentType, config);
+          uploadedAssets += 1;
+        }
+      } else {
+        skippedAssets += 1;
+        logInfo_("Artwork unchanged, skipping upload", {
+          path: objectPath,
+          imageUpdatedAt: currentEntry.imageUpdatedAt
+        });
       }
 
       currentManifest.push(currentEntry);
+
+      if (!imageChanged && !metadataChanged && previousArtwork) {
+        reusedMetadataAssets += 1;
+        artworks.push({
+          ...previousArtwork,
+          imageUrl: imageUrl
+        });
+        return;
+      }
+
       artworks.push(
         buildArtworkObject(
           galleryFolder,
           pair,
-          metadata,
+          readArtworkMetadata(pair),
           artworkIndex,
           imageUrl
         )
@@ -51,25 +104,33 @@ function runSync() {
       galleryMeta.order = String(galleryIndex + 1);
     }
 
-    galleries.push(buildGalleryObject(galleryFolder, galleryMeta, artworks));
-  });
+    const galleryObject = buildGalleryObject(galleryFolder, galleryMeta, artworks);
+    galleries.push(galleryObject);
+    processedGalleryMap[galleryFolder.name] = galleryObject;
 
-  galleries.sort(function(left, right) {
-    const leftOrder = Number(left.order);
-    const rightOrder = Number(right.order);
-
-    if (isFinite(leftOrder) && isFinite(rightOrder) && leftOrder !== rightOrder) {
-      return leftOrder - rightOrder;
-    }
-
-    return left.title.localeCompare(right.title);
-  });
-
-  previousManifest
-    .filter(function(entry) { return !currentManifest.some(function(current) { return current.path === entry.path; }); })
-    .forEach(function(entry) {
-      deleteFileFromR2(entry.path, config);
+    logInfo_("Gallery processed", {
+      gallery: galleryFolder.name,
+      artworks: artworks.length
     });
+
+    persistProgress_(config, previousPayload, previousGalleryMap, processedGalleryMap, currentManifest, previousManifest);
+  });
+
+  galleries.sort(compareGalleries_);
+
+  const removedEntries = previousManifest.filter(function(entry) {
+    return !currentManifest.some(function(current) { return current.path === entry.path; });
+  });
+  const removedAssets = removedEntries.length;
+
+  removedEntries.forEach(function(entry) {
+    deleteFileFromR2(entry.path, config);
+  });
+
+  logInfo_("Uploading gallery JSON", {
+    path: config.r2GalleryJsonPath,
+    galleries: galleries.length
+  });
 
   const payload = buildGalleryPayload(galleries);
   uploadJsonToR2(config.r2GalleryJsonPath, payload, config);
@@ -79,11 +140,22 @@ function runSync() {
     galleries: galleries.length,
     artworks: payload.total,
     uploadedAssets: uploadedAssets,
-    removedAssets: previousManifest.filter(function(entry) {
-      return !currentManifest.some(function(current) { return current.path === entry.path; });
-    }).length,
+    skippedAssets: skippedAssets,
+    reusedMetadataAssets: reusedMetadataAssets,
+    reusedExistingR2Assets: reusedExistingR2Assets,
+    removedAssets: removedAssets,
     galleryJsonPath: config.r2GalleryJsonPath
   }, null, 2));
+
+  logInfo_("Sync finished", {
+    galleries: galleries.length,
+    artworks: payload.total,
+    uploadedAssets: uploadedAssets,
+    skippedAssets: skippedAssets,
+    reusedMetadataAssets: reusedMetadataAssets,
+    reusedExistingR2Assets: reusedExistingR2Assets,
+    removedAssets: removedAssets
+  });
 
   return payload;
 }
@@ -111,14 +183,22 @@ function normalizeManifest_(manifest) {
     if (typeof entry === "string") {
       return {
         path: entry,
+        imageFileId: "",
+        imageSize: "",
         imageUpdatedAt: "",
+        textFileId: "",
+        textSize: "",
         textUpdatedAt: ""
       };
     }
 
     return {
       path: entry.path || "",
+      imageFileId: entry.imageFileId || "",
+      imageSize: entry.imageSize || "",
       imageUpdatedAt: entry.imageUpdatedAt || "",
+      textFileId: entry.textFileId || "",
+      textSize: entry.textSize || "",
       textUpdatedAt: entry.textUpdatedAt || ""
     };
   }).filter(function(entry) {
@@ -133,10 +213,106 @@ function buildManifestMap_(manifest) {
   }, {});
 }
 
-function hasArtworkChanged_(previousEntry, currentEntry) {
+function buildPreviousGalleryMap_(payload) {
+  const galleries = Array.isArray(payload.galleries) ? payload.galleries : [];
+
+  return galleries.reduce(function(map, gallery) {
+    if (gallery.slug) {
+      map[gallery.slug] = gallery;
+    }
+    return map;
+  }, {});
+}
+
+function buildPreviousArtworkMap_(payload) {
+  const galleries = Array.isArray(payload.galleries) ? payload.galleries : [];
+
+  return galleries.reduce(function(map, gallery) {
+    const artworks = Array.isArray(gallery.artworks) ? gallery.artworks : [];
+    artworks.forEach(function(artwork) {
+      if (artwork.imagePath) {
+        map[artwork.imagePath] = artwork;
+      }
+    });
+    return map;
+  }, {});
+}
+
+function persistProgress_(config, previousPayload, previousGalleryMap, processedGalleryMap, currentManifest, previousManifest) {
+  const interimPayload = buildInterimPayload_(previousPayload, previousGalleryMap, processedGalleryMap);
+  const interimManifest = buildInterimManifest_(currentManifest, previousManifest, processedGalleryMap);
+
+  uploadJsonToR2(config.r2GalleryJsonPath, interimPayload, config);
+  setSyncState(new Date().toISOString(), interimManifest);
+
+  logInfo_("Progress persisted", {
+    galleries: interimPayload.galleries.length,
+    artworks: interimPayload.total,
+    processedGalleries: Object.keys(processedGalleryMap).length
+  });
+}
+
+function buildInterimPayload_(previousPayload, previousGalleryMap, processedGalleryMap) {
+  const previousGalleries = Array.isArray(previousPayload.galleries) ? previousPayload.galleries : [];
+  const mergedGalleries = previousGalleries.map(function(gallery) {
+    return processedGalleryMap[gallery.slug] || gallery;
+  });
+
+  Object.keys(processedGalleryMap).forEach(function(slug) {
+    if (!previousGalleryMap[slug]) {
+      mergedGalleries.push(processedGalleryMap[slug]);
+    }
+  });
+
+  mergedGalleries.sort(compareGalleries_);
+
+  return buildGalleryPayload(mergedGalleries);
+}
+
+function buildInterimManifest_(currentManifest, previousManifest, processedGalleryMap) {
+  const processedGalleryNames = Object.keys(processedGalleryMap);
+  const previousRemaining = previousManifest.filter(function(entry) {
+    return processedGalleryNames.indexOf(getGallerySlugFromPath_(entry.path)) === -1;
+  });
+
+  return previousRemaining.concat(currentManifest);
+}
+
+function getGallerySlugFromPath_(path) {
+  return String(path || "").split("/")[0] || "";
+}
+
+function compareGalleries_(left, right) {
+  const leftOrder = Number(left.order);
+  const rightOrder = Number(right.order);
+
+  if (isFinite(leftOrder) && isFinite(rightOrder) && leftOrder !== rightOrder) {
+    return leftOrder - rightOrder;
+  }
+
+  return left.title.localeCompare(right.title);
+}
+
+function hasArtworkImageChanged_(previousEntry, currentEntry) {
   if (!previousEntry) {
     return true;
   }
 
-  return previousEntry.imageUpdatedAt !== currentEntry.imageUpdatedAt;
+  return (
+    previousEntry.path !== currentEntry.path ||
+    previousEntry.imageFileId !== currentEntry.imageFileId ||
+    previousEntry.imageSize !== currentEntry.imageSize
+  );
+}
+
+function hasArtworkMetadataChanged_(previousEntry, currentEntry) {
+  if (!previousEntry) {
+    return true;
+  }
+
+  return (
+    previousEntry.textFileId !== currentEntry.textFileId ||
+    previousEntry.textSize !== currentEntry.textSize ||
+    previousEntry.textUpdatedAt !== currentEntry.textUpdatedAt
+  );
 }

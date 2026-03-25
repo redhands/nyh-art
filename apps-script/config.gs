@@ -28,3 +28,21 @@ function setSyncState(lastSyncAt, manifestRecords) {
   props.setProperty("LAST_SYNC_AT", lastSyncAt);
   props.setProperty("SYNC_MANIFEST_JSON", JSON.stringify(manifestRecords));
 }
+
+function logInfo_(message, data) {
+  if (typeof data === "undefined") {
+    Logger.log("[INFO] " + message);
+    return;
+  }
+
+  Logger.log("[INFO] " + message + " | " + JSON.stringify(data));
+}
+
+function logWarn_(message, data) {
+  if (typeof data === "undefined") {
+    Logger.log("[WARN] " + message);
+    return;
+  }
+
+  Logger.log("[WARN] " + message + " | " + JSON.stringify(data));
+}

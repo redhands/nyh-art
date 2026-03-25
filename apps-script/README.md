@@ -53,6 +53,20 @@ Google Drive의 작품 폴더를 읽어 Cloudflare R2와 `gallery.json`을 갱�
 
 - 시간 기반 트리거로 `runSyncNow`를 5분 또는 10분 간격 등록
 
+## 실행 로그 보기
+
+- Apps Script 편집기에서 `Executions`를 열면 최근 실행 기록을 볼 수 있습니다.
+- 각 실행을 클릭하면 아래 단계 로그가 보입니다.
+- Drive 시리즈 폴더 로드
+- 시리즈 메타데이터 읽기
+- 작품 메타데이터 읽기
+- 변경 파일 업로드 / 미변경 파일 건너뜀
+- manifest에는 없지만 R2에 이미 있는 파일 재사용
+- 갤러리 하나가 끝날 때마다 `gallery.json`과 manifest 중간 저장
+- R2 삭제
+- `gallery.json` 업로드
+- 마지막 요약 통계
+
 ## 출력
 
 - 이미지: `https://img.nyh-art.com/<gallery>/<filename>`

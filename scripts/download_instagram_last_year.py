@@ -27,14 +27,14 @@ from instaloader.exceptions import (
 
 
 ROOT_DIR = Path(__file__).resolve().parent.parent
-DEFAULT_OUTPUT_DIR = ROOT_DIR / "artworks" / "instagram"
+DEFAULT_OUTPUT_DIR = ROOT_DIR / "imports" / "instagram"
 DEFAULT_USERNAME = "nyh_doodles"
 DEFAULT_SESSION_DIR = Path.home() / ".config" / "instaloader"
 
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="인스타그램 공개 프로필에서 최근 1년치 게시물 이미지를 내려받습니다."
+        description="인스타그램 공개 프로필에서 최근 1년치 게시물 이미지를 내려받아 Google Drive 업로드용 파일 쌍을 준비합니다."
     )
     parser.add_argument(
         "--username",
@@ -51,6 +51,12 @@ def parse_args() -> argparse.Namespace:
         type=int,
         default=365,
         help="최근 며칠치 게시물을 가져올지 설정합니다. 기본값은 365일입니다.",
+    )
+    parser.add_argument(
+        "--year",
+        type=int,
+        default=0,
+        help="특정 연도의 게시물만 가져옵니다. 예: --year 2025",
     )
     parser.add_argument(
         "--login-user",
@@ -96,31 +102,28 @@ def build_stem(post_date: dt.datetime, shortcode: str, index: int | None = None)
     return sanitize_filename(f"{stamp}-{shortcode}-{index:02d}")
 
 
-def write_markdown_template(image_path: Path, caption: str, post_date: dt.datetime) -> None:
-    md_path = image_path.with_suffix(".md")
-    if md_path.exists():
+def write_text_template(image_path: Path, caption: str, post_date: dt.datetime) -> None:
+    text_path = image_path.with_suffix(".txt")
+    if text_path.exists():
         return
 
     caption_lines = [line.strip() for line in caption.splitlines() if line.strip()]
     first_line = caption_lines[0] if caption_lines else ""
+    body_lines = caption_lines if caption_lines else ["인스타그램에 공개한 작업입니다."]
 
     title = first_line[:60] if first_line else image_path.stem
     subtitle = f"인스타그램 기록 {post_date.strftime('%Y.%m.%d')}"
-    body = first_line if first_line else "인스타그램에 공개한 작업입니다."
 
-    md_path.write_text(
+    text_path.write_text(
         "\n".join(
             [
-                "---",
                 f"title: {title}",
                 f"subtitle: {subtitle}",
                 "size: 인스타그램 원본",
-                "medium: 미정",
+                "medium: 디지털",
                 f"year: {post_date.year}",
-                "description: 인스타그램에 공개한 작업입니다.",
-                "---",
                 "",
-                body,
+                *body_lines,
                 "",
             ]
         ),
@@ -134,33 +137,13 @@ def iter_post_image_urls(post: instaloader.Post) -> Iterable[str]:
             if node.is_video:
                 continue
             yield node.display_url
+            return
         return
 
     if getattr(post, "is_video", False):
         return
 
     yield post.url
-
-
-def ensure_gallery_markdown(output_dir: Path) -> None:
-    gallery_md = output_dir / "artworks.md"
-    if gallery_md.exists():
-        return
-
-    gallery_md.write_text(
-        "\n".join(
-            [
-                "---",
-                "gallery: 인스타그램 아카이브",
-                "order: 3",
-                "---",
-                "",
-                "인스타그램에 포스팅한 작업 중 홈페이지에 함께 소개할 작품을 모아두는 시리즈입니다.",
-                "",
-            ]
-        ),
-        encoding="utf-8",
-    )
 
 
 def find_default_sessionfile(username: str) -> Path:
@@ -171,9 +154,14 @@ def main() -> int:
     args = parse_args()
     output_dir = Path(args.output_dir).expanduser().resolve()
     output_dir.mkdir(parents=True, exist_ok=True)
-    ensure_gallery_markdown(output_dir)
 
     cutoff = dt.datetime.now(dt.timezone.utc) - dt.timedelta(days=args.days)
+    year_start = None
+    year_end = None
+
+    if args.year:
+        year_start = dt.datetime(args.year, 1, 1, tzinfo=dt.timezone.utc)
+        year_end = dt.datetime(args.year + 1, 1, 1, tzinfo=dt.timezone.utc)
 
     loader = instaloader.Instaloader(
         download_comments=False,
@@ -270,7 +258,13 @@ def main() -> int:
 
     for post in profile.get_posts():
         post_date = post.date_utc.replace(tzinfo=dt.timezone.utc)
-        if post_date < cutoff:
+
+        if year_start and year_end:
+            if post_date >= year_end:
+                continue
+            if post_date < year_start:
+                break
+        elif post_date < cutoff:
             break
 
         considered_posts += 1
@@ -278,14 +272,14 @@ def main() -> int:
         if not image_urls:
             continue
 
-        for index, image_url in enumerate(image_urls, start=1):
-            stem = build_stem(post_date, post.shortcode, None if len(image_urls) == 1 else index)
+        for image_url in image_urls[:1]:
+            stem = build_stem(post_date, post.shortcode)
             extension = infer_extension_from_url(image_url)
             image_path = output_dir / f"{stem}{extension}"
 
             if image_path.exists():
                 skipped_existing += 1
-                write_markdown_template(image_path, post.caption or "", post.date_utc)
+                write_text_template(image_path, post.caption or "", post.date_utc)
                 continue
 
             if args.dry_run:
@@ -293,15 +287,24 @@ def main() -> int:
                 continue
 
             loader.download_pic(str(image_path), image_url, post.date_utc)
-            write_markdown_template(image_path, post.caption or "", post.date_utc)
+            write_text_template(image_path, post.caption or "", post.date_utc)
             downloaded += 1
             print(f"downloaded: {image_path.name}")
 
-    print(
-        f"완료: 최근 {args.days}일 기준 게시물 {considered_posts}개 확인, 이미지 {downloaded}개 다운로드, 기존 파일 {skipped_existing}개 건너뜀."
-    )
+    if args.year:
+        summary = (
+            f"완료: {args.year}년 기준 게시물 {considered_posts}개 확인, "
+            f"이미지 {downloaded}개 다운로드, 기존 파일 {skipped_existing}개 건너뜀."
+        )
+    else:
+        summary = (
+            f"완료: 최근 {args.days}일 기준 게시물 {considered_posts}개 확인, "
+            f"이미지 {downloaded}개 다운로드, 기존 파일 {skipped_existing}개 건너뜀."
+        )
+
+    print(summary)
     print(f"저장 위치: {output_dir}")
-    print("다운로드 후 `npm run build:data`를 실행하면 사이트 갤러리에 반영됩니다.")
+    print("생성된 이미지와 같은 이름의 `.txt`를 확인한 뒤, Google Drive의 instagram 폴더로 업로드하면 됩니다.")
     return 0
 
 

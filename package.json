@@ -3,6 +3,6 @@
   "private": true,
   "scripts": {
     "build": "node scripts/build-site.mjs",
-    "instagram:download": "python3 scripts/download_instagram_last_year.py"
+    "instagram:collect": "python3 scripts/download_instagram_last_year.py"
   }
 }
