@@ -200,6 +200,7 @@ main {
 .hero h1 {
   font-size: clamp(3.6rem, 8vw, 6.9rem);
   max-width: none;
+  white-space: nowrap;
 }
 
 .hero-body,
@@ -637,16 +638,6 @@ main {
   padding: 1.5rem;
 }
 
-.note-card img {
-  width: 100%;
-  aspect-ratio: 1;
-  object-fit: contain;
-  border-radius: 1.25rem;
-  background: rgba(255, 255, 255, 0.82);
-  padding: 0.3rem;
-  margin-bottom: 1rem;
-}
-
 .note-card h3 {
   margin: 0 0 0.45rem;
   font-family: "Nanum Myeongjo", Georgia, serif;
@@ -673,6 +664,7 @@ main {
 
 .lightbox-content {
   width: min(100%, 62rem);
+  max-height: min(84vh, 52rem);
   display: grid;
   grid-template-columns: minmax(0, 1.2fr) minmax(16rem, 0.8fr);
   gap: 1rem;
@@ -694,6 +686,7 @@ main {
 
 .lightbox-meta {
   padding: 1.5rem;
+  overflow-y: auto;
 }
 
 .lightbox-meta h3 {
@@ -787,7 +780,6 @@ main {
 
   .hero h1 {
     font-size: clamp(2.25rem, 9.6vw, 3.05rem);
-    white-space: nowrap;
     letter-spacing: -0.03em;
   }
 

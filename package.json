@@ -2,7 +2,6 @@
   "name": "nyh-art",
   "private": true,
   "scripts": {
-    "build:data": "node scripts/generate-gallery-data.mjs",
     "build": "node scripts/build-site.mjs",
     "instagram:download": "python3 scripts/download_instagram_last_year.py"
   }

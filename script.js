@@ -31,6 +31,23 @@ function getThumbnailSizeClass(artwork) {
   return `thumbnail-size-${thumbnailSize}`;
 }
 
+function getArtworkImageUrl(artwork) {
+  return artwork.imageUrl || "";
+}
+
+function getGalleryDataSourceUrl() {
+  const datasetUrl = document.body?.dataset.galleryUrl;
+  if (datasetUrl) {
+    return datasetUrl;
+  }
+
+  if (window.__NYH_GALLERY_URL__) {
+    return window.__NYH_GALLERY_URL__;
+  }
+
+  return "data/gallery.json";
+}
+
 function getArtworkThumbnailMarkup(artwork, eager = false) {
   const loadingMode = eager ? "eager" : "lazy";
   const thumbnailSizeClass = getThumbnailSizeClass(artwork);
@@ -38,7 +55,7 @@ function getArtworkThumbnailMarkup(artwork, eager = false) {
   return `
     <div class="thumbnail-frame ${thumbnailSizeClass}">
       <img
-        src="artworks/${artwork.imagePath}"
+        src="${getArtworkImageUrl(artwork)}"
         alt="${artwork.title}"
         loading="${loadingMode}"
         decoding="async"
@@ -94,7 +111,7 @@ function renderHeroImages() {
     const target = targets[index];
     if (!target) return;
 
-    target.src = `artworks/${artwork.imagePath}`;
+    target.src = getArtworkImageUrl(artwork);
     target.alt = artwork.title;
   });
 }
@@ -278,7 +295,7 @@ function updateGallerySummary() {
 function openLightboxForArtwork(artwork) {
   if (!artwork) return;
 
-  lightboxImage.src = `artworks/${artwork.imagePath}`;
+  lightboxImage.src = getArtworkImageUrl(artwork);
   lightboxImage.alt = artwork.title;
   lightboxIndex.textContent = artwork.subtitle;
   lightboxTitle.textContent = artwork.title;
@@ -389,7 +406,7 @@ async function loadGallery() {
   }
 
   try {
-    const response = await fetch("data/gallery.json", { cache: "no-store" });
+    const response = await fetch(getGalleryDataSourceUrl(), { cache: "no-store" });
     if (!response.ok) {
       throw new Error(`HTTP ${response.status}`);
     }
@@ -410,7 +427,7 @@ async function loadGallery() {
 
     if (gallerySummary) {
       gallerySummary.textContent =
-        "갤러리 데이터를 불러오지 못했습니다. data/gallery.json 파일이 생성되어 있는지 확인해 주세요.";
+        "갤러리 데이터를 불러오지 못했습니다. 외부 gallery.json 경로와 접근 권한을 확인해 주세요.";
     }
   }
 }

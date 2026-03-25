@@ -1,5 +1,5 @@
 window.__NYH_GALLERY__ = {
-  "generatedAt": "2026-03-25T10:04:44.574Z",
+  "generatedAt": "2026-03-25T11:30:44.770Z",
   "total": 44,
   "galleries": [
     {
@@ -285,8 +285,8 @@ window.__NYH_GALLERY__ = {
       "thumbnailSize": "default",
       "artworks": [
         {
-          "fileName": "2025-04-15-DIdzu9Npe9x-01.jpg",
-          "imagePath": "instagram/2025-04-15-DIdzu9Npe9x-01.jpg",
+          "fileName": "2025-04-15-02.jpg",
+          "imagePath": "instagram/2025-04-15-02.jpg",
           "folder": "instagram",
           "title": "⭐️🐋",
           "subtitle": "인스타그램 기록 2025.04.15",
@@ -296,8 +296,8 @@ window.__NYH_GALLERY__ = {
           "year": "2025"
         },
         {
-          "fileName": "2025-04-15-DIdzu9Npe9x-04.jpg",
-          "imagePath": "instagram/2025-04-15-DIdzu9Npe9x-04.jpg",
+          "fileName": "2025-04-15.jpg",
+          "imagePath": "instagram/2025-04-15.jpg",
           "folder": "instagram",
           "title": "⭐️🐋",
           "subtitle": "인스타그램 기록 2025.04.15",
@@ -307,8 +307,8 @@ window.__NYH_GALLERY__ = {
           "year": "2025"
         },
         {
-          "fileName": "2025-05-06-DJUBnZAPqPb-01.jpg",
-          "imagePath": "instagram/2025-05-06-DJUBnZAPqPb-01.jpg",
+          "fileName": "2025-05-06.jpg",
+          "imagePath": "instagram/2025-05-06.jpg",
           "folder": "instagram",
           "title": "hug💫",
           "subtitle": "인스타그램 기록 2025.05.06",
@@ -318,8 +318,8 @@ window.__NYH_GALLERY__ = {
           "year": "2025"
         },
         {
-          "fileName": "2025-05-21-DJ6X3ULv17E-01.jpg",
-          "imagePath": "instagram/2025-05-21-DJ6X3ULv17E-01.jpg",
+          "fileName": "2025-05-21.jpg",
+          "imagePath": "instagram/2025-05-21.jpg",
           "folder": "instagram",
           "title": "😚💛",
           "subtitle": "인스타그램 기록 2025.05.21",
@@ -329,8 +329,8 @@ window.__NYH_GALLERY__ = {
           "year": "2025"
         },
         {
-          "fileName": "2025-06-20-DLIHLX4v68e-01.jpg",
-          "imagePath": "instagram/2025-06-20-DLIHLX4v68e-01.jpg",
+          "fileName": "2025-06-20.jpg",
+          "imagePath": "instagram/2025-06-20.jpg",
           "folder": "instagram",
           "title": "🫧⭐️🫧🌈",
           "subtitle": "인스타그램 기록 2025.06.20",
@@ -340,8 +340,8 @@ window.__NYH_GALLERY__ = {
           "year": "2025"
         },
         {
-          "fileName": "2025-06-30-DLgorrBPOWW-01.jpg",
-          "imagePath": "instagram/2025-06-30-DLgorrBPOWW-01.jpg",
+          "fileName": "2025-06-30.jpg",
+          "imagePath": "instagram/2025-06-30.jpg",
           "folder": "instagram",
           "title": "행복의 온도🩵💛",
           "subtitle": "인스타그램 기록 2025.06.30",
@@ -351,8 +351,8 @@ window.__NYH_GALLERY__ = {
           "year": "2025"
         },
         {
-          "fileName": "2025-07-14-DME2j3Ovs-w-01.jpg",
-          "imagePath": "instagram/2025-07-14-DME2j3Ovs-w-01.jpg",
+          "fileName": "2025-07-14.jpg",
+          "imagePath": "instagram/2025-07-14.jpg",
           "folder": "instagram",
           "title": "행복의 온도2",
           "subtitle": "인스타그램 기록 2025.07.14",
@@ -362,8 +362,8 @@ window.__NYH_GALLERY__ = {
           "year": "2025"
         },
         {
-          "fileName": "2025-08-14-DNVTQf1Pbk4-01.jpg",
-          "imagePath": "instagram/2025-08-14-DNVTQf1Pbk4-01.jpg",
+          "fileName": "2025-08-14.jpg",
+          "imagePath": "instagram/2025-08-14.jpg",
           "folder": "instagram",
           "title": "세상에서 가장 긴 생물 🪼🌟🌌",
           "subtitle": "인스타그램 기록 2025.08.14",
@@ -373,8 +373,8 @@ window.__NYH_GALLERY__ = {
           "year": "2025"
         },
         {
-          "fileName": "2025-09-03-DOKJpmsEx-E-01.jpg",
-          "imagePath": "instagram/2025-09-03-DOKJpmsEx-E-01.jpg",
+          "fileName": "2025-09-03.jpg",
+          "imagePath": "instagram/2025-09-03.jpg",
           "folder": "instagram",
           "title": "🚥🫧🐬",
           "subtitle": "인스타그램 기록 2025.09.03",
@@ -384,8 +384,8 @@ window.__NYH_GALLERY__ = {
           "year": "2025"
         },
         {
-          "fileName": "2025-09-15-DOn9qyuD7l2-01.jpg",
-          "imagePath": "instagram/2025-09-15-DOn9qyuD7l2-01.jpg",
+          "fileName": "2025-09-15.jpg",
+          "imagePath": "instagram/2025-09-15.jpg",
           "folder": "instagram",
           "title": "Dive 🌠",
           "subtitle": "인스타그램 기록 2025.09.15",
@@ -395,8 +395,8 @@ window.__NYH_GALLERY__ = {
           "year": "2025"
         },
         {
-          "fileName": "2025-10-07-DPfwTfaDzrS-01.jpg",
-          "imagePath": "instagram/2025-10-07-DPfwTfaDzrS-01.jpg",
+          "fileName": "2025-10-07.jpg",
+          "imagePath": "instagram/2025-10-07.jpg",
           "folder": "instagram",
           "title": "🌕⭐️😌",
           "subtitle": "인스타그램 기록 2025.10.07",
@@ -406,8 +406,8 @@ window.__NYH_GALLERY__ = {
           "year": "2025"
         },
         {
-          "fileName": "2025-10-16-DP3jtICD2UW.jpg",
-          "imagePath": "instagram/2025-10-16-DP3jtICD2UW.jpg",
+          "fileName": "2025-10-16.jpg",
+          "imagePath": "instagram/2025-10-16.jpg",
           "folder": "instagram",
           "title": "삭으로 흐르는 시간🌘",
           "subtitle": "인스타그램 기록 2025.10.16",
@@ -417,8 +417,8 @@ window.__NYH_GALLERY__ = {
           "year": "2025"
         },
         {
-          "fileName": "2025-10-25-DQO61uNj6Og.jpg",
-          "imagePath": "instagram/2025-10-25-DQO61uNj6Og.jpg",
+          "fileName": "2025-10-25.jpg",
+          "imagePath": "instagram/2025-10-25.jpg",
           "folder": "instagram",
           "title": "🩷🐬",
           "subtitle": "인스타그램 기록 2025.10.25",
@@ -428,8 +428,8 @@ window.__NYH_GALLERY__ = {
           "year": "2025"
         },
         {
-          "fileName": "2025-12-01-DRs0yyok1pI-01.jpg",
-          "imagePath": "instagram/2025-12-01-DRs0yyok1pI-01.jpg",
+          "fileName": "2025-12-01.jpg",
+          "imagePath": "instagram/2025-12-01.jpg",
           "folder": "instagram",
           "title": "🎹🫧✨",
           "subtitle": "인스타그램 기록 2025.12.01",
@@ -439,8 +439,8 @@ window.__NYH_GALLERY__ = {
           "year": "2025"
         },
         {
-          "fileName": "2025-12-13-DSM9mfhD4Lp-01.jpg",
-          "imagePath": "instagram/2025-12-13-DSM9mfhD4Lp-01.jpg",
+          "fileName": "2025-12-13.jpg",
+          "imagePath": "instagram/2025-12-13.jpg",
           "folder": "instagram",
           "title": "💫💫💫",
           "subtitle": "인스타그램 기록 2025.12.13",
@@ -450,8 +450,8 @@ window.__NYH_GALLERY__ = {
           "year": "2025"
         },
         {
-          "fileName": "2026-01-02-DTAIEV1j3LE-01.jpg",
-          "imagePath": "instagram/2026-01-02-DTAIEV1j3LE-01.jpg",
+          "fileName": "2026-01-02.jpg",
+          "imagePath": "instagram/2026-01-02.jpg",
           "folder": "instagram",
           "title": "새해 복 많이 받으세요. 🐴❤️‍🔥",
           "subtitle": "인스타그램 기록 2026.01.02",
@@ -461,8 +461,8 @@ window.__NYH_GALLERY__ = {
           "year": "2026"
         },
         {
-          "fileName": "2026-01-24-DT48GDRD2-e-01.jpg",
-          "imagePath": "instagram/2026-01-24-DT48GDRD2-e-01.jpg",
+          "fileName": "2026-01-24.jpg",
+          "imagePath": "instagram/2026-01-24.jpg",
           "folder": "instagram",
           "title": "🐋💫",
           "subtitle": "인스타그램 기록 2026.01.24",
@@ -472,8 +472,8 @@ window.__NYH_GALLERY__ = {
           "year": "2026"
         },
         {
-          "fileName": "2026-02-10-DUkG9mGjw9l-01.jpg",
-          "imagePath": "instagram/2026-02-10-DUkG9mGjw9l-01.jpg",
+          "fileName": "2026-02-10.jpg",
+          "imagePath": "instagram/2026-02-10.jpg",
           "folder": "instagram",
           "title": "🪼⭐️🫧",
           "subtitle": "인스타그램 기록 2026.02.10",
@@ -483,8 +483,8 @@ window.__NYH_GALLERY__ = {
           "year": "2026"
         },
         {
-          "fileName": "2026-02-16-DU0hgojj5tV-01.jpg",
-          "imagePath": "instagram/2026-02-16-DU0hgojj5tV-01.jpg",
+          "fileName": "2026-02-16.jpg",
+          "imagePath": "instagram/2026-02-16.jpg",
           "folder": "instagram",
           "title": "🌅",
           "subtitle": "인스타그램 기록 2026.02.16",
@@ -494,8 +494,8 @@ window.__NYH_GALLERY__ = {
           "year": "2026"
         },
         {
-          "fileName": "2026-03-16-DV8GLxaj4xk-01.jpg",
-          "imagePath": "instagram/2026-03-16-DV8GLxaj4xk-01.jpg",
+          "fileName": "2026-03-16.jpg",
+          "imagePath": "instagram/2026-03-16.jpg",
           "folder": "instagram",
           "title": "낮잠",
           "subtitle": "인스타그램 기록 2026.03.16",

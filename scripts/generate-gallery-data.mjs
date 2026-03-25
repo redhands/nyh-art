@@ -11,7 +11,7 @@ const outputPath = path.join(outputDir, "gallery.json");
 const scriptOutputPath = path.join(outputDir, "gallery-data.js");
 
 const imagePattern = /\.(avif|gif|jpe?g|png|webp)$/i;
-const markdownPattern = /\.md$/i;
+const textPattern = /\.txt$/i;
 const defaultDescription =
   "현재 올라간 작품은 10x10 캔버스에 아크릴로 작업한 작품입니다. 이후 다른 크기와 형식의 작품이 추가될 수 있으며, 현재는 임시 아카이브 표기라 실제 작품명과 제작년도 정보가 확정되면 이 데이터만 바꿔서 바로 반영할 수 있습니다.";
 const defaultMedium = "아크릴";
@@ -26,21 +26,15 @@ function buildFallbackSubtitle(index) {
   return `아카이브 ${String(index + 1).padStart(2, "0")}`;
 }
 
-function parseFrontmatter(markdown) {
-  const normalized = markdown.replace(/\r\n/g, "\n");
-
-  if (!normalized.startsWith("---\n")) {
-    return { attributes: {}, body: normalized.trim() };
+function parseTextMetadata(content) {
+  const normalized = content.replace(/\r\n/g, "\n").trim();
+  if (!normalized) {
+    return { attributes: {}, body: "" };
   }
 
-  const closingIndex = normalized.indexOf("\n---\n", 4);
-  if (closingIndex === -1) {
-    return { attributes: {}, body: normalized.trim() };
-  }
-
-  const rawAttributes = normalized.slice(4, closingIndex).split("\n");
-  const body = normalized.slice(closingIndex + 5).trim();
+  const [rawAttributesBlock, ...bodyBlocks] = normalized.split(/\n\s*\n/);
   const attributes = {};
+  const rawAttributes = rawAttributesBlock.split("\n");
 
   for (const line of rawAttributes) {
     const separatorIndex = line.indexOf(":");
@@ -52,13 +46,14 @@ function parseFrontmatter(markdown) {
     attributes[key] = value;
   }
 
+  const body = bodyBlocks.join("\n\n").trim();
   return { attributes, body };
 }
 
-async function readMarkdownFile(filePath) {
+async function readTextFile(filePath) {
   try {
     const content = await readFile(filePath, "utf8");
-    return parseFrontmatter(content);
+    return parseTextMetadata(content);
   } catch (error) {
     if (error && typeof error === "object" && "code" in error && error.code === "ENOENT") {
       return { attributes: {}, body: "" };
@@ -68,9 +63,9 @@ async function readMarkdownFile(filePath) {
   }
 }
 
-async function readArtworkMarkdown(directoryPath, fileName) {
+async function readArtworkText(directoryPath, fileName) {
   const basename = fileName.replace(/\.[^.]+$/, "");
-  return readMarkdownFile(path.join(directoryPath, `${basename}.md`));
+  return readTextFile(path.join(directoryPath, `${basename}.txt`));
 }
 
 const directoryEntries = await readdir(artworksDir, { withFileTypes: true });
@@ -84,17 +79,17 @@ const galleries = (
     const directoryName = directoryEntry.name;
     const directoryPath = path.join(artworksDir, directoryName);
     const files = await readdir(directoryPath);
-    const galleryMarkdown = await readMarkdownFile(path.join(directoryPath, "artworks.md"));
-    const galleryMeta = galleryMarkdown.attributes;
+    const galleryText = await readTextFile(path.join(directoryPath, "artworks.txt"));
+    const galleryMeta = galleryText.attributes;
 
     const imageFileNames = files
-      .filter((fileName) => imagePattern.test(fileName) && !markdownPattern.test(fileName))
+      .filter((fileName) => imagePattern.test(fileName) && !textPattern.test(fileName))
       .sort((left, right) => left.localeCompare(right, "en"));
 
     const artworks = await Promise.all(
       imageFileNames.map(async (fileName, artworkIndex) => {
-        const markdown = await readArtworkMarkdown(directoryPath, fileName);
-        const meta = markdown.attributes;
+        const metadata = await readArtworkText(directoryPath, fileName);
+        const meta = metadata.attributes;
 
         return {
           fileName,
@@ -102,7 +97,7 @@ const galleries = (
           folder: directoryName,
           title: meta.title ?? buildFallbackTitle(artworkIndex),
           subtitle: meta.subtitle ?? buildFallbackSubtitle(artworkIndex),
-          description: meta.description || markdown.body || defaultDescription,
+          description: meta.description || metadata.body || defaultDescription,
           medium: meta.medium || defaultMedium,
           size: meta.size || defaultSize,
           year: meta.year || ""
@@ -113,7 +108,7 @@ const galleries = (
     return {
       slug: directoryName,
       title: galleryMeta.gallery || galleryMeta.title || directoryName,
-      description: galleryMarkdown.body || "",
+      description: galleryText.body || "",
       total: artworks.length,
       order: galleryMeta.order || String(galleryIndex + 1),
       thumbnailSize: galleryMeta.thumbnailSize || "default",
