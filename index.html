@@ -20,7 +20,11 @@
     <div class="page-shell">
       <header class="site-header">
         <a class="brand" href="#top">
-          <span class="brand-mark"></span>
+          <img
+            class="brand-mark"
+            src="assets/profile.jpg"
+            alt="NYH 프로필 이미지"
+          />
           <span class="brand-text">
             <strong>NYH's Artworks</strong>
             <small>온라인 갤러리</small>
@@ -37,9 +41,10 @@
         </button>
 
         <nav class="site-nav" id="site-nav" aria-label="주요 메뉴">
-          <a href="#gallery">갤러리</a>
+          <a href="gallery.html">갤러리</a>
           <a href="#about">작가 소개</a>
           <a href="#notes">작품 세계</a>
+          <a href="https://www.instagram.com/nyh_doodles" target="_blank" rel="noreferrer">인스타그램</a>
         </nav>
       </header>
 
@@ -47,19 +52,16 @@
         <section class="hero">
           <div class="hero-copy reveal">
             <p class="eyebrow">NYH를 위한 감성 갤러리</p>
-            <h1>
-              조용한 바다와
-              <br />
-              상상의 별빛을 담은 작품 세계
-            </h1>
+            <h1>꿈결 조각 모음</h1>
             <p class="hero-body">
-              NYH's Artworks는 따뜻한 색과 몽환적인 장면으로 감정을 그려내는
-              온라인 전시 공간입니다. 작품 한 점씩 천천히 머물러 볼 수 있도록
-              여백과 흐름을 중심으로 구성했습니다.
+              NYH's Artworks는 바다, 해파리, 돌고래와 별빛 같은 상징을 따라
+              마음의 풍경을 그려내는 온라인 전시 공간입니다. 화면 안을 천천히
+              흐르는 장면들을 따라가다 보면, 작가가 지나온 시간과 감정의 결을
+              함께 마주하게 됩니다.
             </p>
 
             <div class="hero-actions">
-              <a class="button button-primary" href="#gallery">작품 감상하기</a>
+              <a class="button button-primary" href="gallery.html">작품 감상하기</a>
               <a class="button button-secondary" href="#about">작가 소개 보기</a>
             </div>
 
@@ -73,44 +75,25 @@
 
           <div class="hero-visual reveal">
             <article class="floating-card floating-card-main">
-              <img src="artworks/DSC_0377.jpg" alt="거북이가 헤엄치는 작품" />
+              <img
+                id="hero-image-main"
+                src="artworks/10x10/DSC_0377.jpg"
+                alt="거북이가 헤엄치는 작품"
+              />
             </article>
             <article class="floating-card floating-card-top">
-              <img src="artworks/DSC_0189.jpg" alt="푸른 배경 위에 인물이 등장하는 작품" />
+              <img
+                id="hero-image-top"
+                src="artworks/10x10/DSC_0189.jpg"
+                alt="푸른 배경 위에 인물이 등장하는 작품"
+              />
             </article>
             <article class="floating-card floating-card-bottom">
-              <img src="artworks/DSC_0370.jpg" alt="밤하늘과 별을 담은 작품" />
-            </article>
-          </div>
-        </section>
-
-        <section class="section highlights reveal" aria-labelledby="highlights-title">
-          <div class="section-heading">
-            <p class="eyebrow">대표 작품</p>
-            <h2 id="highlights-title">대표 작품 미리보기</h2>
-          </div>
-
-          <div class="highlight-grid">
-            <article class="highlight-card">
-              <img src="artworks/DSC_0179.jpg" alt="바다 속 인물과 생명체를 담은 작품" />
-              <div>
-                <p>부드러운 물결과 다정한 동행</p>
-                <strong>바다의 품</strong>
-              </div>
-            </article>
-            <article class="highlight-card">
-              <img src="artworks/DSC_0378.jpg" alt="해파리 위에 앉은 인물을 그린 작품" />
-              <div>
-                <p>고요한 바다를 건너는 움직임</p>
-                <strong>해파리 산책</strong>
-              </div>
-            </article>
-            <article class="highlight-card">
-              <img src="artworks/DSC_0182.jpg" alt="밤하늘 속 고래 형상을 담은 작품" />
-              <div>
-                <p>경이로움이 머무는 밤의 풍경</p>
-                <strong>밤의 고래</strong>
-              </div>
+              <img
+                id="hero-image-bottom"
+                src="artworks/10x10/DSC_0370.jpg"
+                alt="밤하늘과 별을 담은 작품"
+              />
             </article>
           </div>
         </section>
@@ -119,87 +102,86 @@
           <div class="section-heading reveal">
             <p class="eyebrow">갤러리</p>
             <h2 id="gallery-title">작품 아카이브</h2>
-            <p>
-              현재 등록된 24점의 작품을 한 자리에서 감상할 수 있습니다. 지금
-              올라가 있는 작품들은 10x10 캔버스 위에 아크릴로 작업되었으며,
-              이후에는 다른 크기와 형식의 작품도 함께 추가될 수 있습니다.
-              카드를 누르면 큰 화면으로 확대해서 볼 수 있습니다.
+            <p id="gallery-summary">
+              바다, 해파리, 돌고래와 별빛처럼 화면 안에 오래 머무는 장면들
+              가운데 몇 작품을 먼저 소개합니다. 전체 작품과 시리즈별 흐름은
+              하위 갤러리 페이지에서 이어서 감상할 수 있습니다.
             </p>
           </div>
 
           <div class="gallery-toolbar reveal">
-            <span class="pill">총 24점</span>
-            <span class="pill">현재 등록 작품: 10x10 캔버스</span>
-            <span class="pill">현재 등록 작품: 아크릴 작업</span>
-            <span class="pill">아카이브 전시</span>
+            <span class="pill" id="gallery-count">총 0점</span>
+            <span class="pill" id="gallery-groups">총 0개 시리즈</span>
+            <span class="pill">랜덤 작품 미리보기</span>
+            <span class="pill">전체 갤러리 별도 페이지</span>
           </div>
 
-          <div class="gallery-grid" id="gallery-grid"></div>
+          <div class="archive-preview-grid" id="archive-preview-grid"></div>
+
+          <div class="archive-preview-actions reveal">
+            <a class="button button-primary" href="gallery.html">전체 갤러리 보기</a>
+          </div>
         </section>
 
         <section class="section about-section" id="about" aria-labelledby="about-title">
           <div class="about-layout">
             <div class="about-copy reveal">
               <p class="eyebrow">작가 소개</p>
-              <h2 id="about-title">작은 생명과 상상의 장면을 그리는 NYH</h2>
+              <h2 id="about-title">그림으로 다시 자신을 만나기 시작한 남영희</h2>
               <p>
-                NYH는 바다, 별, 동행, 휴식 같은 감각을 바탕으로 화면 안에
-                조용한 위로를 담아냅니다. 관람자는 작품 속 존재들과 시선을
-                나누며 잠시 쉬어갈 수 있고, 각 장면은 꿈과 기억 사이의 풍경처럼
-                느껴집니다.
+                남영희는 디지털 일러스트를 통해 자신의 감정과 기억을 천천히
+                그려내는 작가입니다. 사회복지학을 전공했지만, 이미지 작업을
+                계기로 그림의 길에 들어섰고, 독학과 실무 경험을 지나며 자신만의
+                화면을 만들어 왔습니다.
               </p>
               <p>
-                이 홈페이지는 작품 포트폴리오이자 온라인 전시 공간으로
-                설계되었습니다. 이후 실제 작품명, 연도, 전시 이력, 판매 가능
-                여부를 순차적으로 확장할 수 있도록 구조를 단순하게 유지했습니다.
+                오랜 공백 끝에 다시 그림을 시작한 순간, 작업은 작가에게 일기와
+                거울, 그리고 조용한 위로가 되었습니다. 인스타그램에 하루 한 장의
+                그림을 올리며 이어온 시간은 결국 다시 삶을 움직이게 한 작은
+                빛이 되었습니다.
+              </p>
+              <p>
+                바다, 해파리, 돌고래와 별빛은 그녀의 화면 안에서 마음의 언어가
+                됩니다. 남영희의 그림은 바닷속을 유영하듯 조용히 흘러가며,
+                보는 이가 자신의 꿈과 감정을 가만히 들여다볼 수 있는 작은
+                풍경이 되어 줍니다.
               </p>
             </div>
-
-            <aside class="about-panel reveal">
-              <h3>사이트 방향</h3>
-              <ul>
-                <li>넓은 여백과 전시형 레이아웃</li>
-                <li>바다빛 블루와 크림 계열의 부드러운 색감</li>
-                <li>모바일에서도 작품이 먼저 보이는 구조</li>
-                <li>추후 다국어 및 전시 소식 확장 가능</li>
-              </ul>
-            </aside>
           </div>
         </section>
 
         <section class="section notes-section" id="notes" aria-labelledby="notes-title">
           <div class="section-heading reveal">
             <p class="eyebrow">작품 세계</p>
-            <h2 id="notes-title">작품을 관통하는 감정의 키워드</h2>
+            <h2 id="notes-title">작품을 이루는 장면들</h2>
           </div>
 
           <div class="note-grid">
             <article class="note-card reveal">
+              <img src="artworks/10x10/DSC_0377.jpg" alt="바다를 헤엄치는 장면의 작품" />
               <h3>바다</h3>
               <p>
-                바다는 화면 속에서 가장 큰 공간이자 감정을 감싸는 배경입니다.
-                작품 전체에 고요한 호흡을 만들어 줍니다.
+                바다는 작가에게 주어진 환경이자 모든 장면을 감싸는 커다란
+                배경입니다. 화면 안의 존재들은 그 흐름 속을 천천히 지나가며,
+                삶의 시간과 마음의 결을 함께 품고 있습니다.
               </p>
             </article>
             <article class="note-card reveal">
-              <h3>동행</h3>
+              <img src="artworks/10x10/DSC_0378.jpg" alt="해파리와 함께 흐르는 장면의 작품" />
+              <h3>해파리</h3>
               <p>
-                사람과 생명체가 나란히 머무는 장면은 낯설면서도 다정한 관계를
-                떠올리게 합니다.
+                해파리는 유연한 마음의 상징입니다. 물결을 거스르기보다 흐름에
+                몸을 맡기며 움직이는 모습은, 흔들리면서도 다시 나아가는 마음의
+                형태를 닮아 있습니다.
               </p>
             </article>
             <article class="note-card reveal">
-              <h3>별빛</h3>
+              <img src="artworks/10x10/DSC_0179.jpg" alt="돌고래와 함께 있는 장면의 작품" />
+              <h3>돌고래</h3>
               <p>
-                우주와 별빛의 모티프는 작은 캔버스를 더 넓은 상상의 공간으로
-                확장시킵니다.
-              </p>
-            </article>
-            <article class="note-card reveal">
-              <h3>위로</h3>
-              <p>
-                선명한 자극보다 잔잔한 위로를 전달하는 것이 이 작업 세계의
-                핵심입니다.
+                돌고래는 무한한 애정을 상징합니다. 화면 속에서 인물을 감싸고
+                함께 머무는 존재로 나타나며, 따뜻한 위로와 다정한 관계의 감각을
+                조용히 전합니다.
               </p>
             </article>
           </div>
@@ -208,18 +190,7 @@
       </main>
     </div>
 
-    <div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-label="작품 확대 보기">
-      <button class="lightbox-close" type="button" aria-label="닫기">닫기</button>
-      <div class="lightbox-content">
-        <img id="lightbox-image" alt="" />
-        <div class="lightbox-meta">
-          <p id="lightbox-index"></p>
-          <h3 id="lightbox-title"></h3>
-          <p id="lightbox-description"></p>
-        </div>
-      </div>
-    </div>
-
+    <script src="data/gallery-data.js"></script>
     <script src="script.js"></script>
   </body>
 </html>
