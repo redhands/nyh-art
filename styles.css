@@ -178,6 +178,7 @@ main {
   align-items: center;
   gap: 3rem;
   padding: 4rem 0 3rem;
+  position: relative;
 }
 
 .eyebrow {
@@ -199,8 +200,14 @@ main {
 
 .hero h1 {
   font-size: clamp(3.6rem, 8vw, 6.9rem);
-  max-width: none;
+  max-width: 7.2em;
   white-space: nowrap;
+}
+
+.hero-copy {
+  position: relative;
+  z-index: 2;
+  max-width: 34rem;
 }
 
 .hero-body,
@@ -274,6 +281,8 @@ main {
 .hero-visual {
   position: relative;
   min-height: 34rem;
+  z-index: 1;
+  padding-left: 1.5rem;
 }
 
 .floating-card {

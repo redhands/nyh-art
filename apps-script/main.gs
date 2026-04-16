@@ -1,5 +1,36 @@
 function runSyncNow() {
-  return runSync();
+  const maxAttempts = 3;
+  const retryDelayMs = 2000;
+  let lastError = null;
+
+  for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
+    try {
+      logInfo_("runSyncNow attempt started", {
+        attempt: attempt,
+        maxAttempts: maxAttempts
+      });
+      return runSync();
+    } catch (error) {
+      lastError = error;
+
+      logWarn_("runSyncNow attempt failed", {
+        attempt: attempt,
+        maxAttempts: maxAttempts,
+        message: error && error.message ? error.message : String(error)
+      });
+
+      if (attempt === maxAttempts) {
+        throw new Error(
+          "runSyncNow failed after " + maxAttempts + " attempts: " +
+          (error && error.message ? error.message : String(error))
+        );
+      }
+
+      Utilities.sleep(retryDelayMs * attempt);
+    }
+  }
+
+  throw lastError;
 }
 
 function runSync() {
