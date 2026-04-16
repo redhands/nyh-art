@@ -43,6 +43,17 @@ Google Drive의 작품 폴더를 읽어 Cloudflare R2와 `gallery.json`을 갱�
 - 이미지 파일
 - 같은 이름의 `.txt`
 
+`artworks.txt`에 아래 같은 시리즈 옵션을 넣을 수 있습니다.
+
+```txt
+gallery: instagram
+order: 3
+thumbnailSize: default
+showInArchive: false
+```
+
+`showInArchive: false`로 두면 메인 화면 `작품 아카이브`의 랜덤 썸네일에는 노출되지 않고, 전체 갤러리와 시리즈 직접 링크에서는 그대로 접근할 수 있습니다.
+
 ## 실행
 
 수동 실행:

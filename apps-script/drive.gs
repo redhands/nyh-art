@@ -35,18 +35,21 @@ function readTextFileFromFolder(folder, fileName) {
 
 function readGalleryMetadata(folder) {
   const parsed = parseTextMetadata(readTextFileFromFolder(folder, "artworks.txt"));
+  const showInArchiveValue = String(parsed.attributes.showInArchive || "true").trim().toLowerCase();
   const metadata = {
     title: parsed.attributes.gallery || parsed.attributes.title || folder.getName(),
     description: parsed.body || "",
     order: parsed.attributes.order || "",
-    thumbnailSize: parsed.attributes.thumbnailSize || "default"
+    thumbnailSize: parsed.attributes.thumbnailSize || "default",
+    showInArchive: ["false", "0", "no", "off"].indexOf(showInArchiveValue) === -1
   };
 
   logInfo_("Gallery metadata loaded", {
     folder: folder.getName(),
     title: metadata.title,
     order: metadata.order || "",
-    thumbnailSize: metadata.thumbnailSize
+    thumbnailSize: metadata.thumbnailSize,
+    showInArchive: metadata.showInArchive
   });
 
   return metadata;

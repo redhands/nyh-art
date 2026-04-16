@@ -18,6 +18,7 @@ function buildGalleryObject(galleryFolder, galleryMeta, artworks) {
     total: artworks.length,
     order: galleryMeta.order || "",
     thumbnailSize: galleryMeta.thumbnailSize || "default",
+    showInArchive: galleryMeta.showInArchive !== false,
     artworks: artworks
   };
 }

@@ -107,20 +107,10 @@
               가운데 몇 작품을 먼저 소개합니다. 전체 작품과 시리즈별 흐름은
               하위 갤러리 페이지에서 이어서 감상할 수 있습니다.
             </p>
-          </div>
-
-          <div class="gallery-toolbar reveal">
-            <span class="pill" id="gallery-count">총 0점</span>
-            <span class="pill" id="gallery-groups">총 0개 시리즈</span>
-            <span class="pill">랜덤 작품 미리보기</span>
-            <span class="pill">전체 갤러리 별도 페이지</span>
+            <div class="section-heading-actions" id="archive-entry-links"></div>
           </div>
 
           <div class="archive-preview-grid" id="archive-preview-grid"></div>
-
-          <div class="archive-preview-actions reveal">
-            <a class="button button-primary" href="gallery.html">전체 갤러리 보기</a>
-          </div>
         </section>
 
         <section class="section about-section" id="about" aria-labelledby="about-title">
@@ -185,6 +175,18 @@
         </section>
 
       </main>
+    </div>
+
+    <div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-label="작품 확대 보기">
+      <button class="lightbox-close" type="button" aria-label="닫기">닫기</button>
+      <div class="lightbox-content">
+        <img id="lightbox-image" alt="" />
+        <div class="lightbox-meta">
+          <p id="lightbox-index"></p>
+          <h3 id="lightbox-title"></h3>
+          <p id="lightbox-description"></p>
+        </div>
+      </div>
     </div>
 
     <script src="script.js"></script>
