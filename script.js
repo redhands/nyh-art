@@ -5,9 +5,7 @@ let visibleArtworks = [];
 let revealObserver;
 
 const galleryGroupsContainer = document.querySelector("#gallery-groups-container");
-const galleryCount = document.querySelector("#gallery-count");
 const gallerySummary = document.querySelector("#gallery-summary");
-const galleryGroups = document.querySelector("#gallery-groups");
 const archiveEntryLinks = document.querySelector("#archive-entry-links");
 const seriesFilter = document.querySelector("#series-filter");
 const heroImageMain = document.querySelector("#hero-image-main");
@@ -307,20 +305,10 @@ function renderGallery() {
 }
 
 function updateGallerySummary() {
-  if (galleryCount) {
-    galleryCount.textContent = `총 ${visibleArtworks.length}점`;
-  }
-
-  if (galleryGroups) {
-    galleryGroups.textContent = `총 ${visibleGalleries.length}개 시리즈`;
-  }
-
   if (gallerySummary) {
     gallerySummary.textContent = document.querySelector(".archive-preview-grid")
       ? `현재 등록된 ${artworks.length}점의 작품 중 화면 안에 오래 머무는 장면들을 랜덤으로 소개합니다. 카드를 누르면 작품을 크게 볼 수 있고, 전체 갤러리는 바로가기 버튼으로 이동할 수 있습니다.`
-      : getSelectedSeriesSlug()
-        ? `선택한 시리즈의 작품 ${visibleArtworks.length}점을 보고 있습니다. 하나의 흐름 안에서 이어지는 장면들을 천천히 감상해 보세요. 상단 필터를 이용하면 다른 시리즈나 전체 보기로 돌아갈 수 있습니다.`
-        : `현재 등록된 ${visibleArtworks.length}점의 작품을 시리즈별 흐름에 따라 감상할 수 있습니다. 각 하위 폴더의 artworks.md에서 시리즈 제목과 설명을 읽어오며, 작품 정보는 이미지와 같은 이름의 마크다운 파일에서 관리됩니다. 카드를 누르면 큰 화면으로 확대해서 볼 수 있습니다.`;
+      : "";
   }
 }
 
