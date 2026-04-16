@@ -28,6 +28,8 @@ body {
   margin: 0;
   color: var(--text);
   font-family: "Nanum Gothic", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  word-break: keep-all;
+  overflow-wrap: normal;
   background:
     radial-gradient(circle at top left, rgba(105, 197, 219, 0.26), transparent 28%),
     radial-gradient(circle at 85% 15%, rgba(217, 194, 122, 0.2), transparent 22%),
@@ -152,6 +154,9 @@ button {
 .site-nav a {
   color: var(--muted);
   font-size: 0.95rem;
+  word-break: keep-all;
+  overflow-wrap: normal;
+  white-space: normal;
 }
 
 .site-nav a:hover,
@@ -203,6 +208,8 @@ main {
   font-family: "Nanum Myeongjo", Georgia, serif;
   line-height: 1.08;
   letter-spacing: -0.015em;
+  word-break: keep-all;
+  overflow-wrap: normal;
 }
 
 .hero h1 {
@@ -224,6 +231,8 @@ main {
 .lightbox-meta p {
   color: var(--muted);
   line-height: 1.75;
+  word-break: keep-all;
+  overflow-wrap: normal;
 }
 
 .hero-body {
@@ -601,6 +610,8 @@ main {
   font-family: "Nanum Myeongjo", Georgia, serif;
   font-size: clamp(2rem, 3vw, 3rem);
   line-height: 1.05;
+  word-break: keep-all;
+  overflow-wrap: normal;
 }
 
 .gallery-group-header p {
@@ -608,6 +619,8 @@ main {
   color: var(--muted);
   line-height: 1.75;
   max-width: 44rem;
+  word-break: keep-all;
+  overflow-wrap: normal;
 }
 
 .gallery-grid {
@@ -758,6 +771,8 @@ main {
   margin: 0 0 0.8rem;
   font-family: "Nanum Myeongjo", Georgia, serif;
   font-size: 2.3rem;
+  word-break: keep-all;
+  overflow-wrap: normal;
 }
 
 .lightbox-close {
