@@ -40,6 +40,17 @@ body {
     linear-gradient(180deg, #f8fbfd 0%, var(--bg) 42%, #eef7f2 100%);
 }
 
+html[lang="ja"],
+html[lang="zh"] {
+  line-break: strict;
+}
+
+html[lang="ja"] body,
+html[lang="zh"] body {
+  word-break: normal;
+  overflow-wrap: anywhere;
+}
+
 img {
   display: block;
   max-width: 100%;
@@ -138,6 +149,28 @@ button {
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.16em;
+}
+
+html[lang="ja"] .site-nav a,
+html[lang="zh"] .site-nav a,
+html[lang="ja"] .site-nav .nav-contact-trigger,
+html[lang="zh"] .site-nav .nav-contact-trigger,
+html[lang="ja"] .locale-current-button,
+html[lang="zh"] .locale-current-button,
+html[lang="ja"] .locale-switcher-button,
+html[lang="zh"] .locale-switcher-button,
+html[lang="ja"] .button,
+html[lang="zh"] .button,
+html[lang="ja"] .hero-notes li,
+html[lang="zh"] .hero-notes li,
+html[lang="ja"] .series-filter-link,
+html[lang="zh"] .series-filter-link,
+html[lang="ja"] .archive-entry-link,
+html[lang="zh"] .archive-entry-link,
+html[lang="ja"] .contact-icon-link,
+html[lang="zh"] .contact-icon-link {
+  word-break: normal;
+  overflow-wrap: anywhere;
 }
 
 .site-nav {
@@ -310,6 +343,11 @@ main {
     0 1px rgba(255, 255, 255, 0.45);
 }
 
+html[lang="ja"] .hero h1,
+html[lang="zh"] .hero h1 {
+  white-space: normal;
+}
+
 .hero-copy {
   position: relative;
   z-index: 2;
@@ -331,6 +369,22 @@ main {
   max-width: 36rem;
   margin: 1.5rem 0 0;
   font-size: 1.03rem;
+}
+
+html[lang="ja"] .hero-body,
+html[lang="zh"] .hero-body,
+html[lang="ja"] .section-heading p,
+html[lang="zh"] .section-heading p,
+html[lang="ja"] .about-copy p,
+html[lang="zh"] .about-copy p,
+html[lang="ja"] .note-card p,
+html[lang="zh"] .note-card p,
+html[lang="ja"] .lightbox-meta p,
+html[lang="zh"] .lightbox-meta p,
+html[lang="ja"] .gallery-group-header p,
+html[lang="zh"] .gallery-group-header p {
+  word-break: normal;
+  overflow-wrap: anywhere;
 }
 
 .hero-actions {
@@ -1050,7 +1104,7 @@ main {
   }
 
   .hero-visual {
-    min-height: 24rem;
+    min-height: 29rem;
     order: -1;
   }
 
@@ -1172,15 +1226,6 @@ main {
     letter-spacing: -0.03em;
   }
 
-  .hero {
-    justify-items: center;
-  }
-
-  .hero-copy {
-    width: 100%;
-    max-width: none;
-  }
-
   .highlight-grid,
   .note-grid {
     grid-template-columns: 1fr;
@@ -1227,36 +1272,30 @@ main {
   }
 
   .floating-card-main {
-    position: absolute;
-    width: 82%;
-    top: 8%;
-    left: 50%;
+    position: relative;
+    width: 100%;
+    top: auto;
     right: auto;
-    margin: 0;
-    transform: translateX(-50%);
   }
 
   .floating-card-top {
-    width: 34%;
-    top: 1.5%;
-    left: 2%;
+    width: 7rem;
+    top: -0.45rem;
+    left: 0.45rem;
   }
 
   .floating-card-bottom {
-    width: 36%;
+    width: 7.3rem;
     left: auto;
-    right: 2%;
-    bottom: 1.5%;
+    right: 0.55rem;
+    bottom: -0.45rem;
   }
 
   .hero-visual {
-    width: min(24.5rem, 92vw);
-    aspect-ratio: 1;
-    max-width: none;
-    min-height: 0;
+    min-height: auto;
+    max-width: 18.8rem;
     margin: 0 auto;
-    padding: 0;
-    display: block;
+    padding: 1.4rem 0 0.7rem;
   }
 
   .note-card,
