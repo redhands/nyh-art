@@ -14,6 +14,7 @@ const filesToCopy = [
   "index.html",
   "gallery.html",
   "styles.css",
+  "locale-data.js",
   "script.js"
 ];
 
@@ -128,6 +129,11 @@ function buildSeriesPageHtml(template, gallery) {
     html,
     /<link rel="stylesheet" href="styles\.css" \/>/u,
     `<link rel="stylesheet" href="../../styles.css" />`
+  );
+  html = updateMetaTag(
+    html,
+    /<script src="locale-data\.js"><\/script>/u,
+    `<script src="../../locale-data.js"></script>`
   );
   html = updateMetaTag(
     html,
