@@ -1050,7 +1050,7 @@ main {
   }
 
   .hero-visual {
-    min-height: 29rem;
+    min-height: 24rem;
     order: -1;
   }
 
@@ -1219,27 +1219,30 @@ main {
 
   .floating-card-main {
     position: relative;
-    width: 100%;
+    width: min(19rem, 78vw);
     top: auto;
     right: auto;
+    margin: 0 auto;
   }
 
   .floating-card-top {
-    width: 8rem;
-    top: -0.75rem;
-    left: 0.25rem;
+    width: min(6.6rem, 28vw);
+    top: -0.45rem;
+    left: 0.35rem;
   }
 
   .floating-card-bottom {
-    width: 8.4rem;
+    width: min(6.9rem, 29vw);
     left: auto;
-    right: 0.3rem;
-    bottom: -0.8rem;
+    right: 0.5rem;
+    bottom: -0.45rem;
   }
 
   .hero-visual {
     min-height: auto;
-    padding: 2rem 0 1rem;
+    max-width: 20rem;
+    margin: 0 auto;
+    padding: 1.15rem 0 0.6rem;
   }
 
   .note-card,
