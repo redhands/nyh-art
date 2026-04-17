@@ -1218,31 +1218,33 @@ main {
   }
 
   .floating-card-main {
-    position: relative;
-    width: min(19rem, 78vw);
-    top: auto;
+    position: absolute;
+    width: 100%;
+    top: 1rem;
+    left: 0;
     right: auto;
-    margin: 0 auto;
+    margin: 0;
   }
 
   .floating-card-top {
-    width: min(6.6rem, 28vw);
-    top: -0.45rem;
-    left: 0.35rem;
+    width: 34%;
+    top: 0;
+    left: -0.1rem;
   }
 
   .floating-card-bottom {
-    width: min(6.9rem, 29vw);
+    width: 36%;
     left: auto;
-    right: 0.5rem;
-    bottom: -0.45rem;
+    right: -0.1rem;
+    bottom: 0;
   }
 
   .hero-visual {
-    min-height: auto;
-    max-width: 20rem;
+    width: min(19rem, 78vw);
+    max-width: none;
+    min-height: calc(min(19rem, 78vw) + 1.6rem);
     margin: 0 auto;
-    padding: 1.15rem 0 0.6rem;
+    padding: 0;
   }
 
   .note-card,
