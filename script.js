@@ -54,6 +54,45 @@ function getTranslationValue(locale, key) {
   return key.split(".").reduce((value, segment) => value?.[segment], translations[locale]);
 }
 
+function getLocalizedContent(valueMap, fallbackValue = "") {
+  if (valueMap && typeof valueMap === "object") {
+    if (valueMap[currentLocale]) {
+      return valueMap[currentLocale];
+    }
+
+    if (valueMap.ko) {
+      return valueMap.ko;
+    }
+
+    const firstValue = Object.values(valueMap).find(Boolean);
+    if (firstValue) {
+      return firstValue;
+    }
+  }
+
+  return fallbackValue || "";
+}
+
+function getGalleryTitle(gallery) {
+  return getLocalizedContent(gallery?.titleI18n, gallery?.title || "");
+}
+
+function getGalleryDescription(gallery) {
+  return getLocalizedContent(gallery?.descriptionI18n, gallery?.description || "");
+}
+
+function getArtworkTitle(artwork) {
+  return getLocalizedContent(artwork?.titleI18n, artwork?.title || "");
+}
+
+function getArtworkSubtitle(artwork) {
+  return getLocalizedContent(artwork?.subtitleI18n, artwork?.subtitle || "");
+}
+
+function getArtworkDescription(artwork) {
+  return getLocalizedContent(artwork?.descriptionI18n, artwork?.description || "");
+}
+
 function t(key, ...args) {
   const value =
     getTranslationValue(currentLocale, key) ??
@@ -194,12 +233,13 @@ function getSeriesPageUrl(slug) {
 function getArtworkThumbnailMarkup(artwork, eager = false) {
   const loadingMode = eager ? "eager" : "lazy";
   const thumbnailSizeClass = getThumbnailSizeClass(artwork);
+  const artworkTitle = getArtworkTitle(artwork) || t("common.untitledArtwork");
 
   return `
     <div class="thumbnail-frame ${thumbnailSizeClass}">
       <img
         src="${getArtworkImageUrl(artwork)}"
-        alt="${artwork.title}"
+        alt="${artworkTitle}"
         loading="${loadingMode}"
         decoding="async"
       />
@@ -210,9 +250,10 @@ function getArtworkThumbnailMarkup(artwork, eager = false) {
 function createGalleryCard(artwork, index) {
   const card = document.createElement("button");
   const thumbnailSizeClass = getThumbnailSizeClass(artwork);
+  const artworkTitle = getArtworkTitle(artwork);
   card.className = `gallery-card reveal ${thumbnailSizeClass}`;
   card.type = "button";
-  card.setAttribute("aria-label", `${artwork.title || t("common.untitledArtwork")} ${t("common.viewArtwork")}`);
+  card.setAttribute("aria-label", `${artworkTitle || t("common.untitledArtwork")} ${t("common.viewArtwork")}`);
 
   card.innerHTML = getArtworkThumbnailMarkup(artwork, index < 8);
 
@@ -223,9 +264,10 @@ function createGalleryCard(artwork, index) {
 function createArchivePreviewCard(artwork) {
   const card = document.createElement("button");
   const thumbnailSizeClass = getThumbnailSizeClass(artwork);
+  const artworkTitle = getArtworkTitle(artwork);
   card.className = `archive-preview-card reveal ${thumbnailSizeClass}`;
   card.type = "button";
-  card.setAttribute("aria-label", `${artwork.title || t("common.untitledArtwork")} ${t("common.viewArtwork")}`);
+  card.setAttribute("aria-label", `${artworkTitle || t("common.untitledArtwork")} ${t("common.viewArtwork")}`);
   card.innerHTML = getArtworkThumbnailMarkup(artwork, true);
   card.addEventListener("click", () => openLightboxForArtwork(artwork));
   return card;
@@ -267,7 +309,7 @@ function renderHeroImages() {
     if (!target) return;
 
     target.src = getArtworkImageUrl(artwork);
-    target.alt = artwork.title;
+    target.alt = getArtworkTitle(artwork) || t("common.untitledArtwork");
   });
 }
 
@@ -371,7 +413,7 @@ function renderSeriesFilter() {
     },
     ...galleries.map((gallery) => ({
       href: getSeriesPageUrl(gallery.slug),
-      label: gallery.title,
+      label: getGalleryTitle(gallery),
       active: selectedSeriesSlug === gallery.slug
     }))
   ];
@@ -403,7 +445,7 @@ function renderArchiveEntryLinks() {
         href="${getSeriesPageUrl(gallery.slug)}"
       >
         <span class="archive-entry-icon" aria-hidden="true">+</span>
-        <span>${gallery.title}</span>
+        <span>${getGalleryTitle(gallery)}</span>
       </a>
     `)
   ];
@@ -423,16 +465,18 @@ function renderGallery() {
     section.className = "gallery-group reveal";
     section.setAttribute("aria-labelledby", `gallery-group-${gallery.slug}`);
     section.id = `gallery-group-${gallery.slug}`;
+    const galleryTitle = getGalleryTitle(gallery);
+    const galleryDescription = getGalleryDescription(gallery);
 
-    const description = gallery.description
-      ? `<p>${gallery.description}</p>`
+    const description = galleryDescription
+      ? `<p>${galleryDescription}</p>`
       : "";
 
     section.innerHTML = `
       <div class="gallery-group-header">
         <div>
           <p class="eyebrow">${t("gallery.seriesEyebrow")}</p>
-          <h3>${gallery.title}</h3>
+          <h3>${galleryTitle}</h3>
           ${description}
         </div>
       </div>
@@ -469,15 +513,15 @@ function updateGallerySummary() {
 
   if (galleryPageTitle) {
     galleryPageTitle.textContent = selectedGallery
-      ? selectedGallery.title
+      ? getGalleryTitle(selectedGallery)
       : t("gallery.rootTitle");
   }
 
   if (gallerySummary) {
     if (isHomePage) {
       gallerySummary.textContent = t("home.archive.summary", artworks.length);
-    } else if (selectedGallery?.description) {
-      gallerySummary.textContent = selectedGallery.description;
+    } else if (selectedGallery) {
+      gallerySummary.textContent = getGalleryDescription(selectedGallery);
     } else {
       gallerySummary.textContent = "";
     }
@@ -487,14 +531,14 @@ function updateGallerySummary() {
 function hasArtworkMetadata(artwork) {
   if (!artwork) return false;
 
-  const hasFallbackTitle = /^작품 \d+$/u.test(String(artwork.title || "").trim());
-  const hasFallbackSubtitle = /^아카이브 \d+$/u.test(String(artwork.subtitle || "").trim());
+  const hasFallbackTitle = /^작품 \d+$/u.test(String(getArtworkTitle(artwork) || "").trim());
+  const hasFallbackSubtitle = /^아카이브 \d+$/u.test(String(getArtworkSubtitle(artwork) || "").trim());
   const hasFallbackDescription =
-    String(artwork.description || "").trim() === "설명이 아직 등록되지 않은 작품입니다.";
+    String(getArtworkDescription(artwork) || "").trim() === "설명이 아직 등록되지 않은 작품입니다.";
 
-  const hasCustomTitle = Boolean(artwork.title) && !hasFallbackTitle;
-  const hasCustomSubtitle = Boolean(artwork.subtitle) && !hasFallbackSubtitle;
-  const hasCustomDescription = Boolean(artwork.description) && !hasFallbackDescription;
+  const hasCustomTitle = Boolean(getArtworkTitle(artwork)) && !hasFallbackTitle;
+  const hasCustomSubtitle = Boolean(getArtworkSubtitle(artwork)) && !hasFallbackSubtitle;
+  const hasCustomDescription = Boolean(getArtworkDescription(artwork)) && !hasFallbackDescription;
   const hasExtraMetadata = Boolean(artwork.medium || artwork.size || artwork.year);
 
   return hasCustomTitle || hasCustomSubtitle || hasCustomDescription || hasExtraMetadata;
@@ -503,7 +547,7 @@ function hasArtworkMetadata(artwork) {
 function hasArtworkTitle(artwork) {
   if (!artwork) return false;
 
-  const title = String(artwork.title || "").trim();
+  const title = String(getArtworkTitle(artwork) || "").trim();
   if (!title) return false;
 
   return !/^작품 \d+$/u.test(title);
@@ -513,12 +557,13 @@ function openLightboxForArtwork(artwork) {
   if (!artwork) return;
 
   const showTitle = hasArtworkTitle(artwork);
+  const artworkTitle = getArtworkTitle(artwork);
 
   lightboxImage.src = getArtworkImageUrl(artwork);
-  lightboxImage.alt = artwork.title || t("common.untitledArtwork");
+  lightboxImage.alt = artworkTitle || t("common.untitledArtwork");
   lightboxIndex.textContent = "";
   lightboxDescription.textContent = "";
-  lightboxTitle.textContent = showTitle ? artwork.title : "";
+  lightboxTitle.textContent = showTitle ? artworkTitle : "";
   lightboxMeta?.toggleAttribute("hidden", !showTitle);
   lightboxContent?.classList.toggle("lightbox-content-image-only", !showTitle);
   lightbox.classList.add("is-open");
