@@ -1,4 +1,9 @@
 .DS_Store
 artworks/.DS_Store
 dist/
-.wrangler/
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+.env*
+!.env.example
