@@ -54,6 +54,60 @@ showInArchive: false
 
 `showInArchive: false`로 두면 메인 화면 `작품 아카이브`의 랜덤 썸네일에는 노출되지 않고, 전체 갤러리와 시리즈 직접 링크에서는 그대로 접근할 수 있습니다.
 
+## 다국어 txt 포맷
+
+작품과 시리즈 텍스트 파일은 `key.언어코드` 형식으로 다국어를 함께 넣을 수 있습니다.
+
+- 지원 언어: `ko`, `en`, `ja`, `zh`
+- 기본값은 `ko`
+- 번역이 없으면 `ko` 또는 기존 단일 값으로 fallback 됩니다.
+
+예시:
+
+```txt
+title.ko: 달빛 해파리
+title.en: Moonlit Jellyfish
+title.ja: 月明かりのクラゲ
+title.zh: 月光水母
+```
+
+긴 설명은 아래처럼 여러 줄로 적을 수 있습니다.
+
+```txt
+description.ko:
+달빛이 번지는 바다 속에서 해파리가 조용히 떠오르는 장면.
+
+description.en:
+A quiet scene of a jellyfish rising through a moonlit sea.
+```
+
+시리즈 파일 `artworks.txt`에서는 아래 키들을 권장합니다.
+
+- `gallery.ko`, `gallery.en`, `gallery.ja`, `gallery.zh`
+- `description.ko`, `description.en`, `description.ja`, `description.zh`
+- `order`
+- `thumbnailSize`
+- `showInArchive`
+
+작품 파일 `<image-name>.txt`에서는 아래 키들을 권장합니다.
+
+- `title.ko`, `title.en`, `title.ja`, `title.zh`
+- `subtitle.ko`, `subtitle.en`, `subtitle.ja`, `subtitle.zh`
+- `description.ko`, `description.en`, `description.ja`, `description.zh`
+- `medium.ko`, `medium.en`, `medium.ja`, `medium.zh`
+- `size`
+- `year`
+
+샘플 파일:
+
+- `examples/artworks.sample.txt`
+- `examples/artwork.sample.txt`
+
+이 형식으로 작성하면 Apps Script는 `gallery.json`에 아래 값을 함께 넣습니다.
+
+- `title`, `description` 같은 기본 필드
+- `titleI18n`, `descriptionI18n`, `subtitleI18n`, `mediumI18n` 같은 다국어 맵
+
 ## 실행
 
 수동 실행:

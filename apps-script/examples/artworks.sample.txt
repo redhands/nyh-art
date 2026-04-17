@@ -1,0 +1,20 @@
+gallery.ko: 바다
+gallery.en: Sea
+gallery.ja: 海
+gallery.zh: 海
+
+description.ko:
+바다를 중심으로 한 장면들을 모은 시리즈입니다.
+
+description.en:
+A series of scenes centered around the sea.
+
+description.ja:
+海を中心にした場面を集めたシリーズです。
+
+description.zh:
+以海為中心的場景系列。
+
+order: 1
+thumbnailSize: default
+showInArchive: true

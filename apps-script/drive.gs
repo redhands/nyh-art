@@ -40,9 +40,19 @@ function readTextFileFromFolder(folder, fileName) {
 function readGalleryMetadata(folder) {
   const parsed = parseTextMetadata(readTextFileFromFolder(folder, "artworks.txt"));
   const showInArchiveValue = String(parsed.attributes.showInArchive || "true").trim().toLowerCase();
+  const titleI18n = buildLocalizedFieldMap(parsed.attributes, "gallery");
+  const fallbackTitleI18n = Object.keys(titleI18n).length
+    ? titleI18n
+    : buildLocalizedFieldMap(parsed.attributes, "title");
+  const descriptionI18n = buildLocalizedFieldMap(parsed.attributes, "description");
   const metadata = {
-    title: parsed.attributes.gallery || parsed.attributes.title || folder.getName(),
-    description: parsed.body || "",
+    title: pickLocalizedValue(
+      fallbackTitleI18n,
+      parsed.attributes.gallery || parsed.attributes.title || folder.getName()
+    ),
+    titleI18n: fallbackTitleI18n,
+    description: pickLocalizedValue(descriptionI18n, parsed.body || ""),
+    descriptionI18n: descriptionI18n,
     order: parsed.attributes.order || "",
     thumbnailSize: parsed.attributes.thumbnailSize || "default",
     showInArchive: ["false", "0", "no", "off"].indexOf(showInArchiveValue) === -1
