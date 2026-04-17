@@ -31,13 +31,14 @@ const localeCurrentButton = document.querySelector(".locale-current-button");
 const localeCurrentLabel = document.querySelector("#locale-current-label");
 const localeSwitcherMenu = document.querySelector(".locale-switcher-menu");
 const localeSwitcherButtons = document.querySelectorAll(".locale-switcher-button");
+const backToTopButton = document.querySelector("#back-to-top");
 
 const translations = {
   ko: {
     brand: { subtitle: "온라인 갤러리" },
     menu: { button: "메뉴" },
     nav: { about: "작가 소개", notes: "작품 세계", gallery: "갤러리", contact: "Contact" },
-    common: { close: "닫기", allView: "전체 보기", wholeGallery: "전체 갤러리 보기", seriesLink: "시리즈 링크", untitledArtwork: "작품", viewArtwork: "확대 보기" },
+    common: { close: "닫기", allView: "전체 보기", wholeGallery: "전체 갤러리 보기", seriesLink: "시리즈 링크", untitledArtwork: "작품", viewArtwork: "확대 보기", backToTop: "맨 위로" },
     contact: { label: "Contact" },
     home: {
       hero: {
@@ -86,7 +87,7 @@ const translations = {
     brand: { subtitle: "線上畫廊" },
     menu: { button: "選單" },
     nav: { about: "作家介紹", notes: "作品世界", gallery: "畫廊", contact: "聯絡" },
-    common: { close: "關閉", allView: "全部", wholeGallery: "查看完整畫廊", seriesLink: "系列頁面", untitledArtwork: "作品", viewArtwork: "放大查看" },
+    common: { close: "關閉", allView: "全部", wholeGallery: "查看完整畫廊", seriesLink: "系列頁面", untitledArtwork: "作品", viewArtwork: "放大查看", backToTop: "回到頂端" },
     contact: { label: "聯絡" },
     home: {
       hero: {
@@ -135,7 +136,7 @@ const translations = {
     brand: { subtitle: "Online Gallery" },
     menu: { button: "Menu" },
     nav: { about: "About", notes: "World", gallery: "Gallery", contact: "Contact" },
-    common: { close: "Close", allView: "All", wholeGallery: "View Full Gallery", seriesLink: "Series Page", untitledArtwork: "Artwork", viewArtwork: "Open larger view" },
+    common: { close: "Close", allView: "All", wholeGallery: "View Full Gallery", seriesLink: "Series Page", untitledArtwork: "Artwork", viewArtwork: "Open larger view", backToTop: "Back to top" },
     contact: { label: "Contact" },
     home: {
       hero: {
@@ -184,7 +185,7 @@ const translations = {
     brand: { subtitle: "オンラインギャラリー" },
     menu: { button: "メニュー" },
     nav: { about: "作家紹介", notes: "作品世界", gallery: "ギャラリー", contact: "コンタクト" },
-    common: { close: "閉じる", allView: "すべて", wholeGallery: "ギャラリー全体を見る", seriesLink: "シリーズページ", untitledArtwork: "作品", viewArtwork: "拡大表示" },
+    common: { close: "閉じる", allView: "すべて", wholeGallery: "ギャラリー全体を見る", seriesLink: "シリーズページ", untitledArtwork: "作品", viewArtwork: "拡大表示", backToTop: "トップへ" },
     contact: { label: "コンタクト" },
     home: {
       hero: {
@@ -330,6 +331,11 @@ function bindLocaleSwitcher() {
       applyLocale();
       localeSwitcherMenu?.setAttribute("hidden", "");
       localeCurrentButton?.setAttribute("aria-expanded", "false");
+
+      if (window.matchMedia("(max-width: 720px)").matches) {
+        siteNav?.classList.remove("is-open");
+        menuToggle?.setAttribute("aria-expanded", "false");
+      }
     });
   });
 
@@ -436,6 +442,17 @@ function pickRandomArtworks(count, source = artworks) {
   }
 
   return shuffled.slice(0, Math.min(count, shuffled.length));
+}
+
+function shuffleArtworks(source = []) {
+  const shuffled = [...source];
+
+  for (let index = shuffled.length - 1; index > 0; index -= 1) {
+    const randomIndex = Math.floor(Math.random() * (index + 1));
+    [shuffled[index], shuffled[randomIndex]] = [shuffled[randomIndex], shuffled[index]];
+  }
+
+  return shuffled;
 }
 
 function renderHeroImages() {
@@ -620,12 +637,6 @@ function renderGallery() {
           <h3>${gallery.title}</h3>
           ${description}
         </div>
-        <div class="gallery-group-actions">
-          <span class="pill">${t("gallery.count", gallery.total)}</span>
-          <a class="series-direct-link" href="${getSeriesPageUrl(gallery.slug)}">
-            ${t("common.seriesLink")}
-          </a>
-        </div>
       </div>
       <div class="gallery-grid ${gallery.thumbnailSize === "icon" ? "gallery-grid-icon" : ""}"></div>
     `;
@@ -634,7 +645,7 @@ function renderGallery() {
     const displayedArtworks =
       gallery.thumbnailSize === "icon"
         ? pickRandomArtworks(gallery.artworks.length, gallery.artworks)
-        : gallery.artworks;
+        : shuffleArtworks(gallery.artworks);
 
     displayedArtworks.forEach((artwork) => {
       grid.appendChild(createGalleryCard(artwork, artworkIndex));
@@ -691,18 +702,27 @@ function hasArtworkMetadata(artwork) {
   return hasCustomTitle || hasCustomSubtitle || hasCustomDescription || hasExtraMetadata;
 }
 
+function hasArtworkTitle(artwork) {
+  if (!artwork) return false;
+
+  const title = String(artwork.title || "").trim();
+  if (!title) return false;
+
+  return !/^작품 \d+$/u.test(title);
+}
+
 function openLightboxForArtwork(artwork) {
   if (!artwork) return;
 
-  const showMetadata = hasArtworkMetadata(artwork);
+  const showTitle = hasArtworkTitle(artwork);
 
   lightboxImage.src = getArtworkImageUrl(artwork);
   lightboxImage.alt = artwork.title || t("common.untitledArtwork");
-  lightboxIndex.textContent = showMetadata ? artwork.subtitle : "";
-  lightboxTitle.textContent = showMetadata ? artwork.title : "";
-  lightboxDescription.textContent = showMetadata ? artwork.description : "";
-  lightboxMeta?.toggleAttribute("hidden", !showMetadata);
-  lightboxContent?.classList.toggle("lightbox-content-image-only", !showMetadata);
+  lightboxIndex.textContent = "";
+  lightboxDescription.textContent = "";
+  lightboxTitle.textContent = showTitle ? artwork.title : "";
+  lightboxMeta?.toggleAttribute("hidden", !showTitle);
+  lightboxContent?.classList.toggle("lightbox-content-image-only", !showTitle);
   lightbox.classList.add("is-open");
   lightbox.setAttribute("aria-hidden", "false");
   document.body.style.overflow = "hidden";
@@ -745,6 +765,51 @@ function bindMenu() {
       menuToggle?.setAttribute("aria-expanded", "false");
     });
   });
+}
+
+function bindImageProtection() {
+  document.addEventListener("contextmenu", (event) => {
+    if (event.target instanceof HTMLImageElement) {
+      event.preventDefault();
+    }
+  });
+
+  document.addEventListener("dragstart", (event) => {
+    if (event.target instanceof HTMLImageElement) {
+      event.preventDefault();
+    }
+  });
+}
+
+function adjustHashScroll() {
+  const hash = window.location.hash;
+  if (!hash) return;
+
+  const target = document.querySelector(hash);
+  if (!target) return;
+
+  const navHeight = siteNav?.getBoundingClientRect().height || 0;
+  const extraOffset = 28;
+  const top =
+    window.scrollY +
+    target.getBoundingClientRect().top -
+    navHeight -
+    extraOffset;
+
+  window.scrollTo({
+    top: Math.max(0, top),
+    behavior: "smooth"
+  });
+}
+
+function bindHashScrollFix() {
+  if (!window.location.hash) return;
+
+  requestAnimationFrame(adjustHashScroll);
+  window.setTimeout(adjustHashScroll, 180);
+  window.setTimeout(adjustHashScroll, 520);
+  window.addEventListener("load", adjustHashScroll, { once: true });
+  window.addEventListener("hashchange", adjustHashScroll);
 }
 
 function closeContactPanel() {
@@ -794,6 +859,25 @@ function bindContactPanel() {
       closeContactPanel();
     }
   });
+}
+
+function bindBackToTop() {
+  if (!backToTopButton) return;
+
+  const toggleVisibility = () => {
+    backToTopButton.classList.toggle("is-visible", window.scrollY > 520);
+  };
+
+  backToTopButton.addEventListener("click", () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  });
+
+  toggleVisibility();
+  window.addEventListener("scroll", toggleVisibility, { passive: true });
+  window.addEventListener("resize", toggleVisibility, { passive: true });
 }
 
 function bindReveal() {
@@ -890,6 +974,9 @@ async function loadGallery() {
 applyLocale();
 bindLightbox();
 bindMenu();
+bindImageProtection();
 bindContactPanel();
 bindLocaleSwitcher();
+bindBackToTop();
+bindHashScrollFix();
 loadGallery();
