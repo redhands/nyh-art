@@ -1,11 +1,18 @@
 {
-  "generatedAt": "2026-04-17T14:53:23.149Z",
+  "generatedAt": "2026-04-17T17:00:44.040Z",
   "total": 107,
   "galleries": [
     {
       "slug": "ocean",
       "title": "꿈을 꾸는 바다",
-      "description": "꿈을 꾸는 바다",
+      "titleI18n": {
+        "ko": "꿈을 꾸는 바다",
+        "en": "Dreaming Sea",
+        "ja": "夢を見る海",
+        "zh": "夢之海"
+      },
+      "description": "",
+      "descriptionI18n": {},
       "total": 48,
       "order": "1",
       "thumbnailSize": "default",
@@ -17,11 +24,17 @@
           "imageUrl": "https://img.nyh-art.com/ocean/2022-09-06-nebula.jpg",
           "folder": "ocean",
           "title": "Dive into the Nebula",
-          "subtitle": "인스타그램 기록 2022.09.06",
-          "description": "Dive into the Nebula",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2022"
+          "titleI18n": {
+            "en": "Dive into the Nebula"
+          },
+          "subtitle": "아카이브 01",
+          "subtitleI18n": {},
+          "description": "설명이 아직 등록되지 않은 작품입니다.",
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2022-10-18.jpg",
@@ -65,11 +78,17 @@
           "imageUrl": "https://img.nyh-art.com/ocean/2023-01-22-CnuT-MCvGsX.jpg",
           "folder": "ocean",
           "title": "🌌⭐️🔭👧🏻🐬🌟",
-          "subtitle": "인스타그램 기록 2023.01.22",
-          "description": "별은 가까이",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2023"
+          "titleI18n": {
+            "ko": "🌌⭐️🔭👧🏻🐬🌟"
+          },
+          "subtitle": "아카이브 05",
+          "subtitleI18n": {},
+          "description": "설명이 아직 등록되지 않은 작품입니다.",
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2023-02-24-CpDb8dNPG_X.jpg",
@@ -77,11 +96,17 @@
           "imageUrl": "https://img.nyh-art.com/ocean/2023-02-24-CpDb8dNPG_X.jpg",
           "folder": "ocean",
           "title": "🌊파도를 지나",
-          "subtitle": "인스타그램 기록 2023.02.24",
-          "description": "🌊파도를 지나",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2023"
+          "titleI18n": {
+            "ko": "🌊파도를 지나"
+          },
+          "subtitle": "아카이브 06",
+          "subtitleI18n": {},
+          "description": "설명이 아직 등록되지 않은 작품입니다.",
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2023-03-05-CpaVKairXOw.jpg",
@@ -89,11 +114,17 @@
           "imageUrl": "https://img.nyh-art.com/ocean/2023-03-05-CpaVKairXOw.jpg",
           "folder": "ocean",
           "title": "Golden Jellyfish🫧",
-          "subtitle": "인스타그램 기록 2023.03.05",
-          "description": "Golden Jellyfish🫧",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2023"
+          "titleI18n": {
+            "en": "Golden Jellyfish🫧"
+          },
+          "subtitle": "아카이브 07",
+          "subtitleI18n": {},
+          "description": "설명이 아직 등록되지 않은 작품입니다.",
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2023-03-25-CqOA2pTPzaY.jpg",
@@ -101,11 +132,17 @@
           "imageUrl": "https://img.nyh-art.com/ocean/2023-03-25-CqOA2pTPzaY.jpg",
           "folder": "ocean",
           "title": "🌟",
-          "subtitle": "인스타그램 기록 2023.03.25",
+          "titleI18n": {
+            "ko": "🌟"
+          },
+          "subtitle": "아카이브 08",
+          "subtitleI18n": {},
           "description": "설명이 아직 등록되지 않은 작품입니다.",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2023"
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2023-06-28-CuCjXRPPg9D.jpg",
@@ -113,11 +150,17 @@
           "imageUrl": "https://img.nyh-art.com/ocean/2023-06-28-CuCjXRPPg9D.jpg",
           "folder": "ocean",
           "title": "Glass Octopus 🐙",
-          "subtitle": "인스타그램 기록 2023.06.28",
-          "description": "Glass Octopus 🐙",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2023"
+          "titleI18n": {
+            "en": "Glass Octopus 🐙"
+          },
+          "subtitle": "아카이브 09",
+          "subtitleI18n": {},
+          "description": "설명이 아직 등록되지 않은 작품입니다.",
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2023-07-13-CungcUOvHJJ.jpg",
@@ -125,11 +168,17 @@
           "imageUrl": "https://img.nyh-art.com/ocean/2023-07-13-CungcUOvHJJ.jpg",
           "folder": "ocean",
           "title": "습도 90%! 🐳",
-          "subtitle": "인스타그램 기록 2023.07.13",
+          "titleI18n": {
+            "ko": "습도 90%! 🐳"
+          },
+          "subtitle": "아카이브 10",
+          "subtitleI18n": {},
           "description": "설명이 아직 등록되지 않은 작품입니다.",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2023"
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2023-07-25-CvHs2M8r4v.jpg",
@@ -137,11 +186,17 @@
           "imageUrl": "https://img.nyh-art.com/ocean/2023-07-25-CvHs2M8r4v.jpg",
           "folder": "ocean",
           "title": "베텔기우스🌌",
-          "subtitle": "인스타그램 기록 2023.07.25",
-          "description": "베텔기우스🌌",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2023"
+          "titleI18n": {
+            "ko": "베텔기우스🌌"
+          },
+          "subtitle": "아카이브 11",
+          "subtitleI18n": {},
+          "description": "설명이 아직 등록되지 않은 작품입니다.",
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2023-09-26-CxqLn1Urrgi.jpg",
@@ -149,11 +204,17 @@
           "imageUrl": "https://img.nyh-art.com/ocean/2023-09-26-CxqLn1Urrgi.jpg",
           "folder": "ocean",
           "title": "☁️🐬💛",
-          "subtitle": "인스타그램 기록 2023.09.26",
-          "description": "☁️🐬💛",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2023"
+          "titleI18n": {
+            "ko": "☁️🐬💛"
+          },
+          "subtitle": "아카이브 12",
+          "subtitleI18n": {},
+          "description": "설명이 아직 등록되지 않은 작품입니다.",
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2023-10-03-Cx7axmaOa1e.jpg",
@@ -161,11 +222,17 @@
           "imageUrl": "https://img.nyh-art.com/ocean/2023-10-03-Cx7axmaOa1e.jpg",
           "folder": "ocean",
           "title": "wish",
-          "subtitle": "인스타그램 기록 2023.10.03",
-          "description": "Wish",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2023"
+          "titleI18n": {
+            "en": "wish"
+          },
+          "subtitle": "아카이브 13",
+          "subtitleI18n": {},
+          "description": "설명이 아직 등록되지 않은 작품입니다.",
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2023-11-22-Cz8yM8Gv3V.jpg",
@@ -173,11 +240,17 @@
           "imageUrl": "https://img.nyh-art.com/ocean/2023-11-22-Cz8yM8Gv3V.jpg",
           "folder": "ocean",
           "title": "🪐",
-          "subtitle": "인스타그램 기록 2023.11.22",
-          "description": "🪐",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2023"
+          "titleI18n": {
+            "ko": "🪐"
+          },
+          "subtitle": "아카이브 14",
+          "subtitleI18n": {},
+          "description": "설명이 아직 등록되지 않은 작품입니다.",
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2023-12-01-C0TFkaNr6wc.jpg",
@@ -185,11 +258,17 @@
           "imageUrl": "https://img.nyh-art.com/ocean/2023-12-01-C0TFkaNr6wc.jpg",
           "folder": "ocean",
           "title": "픽스필즈x티웨이항공 캘린더 공모전",
-          "subtitle": "인스타그램 기록 2023.12.01",
-          "description": "픽스필즈x티웨이항공 캘린더 공모전에 당선자",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2023"
+          "titleI18n": {
+            "ko": "픽스필즈x티웨이항공 캘린더 공모전"
+          },
+          "subtitle": "아카이브 15",
+          "subtitleI18n": {},
+          "description": "설명이 아직 등록되지 않은 작품입니다.",
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2024-01-13-C2C9pSTPVcY.jpg",
@@ -197,11 +276,17 @@
           "imageUrl": "https://img.nyh-art.com/ocean/2024-01-13-C2C9pSTPVcY.jpg",
           "folder": "ocean",
           "title": "나이테💫",
-          "subtitle": "인스타그램 기록 2024.01.13",
-          "description": "나이테💫",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2024"
+          "titleI18n": {
+            "ko": "나이테💫"
+          },
+          "subtitle": "아카이브 16",
+          "subtitleI18n": {},
+          "description": "설명이 아직 등록되지 않은 작품입니다.",
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2024-01-26-C2jsG-2OBIK.jpg",
@@ -209,11 +294,17 @@
           "imageUrl": "https://img.nyh-art.com/ocean/2024-01-26-C2jsG-2OBIK.jpg",
           "folder": "ocean",
           "title": "안아주세요🌈",
-          "subtitle": "인스타그램 기록 2024.01.26",
-          "description": "안아주세요 🌈",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2024"
+          "titleI18n": {
+            "ko": "안아주세요🌈"
+          },
+          "subtitle": "아카이브 17",
+          "subtitleI18n": {},
+          "description": "설명이 아직 등록되지 않은 작품입니다.",
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2024-02-28-C36I1gwPVNe.jpg",
@@ -221,11 +312,17 @@
           "imageUrl": "https://img.nyh-art.com/ocean/2024-02-28-C36I1gwPVNe.jpg",
           "folder": "ocean",
           "title": "보름달물해파리 🪼🪼🪼",
-          "subtitle": "인스타그램 기록 2024.02.28",
-          "description": "보름달물해파리",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2024"
+          "titleI18n": {
+            "ko": "보름달물해파리 🪼🪼🪼"
+          },
+          "subtitle": "아카이브 18",
+          "subtitleI18n": {},
+          "description": "설명이 아직 등록되지 않은 작품입니다.",
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2024-03-08-C4Qi8UzPQMZ.jpg",
@@ -233,11 +330,17 @@
           "imageUrl": "https://img.nyh-art.com/ocean/2024-03-08-C4Qi8UzPQMZ.jpg",
           "folder": "ocean",
           "title": "Haecceity",
-          "subtitle": "인스타그램 기록 2024.03.08",
-          "description": "Haecceity",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2024"
+          "titleI18n": {
+            "en": "Haecceity"
+          },
+          "subtitle": "아카이브 19",
+          "subtitleI18n": {},
+          "description": "설명이 아직 등록되지 않은 작품입니다.",
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2024-03-23-C41wvyDv8IR.jpg",
@@ -245,11 +348,17 @@
           "imageUrl": "https://img.nyh-art.com/ocean/2024-03-23-C41wvyDv8IR.jpg",
           "folder": "ocean",
           "title": "🌠",
-          "subtitle": "인스타그램 기록 2024.03.23",
-          "description": "🌠",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2024"
+          "titleI18n": {
+            "ko": "🌠"
+          },
+          "subtitle": "아카이브 20",
+          "subtitleI18n": {},
+          "description": "설명이 아직 등록되지 않은 작품입니다.",
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2024-04-09-C5igkfDP4We.jpg",
@@ -257,11 +366,17 @@
           "imageUrl": "https://img.nyh-art.com/ocean/2024-04-09-C5igkfDP4We.jpg",
           "folder": "ocean",
           "title": "꿈을 좇아서…🌟",
-          "subtitle": "인스타그램 기록 2024.04.09",
-          "description": "꿈을 좇아서…🌟",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2024"
+          "titleI18n": {
+            "ko": "꿈을 좇아서…🌟"
+          },
+          "subtitle": "아카이브 21",
+          "subtitleI18n": {},
+          "description": "설명이 아직 등록되지 않은 작품입니다.",
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2024-04-17-C524uz-rJYC.jpg",
@@ -269,11 +384,17 @@
           "imageUrl": "https://img.nyh-art.com/ocean/2024-04-17-C524uz-rJYC.jpg",
           "folder": "ocean",
           "title": "초록의 기록 🍃",
-          "subtitle": "인스타그램 기록 2024.04.17",
-          "description": "초록의 기록 🍃",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2024"
+          "titleI18n": {
+            "ko": "초록의 기록 🍃"
+          },
+          "subtitle": "아카이브 22",
+          "subtitleI18n": {},
+          "description": "설명이 아직 등록되지 않은 작품입니다.",
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2024-05-27-C7eE6ouvie9.jpg",
@@ -281,11 +402,17 @@
           "imageUrl": "https://img.nyh-art.com/ocean/2024-05-27-C7eE6ouvie9.jpg",
           "folder": "ocean",
           "title": "별을 주워 너에게",
-          "subtitle": "인스타그램 기록 2024.05.27",
-          "description": "별을 주워 너에게",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2024"
+          "titleI18n": {
+            "ko": "별을 주워 너에게"
+          },
+          "subtitle": "아카이브 23",
+          "subtitleI18n": {},
+          "description": "설명이 아직 등록되지 않은 작품입니다.",
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2024-09-16-C_-o3ipPEHt.jpg",
@@ -293,11 +420,17 @@
           "imageUrl": "https://img.nyh-art.com/ocean/2024-09-16-C_-o3ipPEHt.jpg",
           "folder": "ocean",
           "title": "축복",
-          "subtitle": "인스타그램 기록 2024.09.16",
-          "description": "축복",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2024"
+          "titleI18n": {
+            "ko": "축복"
+          },
+          "subtitle": "아카이브 24",
+          "subtitleI18n": {},
+          "description": "설명이 아직 등록되지 않은 작품입니다.",
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2024-10-06-DAyIR9vvge5.jpg",
@@ -305,11 +438,17 @@
           "imageUrl": "https://img.nyh-art.com/ocean/2024-10-06-DAyIR9vvge5.jpg",
           "folder": "ocean",
           "title": "꿈에1",
-          "subtitle": "인스타그램 기록 2024.10.06",
-          "description": "꿈에1",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2024"
+          "titleI18n": {
+            "ko": "꿈에1"
+          },
+          "subtitle": "아카이브 25",
+          "subtitleI18n": {},
+          "description": "설명이 아직 등록되지 않은 작품입니다.",
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2024-10-14-DBGrW9YvMLw.jpg",
@@ -317,11 +456,17 @@
           "imageUrl": "https://img.nyh-art.com/ocean/2024-10-14-DBGrW9YvMLw.jpg",
           "folder": "ocean",
           "title": "꿈에2",
-          "subtitle": "인스타그램 기록 2024.10.14",
-          "description": "꿈에2",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2024"
+          "titleI18n": {
+            "ko": "꿈에2"
+          },
+          "subtitle": "아카이브 26",
+          "subtitleI18n": {},
+          "description": "설명이 아직 등록되지 않은 작품입니다.",
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2024-10-24-DBgM-bSvdEL.jpg",
@@ -329,11 +474,17 @@
           "imageUrl": "https://img.nyh-art.com/ocean/2024-10-24-DBgM-bSvdEL.jpg",
           "folder": "ocean",
           "title": "오늘의 산책🌅",
-          "subtitle": "인스타그램 기록 2024.10.24",
-          "description": "오늘의 산책🌅",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2024"
+          "titleI18n": {
+            "ko": "오늘의 산책🌅"
+          },
+          "subtitle": "아카이브 27",
+          "subtitleI18n": {},
+          "description": "설명이 아직 등록되지 않은 작품입니다.",
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2024-11-13-DCUdgGFSfaN.jpg",
@@ -341,11 +492,17 @@
           "imageUrl": "https://img.nyh-art.com/ocean/2024-11-13-DCUdgGFSfaN.jpg",
           "folder": "ocean",
           "title": "팬아트 🌌🐋💙",
-          "subtitle": "인스타그램 기록 2024.11.13",
+          "titleI18n": {
+            "ko": "팬아트 🌌🐋💙"
+          },
+          "subtitle": "아카이브 28",
+          "subtitleI18n": {},
           "description": "설명이 아직 등록되지 않은 작품입니다.",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2024"
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2024-12-03-DDHmmB7vVcV.jpg",
@@ -353,11 +510,17 @@
           "imageUrl": "https://img.nyh-art.com/ocean/2024-12-03-DDHmmB7vVcV.jpg",
           "folder": "ocean",
           "title": "사랑의 시작",
-          "subtitle": "인스타그램 기록 2024.12.03",
-          "description": "사랑의 시작",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2024"
+          "titleI18n": {
+            "ko": "사랑의 시작"
+          },
+          "subtitle": "아카이브 29",
+          "subtitleI18n": {},
+          "description": "설명이 아직 등록되지 않은 작품입니다.",
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2024-12-07-DDS7hwqyZLk.jpg",
@@ -365,11 +528,17 @@
           "imageUrl": "https://img.nyh-art.com/ocean/2024-12-07-DDS7hwqyZLk.jpg",
           "folder": "ocean",
           "title": "파도를 넘어",
-          "subtitle": "인스타그램 기록 2024.12.07",
-          "description": "파도를 넘어",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2024"
+          "titleI18n": {
+            "ko": "파도를 넘어"
+          },
+          "subtitle": "아카이브 30",
+          "subtitleI18n": {},
+          "description": "설명이 아직 등록되지 않은 작품입니다.",
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2025-01-18-DE8yA7xv4dJ.jpg",
@@ -377,11 +546,17 @@
           "imageUrl": "https://img.nyh-art.com/ocean/2025-01-18-DE8yA7xv4dJ.jpg",
           "folder": "ocean",
           "title": "🌌",
-          "subtitle": "인스타그램 기록 2025.01.18",
-          "description": "🌌",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2025"
+          "titleI18n": {
+            "ko": "🌌"
+          },
+          "subtitle": "아카이브 31",
+          "subtitleI18n": {},
+          "description": "설명이 아직 등록되지 않은 작품입니다.",
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2025-01-30-DFcLeD3vIA2.jpg",
@@ -389,11 +564,17 @@
           "imageUrl": "https://img.nyh-art.com/ocean/2025-01-30-DFcLeD3vIA2.jpg",
           "folder": "ocean",
           "title": "momentary contact 🫧",
-          "subtitle": "인스타그램 기록 2025.01.30",
-          "description": "momentary contact 🫧",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2025"
+          "titleI18n": {
+            "en": "momentary contact 🫧"
+          },
+          "subtitle": "아카이브 32",
+          "subtitleI18n": {},
+          "description": "설명이 아직 등록되지 않은 작품입니다.",
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2025-03-01-DGpYz0BvWs5.jpg",
@@ -401,11 +582,17 @@
           "imageUrl": "https://img.nyh-art.com/ocean/2025-03-01-DGpYz0BvWs5.jpg",
           "folder": "ocean",
           "title": "다 지나가요💫",
-          "subtitle": "인스타그램 기록 2025.03.01",
-          "description": "다 지나가요💫",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2025"
+          "titleI18n": {
+            "ko": "다 지나가요💫"
+          },
+          "subtitle": "아카이브 33",
+          "subtitleI18n": {},
+          "description": "설명이 아직 등록되지 않은 작품입니다.",
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2025-04-15-DIdzu9Npe9x.jpg",
@@ -413,11 +600,17 @@
           "imageUrl": "https://img.nyh-art.com/ocean/2025-04-15-DIdzu9Npe9x.jpg",
           "folder": "ocean",
           "title": "비상",
-          "subtitle": "인스타그램 기록 2025.04.15",
-          "description": "비상",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2025"
+          "titleI18n": {
+            "ko": "비상"
+          },
+          "subtitle": "아카이브 34",
+          "subtitleI18n": {},
+          "description": "설명이 아직 등록되지 않은 작품입니다.",
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2025-05-06-DJUBnZAPqPb2.jpg",
@@ -425,11 +618,17 @@
           "imageUrl": "https://img.nyh-art.com/ocean/2025-05-06-DJUBnZAPqPb2.jpg",
           "folder": "ocean",
           "title": "deep embrace💫",
-          "subtitle": "인스타그램 기록 2025.05.06",
-          "description": "deep embrace💫",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2025"
+          "titleI18n": {
+            "en": "deep embrace💫"
+          },
+          "subtitle": "아카이브 35",
+          "subtitleI18n": {},
+          "description": "설명이 아직 등록되지 않은 작품입니다.",
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2025-06-20-DLIHLX4v68e2.jpg",
@@ -437,11 +636,17 @@
           "imageUrl": "https://img.nyh-art.com/ocean/2025-06-20-DLIHLX4v68e2.jpg",
           "folder": "ocean",
           "title": "따뜻한 여정",
-          "subtitle": "인스타그램 기록 2025.06.20",
-          "description": "따뜻한 여정",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2025"
+          "titleI18n": {
+            "ko": "따뜻한 여정"
+          },
+          "subtitle": "아카이브 36",
+          "subtitleI18n": {},
+          "description": "설명이 아직 등록되지 않은 작품입니다.",
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2025-06-30-DLgorrBPOWW.jpg",
@@ -449,11 +654,17 @@
           "imageUrl": "https://img.nyh-art.com/ocean/2025-06-30-DLgorrBPOWW.jpg",
           "folder": "ocean",
           "title": "행복의 온도🩵💛",
-          "subtitle": "인스타그램 기록 2025.06.30",
-          "description": "행복의 온도🩵💛",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2025"
+          "titleI18n": {
+            "ko": "행복의 온도🩵💛"
+          },
+          "subtitle": "아카이브 37",
+          "subtitleI18n": {},
+          "description": "설명이 아직 등록되지 않은 작품입니다.",
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2025-07-14-DME2j3Ovs-w.jpg",
@@ -461,11 +672,17 @@
           "imageUrl": "https://img.nyh-art.com/ocean/2025-07-14-DME2j3Ovs-w.jpg",
           "folder": "ocean",
           "title": "행복의 온도2",
-          "subtitle": "인스타그램 기록 2025.07.14",
-          "description": "행복의 온도2",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2025"
+          "titleI18n": {
+            "ko": "행복의 온도2"
+          },
+          "subtitle": "아카이브 38",
+          "subtitleI18n": {},
+          "description": "설명이 아직 등록되지 않은 작품입니다.",
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2025-08-14-DNVTQf1Pbk4.jpg",
@@ -473,11 +690,17 @@
           "imageUrl": "https://img.nyh-art.com/ocean/2025-08-14-DNVTQf1Pbk4.jpg",
           "folder": "ocean",
           "title": "관해파리",
-          "subtitle": "인스타그램 기록 2025.08.14",
-          "description": "관해파리",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2025"
+          "titleI18n": {
+            "ko": "관해파리"
+          },
+          "subtitle": "아카이브 39",
+          "subtitleI18n": {},
+          "description": "설명이 아직 등록되지 않은 작품입니다.",
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2025-09-03-DOKJpmsEx-E.jpg",
@@ -485,11 +708,17 @@
           "imageUrl": "https://img.nyh-art.com/ocean/2025-09-03-DOKJpmsEx-E.jpg",
           "folder": "ocean",
           "title": "파랑새",
-          "subtitle": "인스타그램 기록 2025.09.03",
-          "description": "파랑새",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2025"
+          "titleI18n": {
+            "ko": "파랑새"
+          },
+          "subtitle": "아카이브 40",
+          "subtitleI18n": {},
+          "description": "설명이 아직 등록되지 않은 작품입니다.",
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2025-09-15-DOn9qyuD7l2.jpg",
@@ -497,11 +726,17 @@
           "imageUrl": "https://img.nyh-art.com/ocean/2025-09-15-DOn9qyuD7l2.jpg",
           "folder": "ocean",
           "title": "Dive 🌠",
-          "subtitle": "인스타그램 기록 2025.09.15",
-          "description": "Dive 🌠",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2025"
+          "titleI18n": {
+            "en": "Dive 🌠"
+          },
+          "subtitle": "아카이브 41",
+          "subtitleI18n": {},
+          "description": "설명이 아직 등록되지 않은 작품입니다.",
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2025-10-07-DPfwTfaDzrS.jpg",
@@ -509,11 +744,17 @@
           "imageUrl": "https://img.nyh-art.com/ocean/2025-10-07-DPfwTfaDzrS.jpg",
           "folder": "ocean",
           "title": "품고 싶은 것",
-          "subtitle": "인스타그램 기록 2025.10.07",
-          "description": "품고 싶은 것",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2025"
+          "titleI18n": {
+            "ko": "품고 싶은 것"
+          },
+          "subtitle": "아카이브 42",
+          "subtitleI18n": {},
+          "description": "설명이 아직 등록되지 않은 작품입니다.",
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2025-10-16-DP3jtICD2UW.jpg",
@@ -521,11 +762,17 @@
           "imageUrl": "https://img.nyh-art.com/ocean/2025-10-16-DP3jtICD2UW.jpg",
           "folder": "ocean",
           "title": "삭으로 흐르는 시간🌘",
-          "subtitle": "인스타그램 기록 2025.10.16",
-          "description": "삭으로 흐르는 시간🌘",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2025"
+          "titleI18n": {
+            "ko": "삭으로 흐르는 시간🌘"
+          },
+          "subtitle": "아카이브 43",
+          "subtitleI18n": {},
+          "description": "설명이 아직 등록되지 않은 작품입니다.",
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2025-12-01-DRs0yyok1pI.jpg",
@@ -533,11 +780,17 @@
           "imageUrl": "https://img.nyh-art.com/ocean/2025-12-01-DRs0yyok1pI.jpg",
           "folder": "ocean",
           "title": "From🎹🫧✨",
-          "subtitle": "인스타그램 기록 2025.12.01",
-          "description": "From 🎹🫧✨",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2025"
+          "titleI18n": {
+            "en": "From🎹🫧✨"
+          },
+          "subtitle": "아카이브 44",
+          "subtitleI18n": {},
+          "description": "설명이 아직 등록되지 않은 작품입니다.",
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2026-01-24-DT48GDRD2-e.jpg",
@@ -545,11 +798,17 @@
           "imageUrl": "https://img.nyh-art.com/ocean/2026-01-24-DT48GDRD2-e.jpg",
           "folder": "ocean",
           "title": "흰수염고래",
-          "subtitle": "인스타그램 기록 2026.01.24",
-          "description": "흰수염고래",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2026"
+          "titleI18n": {
+            "ko": "흰수염고래"
+          },
+          "subtitle": "아카이브 45",
+          "subtitleI18n": {},
+          "description": "설명이 아직 등록되지 않은 작품입니다.",
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2026-02-10-DUkG9mGjw9l.jpg",
@@ -557,11 +816,17 @@
           "imageUrl": "https://img.nyh-art.com/ocean/2026-02-10-DUkG9mGjw9l.jpg",
           "folder": "ocean",
           "title": "작은 빛",
-          "subtitle": "인스타그램 기록 2026.02.10",
-          "description": "🪼⭐️🫧\n흘러가는 마음 속, 쥐어본 작은 빛\n그저 그렇게 흘러가는 삶일지라도 그 안에서 빛을 찾고 꿈을 꿉니다.\n흘러가는 나날 속에서도 쥐어볼 수 있는 작은 빛 하나쯤은 분명히 있을테니까요.",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2026"
+          "titleI18n": {
+            "ko": "작은 빛"
+          },
+          "subtitle": "아카이브 46",
+          "subtitleI18n": {},
+          "description": "설명이 아직 등록되지 않은 작품입니다.",
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2026-02-16-DU0hgojj5tV.jpg",
@@ -569,11 +834,17 @@
           "imageUrl": "https://img.nyh-art.com/ocean/2026-02-16-DU0hgojj5tV.jpg",
           "folder": "ocean",
           "title": "안녕",
-          "subtitle": "인스타그램 기록 2026.02.16",
-          "description": "안녕",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2026"
+          "titleI18n": {
+            "ko": "안녕"
+          },
+          "subtitle": "아카이브 47",
+          "subtitleI18n": {},
+          "description": "설명이 아직 등록되지 않은 작품입니다.",
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "ourNS.jpg",
@@ -592,9 +863,16 @@
     {
       "slug": "cat",
       "title": "고양이와 함께",
-      "description": "고양이와 함께",
+      "titleI18n": {
+        "ko": "고양이와 함께",
+        "en": "With Cats",
+        "ja": "猫とともに",
+        "zh": "與貓一起"
+      },
+      "description": "",
+      "descriptionI18n": {},
       "total": 22,
-      "order": "3",
+      "order": "2",
       "thumbnailSize": "default",
       "showInArchive": true,
       "artworks": [
@@ -604,11 +882,17 @@
           "imageUrl": "https://img.nyh-art.com/cat/2023-02-11-Cohw7mVr5_7.jpg",
           "folder": "cat",
           "title": "🌃",
-          "subtitle": "인스타그램 기록 2023.02.11",
+          "titleI18n": {
+            "ko": "🌃"
+          },
+          "subtitle": "아카이브 01",
+          "subtitleI18n": {},
           "description": "설명이 아직 등록되지 않은 작품입니다.",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2023"
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2023-03-15-Cpz9jibrXE4.jpg",
@@ -616,11 +900,17 @@
           "imageUrl": "https://img.nyh-art.com/cat/2023-03-15-Cpz9jibrXE4.jpg",
           "folder": "cat",
           "title": "낮잠",
-          "subtitle": "인스타그램 기록 2023.03.15",
-          "description": "낮잠",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2023"
+          "titleI18n": {
+            "ko": "낮잠"
+          },
+          "subtitle": "아카이브 02",
+          "subtitleI18n": {},
+          "description": "설명이 아직 등록되지 않은 작품입니다.",
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2023-04-28-Crla05qrbSJ.jpg",
@@ -628,11 +918,17 @@
           "imageUrl": "https://img.nyh-art.com/cat/2023-04-28-Crla05qrbSJ.jpg",
           "folder": "cat",
           "title": "🍀",
-          "subtitle": "인스타그램 기록 2023.04.28",
-          "description": "🍀\n함께 있는 행복한 순간들.☘️\n널 만난 건 행운이야.💚\n🌟",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2023"
+          "titleI18n": {
+            "ko": "🍀"
+          },
+          "subtitle": "아카이브 03",
+          "subtitleI18n": {},
+          "description": "설명이 아직 등록되지 않은 작품입니다.",
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2023-05-06-Cr5aFJ9uQjt.jpg",
@@ -640,11 +936,17 @@
           "imageUrl": "https://img.nyh-art.com/cat/2023-05-06-Cr5aFJ9uQjt.jpg",
           "folder": "cat",
           "title": "해질녘🌅",
-          "subtitle": "인스타그램 기록 2023.05.06",
-          "description": "해질녘🌅\n함께할 수 있다는 것만으로도 보석같이 빛나는 순간🌟\n지난 번 클로버에 이어 전시회를 위해 그린 두번째 그림이에요.☺️\n살아 숨쉬어 우리는 이렇게 만나고 함께하고, 그러다 언젠가는 결국 이별하게 되겠죠.\n그러기에 함께하는 지금이 더없이 귀한 순간으로 느껴집니다.\n해질녘 어느날 아..같이할 수 있어서 즐겁고 신나는 하루였다. 웃으며 마무리할 수 있기를…",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2023"
+          "titleI18n": {
+            "ko": "해질녘🌅"
+          },
+          "subtitle": "아카이브 04",
+          "subtitleI18n": {},
+          "description": "설명이 아직 등록되지 않은 작품입니다.",
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2023-05-21-CsgSWubrE00.jpg",
@@ -652,11 +954,17 @@
           "imageUrl": "https://img.nyh-art.com/cat/2023-05-21-CsgSWubrE00.jpg",
           "folder": "cat",
           "title": "낮잠",
-          "subtitle": "인스타그램 기록 2023.05.21",
-          "description": "낮잠",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2023"
+          "titleI18n": {
+            "ko": "낮잠"
+          },
+          "subtitle": "아카이브 05",
+          "subtitleI18n": {},
+          "description": "설명이 아직 등록되지 않은 작품입니다.",
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2023-06-13-Ctbi05jrsjn.jpg",
@@ -664,11 +972,17 @@
           "imageUrl": "https://img.nyh-art.com/cat/2023-06-13-Ctbi05jrsjn.jpg",
           "folder": "cat",
           "title": "🪷💧🥤⭐️🐈",
-          "subtitle": "인스타그램 기록 2023.06.13",
+          "titleI18n": {
+            "ko": "🪷💧🥤⭐️🐈"
+          },
+          "subtitle": "아카이브 06",
+          "subtitleI18n": {},
           "description": "설명이 아직 등록되지 않은 작품입니다.",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2023"
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2023-08-13-Cv4XrOPu_f0.jpg",
@@ -676,11 +990,17 @@
           "imageUrl": "https://img.nyh-art.com/cat/2023-08-13-Cv4XrOPu_f0.jpg",
           "folder": "cat",
           "title": "💫💫💫",
-          "subtitle": "인스타그램 기록 2023.08.13",
-          "description": "💫💫💫",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2023"
+          "titleI18n": {
+            "ko": "💫💫💫"
+          },
+          "subtitle": "아카이브 07",
+          "subtitleI18n": {},
+          "description": "설명이 아직 등록되지 않은 작품입니다.",
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2023-08-26-CwaqdY6P-03.jpg",
@@ -688,11 +1008,17 @@
           "imageUrl": "https://img.nyh-art.com/cat/2023-08-26-CwaqdY6P-03.jpg",
           "folder": "cat",
           "title": "쉬는시간🌙",
-          "subtitle": "인스타그램 기록 2023.08.26",
-          "description": "쉬는시간🌙",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2023"
+          "titleI18n": {
+            "ko": "쉬는시간🌙"
+          },
+          "subtitle": "아카이브 08",
+          "subtitleI18n": {},
+          "description": "설명이 아직 등록되지 않은 작품입니다.",
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2023-10-26-Cy20AwIL4e8.jpg",
@@ -700,11 +1026,17 @@
           "imageUrl": "https://img.nyh-art.com/cat/2023-10-26-Cy20AwIL4e8.jpg",
           "folder": "cat",
           "title": "🌬️🍃",
-          "subtitle": "인스타그램 기록 2023.10.26",
-          "description": "🌬️🍃",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2023"
+          "titleI18n": {
+            "ko": "🌬️🍃"
+          },
+          "subtitle": "아카이브 09",
+          "subtitleI18n": {},
+          "description": "설명이 아직 등록되지 않은 작품입니다.",
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2023-11-12-CzifWbBr5wN.jpg",
@@ -712,11 +1044,17 @@
           "imageUrl": "https://img.nyh-art.com/cat/2023-11-12-CzifWbBr5wN.jpg",
           "folder": "cat",
           "title": "☕️🍂",
-          "subtitle": "인스타그램 기록 2023.11.12",
-          "description": "☕️🍂",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2023"
+          "titleI18n": {
+            "ko": "☕️🍂"
+          },
+          "subtitle": "아카이브 10",
+          "subtitleI18n": {},
+          "description": "설명이 아직 등록되지 않은 작품입니다.",
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2023-12-09-C0n22HTLDqV.jpg",
@@ -724,11 +1062,17 @@
           "imageUrl": "https://img.nyh-art.com/cat/2023-12-09-C0n22HTLDqV.jpg",
           "folder": "cat",
           "title": "❤️🧡💛🐕🐈⛄️",
-          "subtitle": "인스타그램 기록 2023.12.09",
-          "description": "❤️🧡💛🐕🐈⛄️",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2023"
+          "titleI18n": {
+            "ko": "❤️🧡💛🐕🐈⛄️"
+          },
+          "subtitle": "아카이브 11",
+          "subtitleI18n": {},
+          "description": "설명이 아직 등록되지 않은 작품입니다.",
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2024-02-10-C3KzqP2vRjS.jpg",
@@ -736,11 +1080,17 @@
           "imageUrl": "https://img.nyh-art.com/cat/2024-02-10-C3KzqP2vRjS.jpg",
           "folder": "cat",
           "title": "Happy Lunar New Year! 🐉🌅🙇🏻‍♀️🎉❤️",
-          "subtitle": "인스타그램 기록 2024.02.10",
+          "titleI18n": {
+            "en": "Happy Lunar New Year! 🐉🌅🙇🏻‍♀️🎉❤️"
+          },
+          "subtitle": "아카이브 12",
+          "subtitleI18n": {},
           "description": "설명이 아직 등록되지 않은 작품입니다.",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2024"
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2024-06-24-C8mtqGZvq7P.jpg",
@@ -748,11 +1098,17 @@
           "imageUrl": "https://img.nyh-art.com/cat/2024-06-24-C8mtqGZvq7P.jpg",
           "folder": "cat",
           "title": "별잼⭐️",
-          "subtitle": "인스타그램 기록 2024.06.24",
-          "description": "별잼⭐️\n\n우주를 담은 테이블보를 깔고 바구니엔 동그란 행성들을 가득 준비해요. \n그중 맛있어 보이는 행성을 하나 골라 그 위에 꾸덕한 별잼을 듬뿍 바릅니다.\n이제 흰둥이, 초코랑 사이좋게 한 입씩 나눠 먹어요.😄",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2024"
+          "titleI18n": {
+            "ko": "별잼⭐️"
+          },
+          "subtitle": "아카이브 13",
+          "subtitleI18n": {},
+          "description": "설명이 아직 등록되지 않은 작품입니다.",
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2024-07-01-C85eTpVvQnA.jpg",
@@ -760,11 +1116,17 @@
           "imageUrl": "https://img.nyh-art.com/cat/2024-07-01-C85eTpVvQnA.jpg",
           "folder": "cat",
           "title": "여름 ☔️💦",
-          "subtitle": "인스타그램 기록 2024.07.01",
+          "titleI18n": {
+            "ko": "여름 ☔️💦"
+          },
+          "subtitle": "아카이브 14",
+          "subtitleI18n": {},
           "description": "설명이 아직 등록되지 않은 작품입니다.",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2024"
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2024-08-02-C-LAbIqvPXO.jpg",
@@ -772,11 +1134,17 @@
           "imageUrl": "https://img.nyh-art.com/cat/2024-08-02-C-LAbIqvPXO.jpg",
           "folder": "cat",
           "title": "낮잠3 🐾😴",
-          "subtitle": "인스타그램 기록 2024.08.02",
-          "description": "낮잠 🐾😴",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2024"
+          "titleI18n": {
+            "ko": "낮잠3 🐾😴"
+          },
+          "subtitle": "아카이브 15",
+          "subtitleI18n": {},
+          "description": "설명이 아직 등록되지 않은 작품입니다.",
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2024-08-28-C_N_9XdPmV2.jpg",
@@ -784,11 +1152,17 @@
           "imageUrl": "https://img.nyh-art.com/cat/2024-08-28-C_N_9XdPmV2.jpg",
           "folder": "cat",
           "title": "⭐️ 꿈을 싣고 ⭐️",
-          "subtitle": "인스타그램 기록 2024.08.28",
-          "description": "⭐️ 꿈을 싣고 ⭐️\n반짝이는 은하수 위로 나룻배 한 가득 꿈을 싣고 떠납니다.\n열심히 따모은 별들로 무얼 해볼까 행복한 상상이 끊이지 않습니다.\n저 편에서 빛나는 별들이 함께 해주니 돌아가는 길에 는 즐거움이 가득합니다.\n40x50cm\n디지털프린트 위에 아크릴물감, 2024\n#새로운여행 #우리의우주 #함께\n#nyh #illust #procreate #전시회 #ipaddrawing",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2024"
+          "titleI18n": {
+            "ko": "⭐️ 꿈을 싣고 ⭐️"
+          },
+          "subtitle": "아카이브 16",
+          "subtitleI18n": {},
+          "description": "설명이 아직 등록되지 않은 작품입니다.",
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2024-08-28-C_N_BaqvtBb.jpg",
@@ -796,11 +1170,17 @@
           "imageUrl": "https://img.nyh-art.com/cat/2024-08-28-C_N_BaqvtBb.jpg",
           "folder": "cat",
           "title": "⭐️ 별이 맺히는 나무 (Nebula Tree) ⭐️",
-          "subtitle": "인스타그램 기록 2024.08.28",
-          "description": "⭐️ 별이 맺히는 나무 (Nebula Tree) ⭐️\n\n성운이라는 커다란 나무에서 긴 시간을 인내하고 견뎌낸 끝에 맺힌 별들.\n별이 되기 까지의 세월을 가늠하다보니 이제는 저 반짝임들이 단순한 빛이 아니라 나의 꿈이자 깊이 간직하고 있던 어떤 희망들처럼 느껴집니다.\n버리지 않고 마음 속 고이 간직해왔던 것들이 이제 반짝이는 결실이 되어 제 품으로 다시 안겨옵니다.\n소중한 별들을 찾아 모아오는 작은 이야기를 세 점의 그림으로 나누어 표현했습니다.\n함께 즐겁게 감상해 주신다면 더욱 기쁠 것 같습니다.\n봐 주셔서 감사합니다.\n40x50cm\n디지털프린트 위에 아크릴물감, 2024\n#별나무 #시간의결실 #Nebula #nebulatree\n#nyh #illust #procreate #전시회 #ipaddrawing",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2024"
+          "titleI18n": {
+            "ko": "⭐️ 별이 맺히는 나무 (Nebula Tree) ⭐️"
+          },
+          "subtitle": "아카이브 17",
+          "subtitleI18n": {},
+          "description": "설명이 아직 등록되지 않은 작품입니다.",
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2024-08-28-C_N_lzIPXEt.jpg",
@@ -808,11 +1188,17 @@
           "imageUrl": "https://img.nyh-art.com/cat/2024-08-28-C_N_lzIPXEt.jpg",
           "folder": "cat",
           "title": "⭐️ 별따기 ⭐️",
-          "subtitle": "인스타그램 기록 2024.08.28",
-          "description": "⭐️ 별따기 ⭐️\n흰둥이 초코와 함께 작은 별들을 하나 둘 따서 모읍니다.\n몸이 날쌘 초코가 커다란 나무에서 잘 익은 별들을 골라 나에게 건네주어요.\n건네 받은 별들을 한 곳에 모아두는 동안, 흰둥이는 별을 싣고 갈 배를 잃어버리지 않게 꼼꼼히 정박해둡니다.\n40x50cm\n디지털프린트 위에 아크릴물감, 2024\n#별수확 #꿈따기 #꿈의열매\n#nyh #illust #procreate #전시회 #ipaddrawing",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2024"
+          "titleI18n": {
+            "ko": "⭐️ 별따기 ⭐️"
+          },
+          "subtitle": "아카이브 18",
+          "subtitleI18n": {},
+          "description": "설명이 아직 등록되지 않은 작품입니다.",
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2025-05-21-DJ6X3ULv17E.jpg",
@@ -820,11 +1206,17 @@
           "imageUrl": "https://img.nyh-art.com/cat/2025-05-21-DJ6X3ULv17E.jpg",
           "folder": "cat",
           "title": "바람이 불어",
-          "subtitle": "인스타그램 기록 2025.05.21",
-          "description": "바람이 불어",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2025"
+          "titleI18n": {
+            "ko": "바람이 불어"
+          },
+          "subtitle": "아카이브 19",
+          "subtitleI18n": {},
+          "description": "설명이 아직 등록되지 않은 작품입니다.",
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2025-12-13-DSM9mfhD4Lp.jpg",
@@ -832,11 +1224,17 @@
           "imageUrl": "https://img.nyh-art.com/cat/2025-12-13-DSM9mfhD4Lp.jpg",
           "folder": "cat",
           "title": "💫💫💫",
-          "subtitle": "인스타그램 기록 2025.12.13",
+          "titleI18n": {
+            "ko": "💫💫💫"
+          },
+          "subtitle": "아카이브 20",
+          "subtitleI18n": {},
           "description": "설명이 아직 등록되지 않은 작품입니다.",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2025"
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2026-03-16-DV8GLxaj4xk.jpg",
@@ -844,11 +1242,17 @@
           "imageUrl": "https://img.nyh-art.com/cat/2026-03-16-DV8GLxaj4xk.jpg",
           "folder": "cat",
           "title": "낮잠",
-          "subtitle": "인스타그램 기록 2026.03.16",
-          "description": "낮잠\n#digitalart #cozyvibes #cats #아이패드드로잉",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2026"
+          "titleI18n": {
+            "ko": "낮잠"
+          },
+          "subtitle": "아카이브 21",
+          "subtitleI18n": {},
+          "description": "설명이 아직 등록되지 않은 작품입니다.",
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "풍선.jpg",
@@ -867,7 +1271,14 @@
     {
       "slug": "etc",
       "title": "기타",
-      "description": "디지털 일러스트",
+      "titleI18n": {
+        "ko": "기타",
+        "en": "Miscellaneous",
+        "ja": "その他",
+        "zh": "其他"
+      },
+      "description": "",
+      "descriptionI18n": {},
       "total": 13,
       "order": "4",
       "thumbnailSize": "default",
@@ -891,11 +1302,17 @@
           "imageUrl": "https://img.nyh-art.com/etc/2023-01-16-Cnd4hVTrT36.jpg",
           "folder": "etc",
           "title": "내 마음만큼은 내 마음대로.",
-          "subtitle": "인스타그램 기록 2023.01.16",
-          "description": "내 마음만큼은 내 마음대로.\n#nyh #illust #digitalart #illustrationofinstagram #painting #일러스트  #그림계정 #artwork #아이패드드로잉 #ipaddrawing #아이패드미니 #프로크리에이트 #procreate #uptome #flying #withme",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2023"
+          "titleI18n": {
+            "ko": "내 마음만큼은 내 마음대로."
+          },
+          "subtitle": "아카이브 02",
+          "subtitleI18n": {},
+          "description": "설명이 아직 등록되지 않은 작품입니다.",
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2023-05-16-CsSM3_gPdzl.jpg",
@@ -903,11 +1320,17 @@
           "imageUrl": "https://img.nyh-art.com/etc/2023-05-16-CsSM3_gPdzl.jpg",
           "folder": "etc",
           "title": "HUG💫",
-          "subtitle": "인스타그램 기록 2023.05.16",
-          "description": "HUG💫\n오랜만에 우주가 그리고 싶어서호다닥✨\n얼마전에 제가 좋아하는 선생님과 포옹을 나누었어요.\n우리는 가고 싶은 곳으로 씩씩하게 잘 가고 있다고.\n토닥이고 쓰다듬는 손길에서 온전히 전해지는 메세지들.\n누군가와 이토록 깊은 포옹을 나눈게 얼마만인지…그 날의 느낌을 잊고 싶지 않아 그림으로 남겨봅니다.☺️\n#nyh #illust #digitalart #illustrationofinstagram #painting #rkgk #일러스트  #그림계정 #artwork #아이패드드로잉 #ipaddrawing #프로크리에이트 #procreate #포옹 #hug #혜성 #comet #orbit",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2023"
+          "titleI18n": {
+            "en": "HUG💫"
+          },
+          "subtitle": "아카이브 03",
+          "subtitleI18n": {},
+          "description": "설명이 아직 등록되지 않은 작품입니다.",
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2023-08-31-CwnmJA8vESA.jpg",
@@ -915,11 +1338,17 @@
           "imageUrl": "https://img.nyh-art.com/etc/2023-08-31-CwnmJA8vESA.jpg",
           "folder": "etc",
           "title": "두번째보름달 🌕🦋🐢",
-          "subtitle": "인스타그램 기록 2023.08.31",
-          "description": "두번째보름달 🌕🦋🐢\n다들 슈퍼블루문 보셨나요.☺️\n달이 어찌나 밝은지 불 꺼진 방 안이 환하게 보이네요.\n오늘을 놓치면 14년을 기다려야 다시 만날 수 있다는 조금은 더 특별한 두번째 보름달.\n아쉽지 않게 소원도 하나 살짝 빌어 봅니다.😊\n다음 슈퍼블루문도 모두 건강하게 맞이할 수 있길...✨\n#nyh #illust #digitalart #illustrationofinstagram #painting #rkgk #일러스트  #그림계정 #artwork #아이패드드로잉 #ipaddrawing #프로크리에이트 #procreate #capcut  #artreels #superbluemoon #fullmoon #슈퍼블루문 #두번째보름달 #거북이 #보름달 #건강이최고 #14년뒤면나몇살이니😱",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2023"
+          "titleI18n": {
+            "ko": "두번째보름달 🌕🦋🐢"
+          },
+          "subtitle": "아카이브 04",
+          "subtitleI18n": {},
+          "description": "설명이 아직 등록되지 않은 작품입니다.",
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2023-10-19-CylAouwvvlN.jpg",
@@ -927,11 +1356,17 @@
           "imageUrl": "https://img.nyh-art.com/etc/2023-10-19-CylAouwvvlN.jpg",
           "folder": "etc",
           "title": "🩵✍️",
-          "subtitle": "인스타그램 기록 2023.10.19",
-          "description": "🩵✍️\n#nyh #illust #digitalart #illustrationofinstagram #painting #rkgk #일러스트 #artwork #아이패드드로잉 #ipaddrawing #프로크리에이트 #procreate #모래위 #하트그리기 #drawheart #doodle",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2023"
+          "titleI18n": {
+            "ko": "🩵✍️"
+          },
+          "subtitle": "아카이브 05",
+          "subtitleI18n": {},
+          "description": "설명이 아직 등록되지 않은 작품입니다.",
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2024-03-30-C5JCdwevt5r.jpg",
@@ -939,11 +1374,17 @@
           "imageUrl": "https://img.nyh-art.com/etc/2024-03-30-C5JCdwevt5r.jpg",
           "folder": "etc",
           "title": "🫧🫧🫧",
-          "subtitle": "인스타그램 기록 2024.03.30",
-          "description": "🫧🫧🫧\n저는 3월 한 달 동안 1일 1낙서 중이예요.\n프로크리에이트 브러쉬도 익힐 겸 매일 브러쉬를 하나 골라서 그걸로 그림을 그려보고 있어요.\n내일이면 드디어 한 달을 채우고 스스로의 목표를 달성하며 개운하게 마무짓게 되네요.💓\n낙서라곤 했지만 간만에 1일1그림을 하니 마음 환기도 되고 좋았어요.\n이제 그 동안의 낙서 중 마음에 드는 몇 개를 추려서 다시 크게 그려보려고 해요. ☺️\n#nyh #illust #illustrationofinstagram #drawing #rkgk #일러스트 #イラスト #artwork #디지털드로잉 #ipaddrawing #프로크리에이트드로잉 #procreate #artreels #capcut #비누방울 #bubbles #moment",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2024"
+          "titleI18n": {
+            "ko": "🫧🫧🫧"
+          },
+          "subtitle": "아카이브 06",
+          "subtitleI18n": {},
+          "description": "설명이 아직 등록되지 않은 작품입니다.",
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2024-04-26-C6NqRtmLCgt.jpg",
@@ -951,11 +1392,17 @@
           "imageUrl": "https://img.nyh-art.com/etc/2024-04-26-C6NqRtmLCgt.jpg",
           "folder": "etc",
           "title": "달 좀 잡아주세요. 🌕",
-          "subtitle": "인스타그램 기록 2024.04.26",
-          "description": "달 좀 잡아주세요. 🌕\n저번 대일코 때 여러 분들이 큰 건 없냐고 물어봐 주셨던 그림.\n이번 서일코에 A4사이즈로 소량 준비해보려고 그림 파일 열었다가 약간씩 리터치 해보았어요.\n지나고 보니 이곳저곳 허술한 곳들이 많이 보여서 그걸 알아볼 수 있는 만큼은 발전했나보다 하네요.☺️\n리터치하고 그냥 두자니 아까워서 피드에도 다시 업로드해봅니다.🌕\n#nyh #illust #illustrationofinstagram #drawing #rkgk #일러스트 #イラスト #artwork #디지털드로잉 #ipaddrawing #프로크리에이트드로잉 #procreate #보름달 #fullmoon #takethismoon #서일코",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2024"
+          "titleI18n": {
+            "ko": "달 좀 잡아주세요. 🌕"
+          },
+          "subtitle": "아카이브 07",
+          "subtitleI18n": {},
+          "description": "설명이 아직 등록되지 않은 작품입니다.",
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2024-05-23-C7TFUvtvUpe.jpg",
@@ -963,11 +1410,17 @@
           "imageUrl": "https://img.nyh-art.com/etc/2024-05-23-C7TFUvtvUpe.jpg",
           "folder": "etc",
           "title": "🌠 into a new universe 🌌",
-          "subtitle": "인스타그램 기록 2024.05.23",
-          "description": "🌠 into a new universe 🌌\npixpills x ISU Artwork Contest 에 참여하여 우승 13인에 선정되었습니다.\n당선작은 5월 31일~6월 2일 영등포 타임스퀘어에서 열리는 이수챌린지페스타에 함께 전시된다고 합니다.☺️\n🌠 into a new universe 🌌\n꿈을 좇는 소년이 미래를 향해 용기있게 뛰어듭니다. 반짝이는 별들이 소년을 위해 함께 응원합니다. 도전의 끝에선 새로운 세상이 소년을 맞이할 준비를 하고 있습니다. 이제 곧, 소년의 용기만큼 새롭고 아름다운 우주가 펼쳐질 것입니다.\n#nyh #illust #illustration #digitalart #일러스트 #digitalillustration #pixpills #isugroup #artwork #artworkcontest #basketball #픽스필즈 #이수그룹 #이수챌린지페스타 #challengethefuture",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2024"
+          "titleI18n": {
+            "en": "🌠 into a new universe 🌌"
+          },
+          "subtitle": "아카이브 08",
+          "subtitleI18n": {},
+          "description": "설명이 아직 등록되지 않은 작품입니다.",
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2024-07-09-C9NOB8gP2bg.jpg",
@@ -975,11 +1428,17 @@
           "imageUrl": "https://img.nyh-art.com/etc/2024-07-09-C9NOB8gP2bg.jpg",
           "folder": "etc",
           "title": "다정한 사슴 🫎",
-          "subtitle": "인스타그램 기록 2024.07.09",
-          "description": "다정한 사슴 🫎\n요즘 재밌게 활동하고 있는 그림크루의 이번주 미션은 ‘심리테스트 결과로 나오는 동물을 주제로 그리기’ 였어요.\n전 다정한 사슴이 나와서 사슴과 함께 제가 좋아하는 요소들을 결합해서 그려 보았습니다.☺️\n#nyh #illust #일러스트 #procreate #ipaddrawing #사슴 #deer #capcut #artreels #다정한사슴",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2024"
+          "titleI18n": {
+            "ko": "다정한 사슴 🫎"
+          },
+          "subtitle": "아카이브 09",
+          "subtitleI18n": {},
+          "description": "설명이 아직 등록되지 않은 작품입니다.",
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2024-08-21-C-70hm0Pg08.jpg",
@@ -987,11 +1446,17 @@
           "imageUrl": "https://img.nyh-art.com/etc/2024-08-21-C-70hm0Pg08.jpg",
           "folder": "etc",
           "title": "🧳 Today’s my Stuff 👜",
-          "subtitle": "인스타그램 기록 2024.08.21",
-          "description": "🧳 Today’s my Stuff 👜\n#nyh #illust #procreate #ipaddrawing #capcut #stuff #내아이템",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2024"
+          "titleI18n": {
+            "en": "🧳 Today’s my Stuff 👜"
+          },
+          "subtitle": "아카이브 10",
+          "subtitleI18n": {},
+          "description": "설명이 아직 등록되지 않은 작품입니다.",
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "2026-01-02-DTAIEV1j3LE.jpg",
@@ -999,11 +1464,17 @@
           "imageUrl": "https://img.nyh-art.com/etc/2026-01-02-DTAIEV1j3LE.jpg",
           "folder": "etc",
           "title": "새해 복 많이 받으세요. 🐴❤️‍🔥",
-          "subtitle": "인스타그램 기록 2026.01.02",
-          "description": "새해 복 많이 받으세요. 🐴❤️‍🔥\n내딛는 걸음걸음, 별처럼 반짝이는 한 해가 되길 바랍니다!✨\n#nyh #Westerlund2 #carina #happynewyear",
-          "medium": "디지털",
-          "size": "인스타그램 원본",
-          "year": "2026"
+          "titleI18n": {
+            "ko": "새해 복 많이 받으세요. 🐴❤️‍🔥"
+          },
+          "subtitle": "아카이브 11",
+          "subtitleI18n": {},
+          "description": "설명이 아직 등록되지 않은 작품입니다.",
+          "descriptionI18n": {},
+          "medium": "",
+          "mediumI18n": {},
+          "size": "",
+          "year": ""
         },
         {
           "fileName": "어떤기다림1.jpg",
@@ -1034,7 +1505,14 @@
     {
       "slug": "10x10",
       "title": "10x10cm",
-      "description": "10x10cm 미니 캔버스, 아크릴..",
+      "titleI18n": {
+        "ko": "10x10cm",
+        "en": "10x10cm",
+        "ja": "10x10cm",
+        "zh": "10x10cm"
+      },
+      "description": "",
+      "descriptionI18n": {},
       "total": 24,
       "order": "5",
       "thumbnailSize": "icon",
