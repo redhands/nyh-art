@@ -721,18 +721,23 @@ main {
 }
 
 .gallery-grid {
-  column-count: 4;
-  column-gap: 0.95rem;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.95rem;
+  grid-auto-flow: dense;
+  grid-auto-rows: 6px;
+  align-items: start;
 }
 
 .gallery-grid-icon {
-  column-count: 9;
-  column-gap: 0.28rem;
+  grid-template-columns: repeat(9, minmax(0, 1fr));
+  gap: 0.28rem;
+  grid-auto-rows: 4px;
 }
 
 .gallery-card {
   appearance: none;
-  display: inline-block;
+  display: block;
   width: 100%;
   margin: 0 0 0.95rem;
   border: 0;
@@ -742,9 +747,12 @@ main {
   border-radius: 0.72rem;
   background: transparent;
   box-shadow: none;
-  break-inside: avoid;
   cursor: pointer;
   transition: transform 220ms ease, opacity 220ms ease;
+}
+
+.gallery-grid .gallery-card {
+  margin: 0;
 }
 
 .gallery-card:hover,
@@ -1070,13 +1078,13 @@ main {
   }
 
   .gallery-grid {
-    column-count: 3;
-    column-gap: 0.8rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.8rem;
   }
 
   .gallery-grid-icon {
-    column-count: 6;
-    column-gap: 0.24rem;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 0.24rem;
   }
 }
 
@@ -1175,13 +1183,13 @@ main {
   }
 
   .gallery-grid-icon {
-    column-count: 5;
-    column-gap: 0.2rem;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 0.2rem;
   }
 
   .gallery-grid {
-    column-count: 2;
-    column-gap: 0.55rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.55rem;
   }
 
   .gallery-group {
