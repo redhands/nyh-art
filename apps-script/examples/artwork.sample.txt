@@ -1,0 +1,29 @@
+title.ko: 달빛 해파리
+title.en: Moonlit Jellyfish
+title.ja: 月明かりのクラゲ
+title.zh: 月光水母
+
+subtitle.ko: 바다의 꿈
+subtitle.en: Dream of the Sea
+subtitle.ja: 海の夢
+subtitle.zh: 海之夢
+
+medium.ko: 디지털 드로잉
+medium.en: Digital Drawing
+medium.ja: デジタルドローイング
+medium.zh: 數位繪圖
+
+size: 2048x2048
+year: 2026
+
+description.ko:
+달빛이 번지는 바다 속에서 해파리가 조용히 떠오르는 장면.
+
+description.en:
+A quiet scene of a jellyfish rising through a moonlit sea.
+
+description.ja:
+月明かりが広がる海の中で、クラゲが静かに浮かび上がる場面。
+
+description.zh:
+月光擴散的海裡，水母靜靜浮現的場景。

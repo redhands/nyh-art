@@ -3,27 +3,67 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>NYH's Artworks</title>
+    <title>NYH's Artwork</title>
+    <meta name="author" content="남영희" />
+    <meta
+      name="keywords"
+      content="남영희, 남영희 작가, NYH, 일러스트레이션, 바다, 우주, 고래상어, 이글레이, 해파리, 돌고래, 고래"
+    />
     <meta
       name="description"
-      content="동화적이고 서정적인 감성으로 채워진 NYH의 작품을 소개하는 온라인 갤러리"
+      content="흘러가는 순간을 그림으로 붙잡아 모아둔 NYH의 온라인 갤러리"
+    />
+    <link rel="canonical" href="https://nyh-art.com/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="ko_KR" />
+    <meta property="og:site_name" content="NYH's Artwork" />
+    <meta property="og:title" content="NYH's Artwork" />
+    <meta
+      property="og:description"
+      content="흘러가는 순간을 그림으로 붙잡아 모아둔 NYH의 온라인 갤러리"
+    />
+    <meta property="og:url" content="https://nyh-art.com/" />
+    <meta
+      property="og:image"
+      content="https://img.nyh-art.com/ocean/2023-10-03-Cx7axmaOa1e.jpg"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="NYH's Artwork" />
+    <meta
+      name="twitter:description"
+      content="흘러가는 순간을 그림으로 붙잡아 모아둔 NYH의 온라인 갤러리"
+    />
+    <meta
+      name="twitter:image"
+      content="https://img.nyh-art.com/ocean/2023-10-03-Cx7axmaOa1e.jpg"
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&family=Nanum+Myeongjo:wght@400;700;800&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="styles.css" />
   </head>
-  <body>
+  <body
+    data-gallery-url="https://img.nyh-art.com/site-data/gallery.json"
+    data-home-url="index.html"
+    data-gallery-index-url="gallery.html"
+    data-series-base-url="series"
+    data-default-locale="ko"
+    data-page-kind="home"
+  >
     <div class="page-shell">
       <header class="site-header">
         <a class="brand" href="#top">
-          <span class="brand-mark"></span>
+          <img
+            class="brand-mark"
+            src="assets/profile.jpg"
+            alt="NYH 프로필 이미지"
+          />
           <span class="brand-text">
-            <strong>NYH's Artworks</strong>
-            <small>온라인 갤러리</small>
+            <strong>NYH's Artwork</strong>
+            <small data-i18n="brand.subtitle">온라인 갤러리</small>
           </span>
         </a>
 
@@ -33,173 +73,141 @@
           aria-expanded="false"
           aria-controls="site-nav"
         >
-          메뉴
+          <span data-i18n="menu.button">메뉴</span>
         </button>
 
         <nav class="site-nav" id="site-nav" aria-label="주요 메뉴">
-          <a href="#gallery">갤러리</a>
-          <a href="#about">작가 소개</a>
-          <a href="#notes">작품 세계</a>
+          <a href="#about" data-i18n="nav.about">작가 소개</a>
+          <a href="#notes" data-i18n="nav.notes">작품 세계</a>
+          <a href="gallery.html" data-i18n="nav.gallery">갤러리</a>
+          <button class="nav-contact-trigger" type="button" aria-expanded="false" aria-controls="contact-panel" data-i18n="nav.contact">Contact</button>
+          <div class="locale-switcher" aria-label="Language selector">
+            <button class="locale-current-button" type="button" aria-expanded="false" aria-controls="locale-switcher-menu">
+              <span id="locale-current-label">한국어</span>
+            </button>
+            <div class="locale-switcher-menu" id="locale-switcher-menu" hidden>
+              <button class="locale-switcher-button" type="button" data-locale="ko">한국어</button>
+              <button class="locale-switcher-button" type="button" data-locale="zh">中文</button>
+              <button class="locale-switcher-button" type="button" data-locale="ja">日本語</button>
+              <button class="locale-switcher-button" type="button" data-locale="en">EN</button>
+            </div>
+          </div>
         </nav>
       </header>
 
       <main id="top">
         <section class="hero">
           <div class="hero-copy reveal">
-            <p class="eyebrow">NYH를 위한 감성 갤러리</p>
-            <h1>
-              조용한 바다와
-              <br />
-              상상의 별빛을 담은 작품 세계
-            </h1>
-            <p class="hero-body">
-              NYH's Artworks는 따뜻한 색과 몽환적인 장면으로 감정을 그려내는
-              온라인 전시 공간입니다. 작품 한 점씩 천천히 머물러 볼 수 있도록
-              여백과 흐름을 중심으로 구성했습니다.
+            <p class="eyebrow" data-i18n="home.hero.eyebrow">NYH의 감성 갤러리</p>
+            <h1 data-i18n="home.hero.title">꿈결 조각 모음</h1>
+            <p class="hero-body" data-i18n="home.hero.body">
+              이 곳은 바다, 해파리, 돌고래와 별빛 같은 상징을 따라 마음의
+              풍경을 그려내는 온라인 전시 공간입니다. 화면 안을 천천히 흐르는
+              장면들을 따라가다 보면, 작가가 지나온 시간과 감정의 결을 함께
+              마주하게 됩니다.
             </p>
 
             <div class="hero-actions">
-              <a class="button button-primary" href="#gallery">작품 감상하기</a>
-              <a class="button button-secondary" href="#about">작가 소개 보기</a>
+              <a class="button button-primary" href="gallery.html" data-i18n="home.hero.primaryAction">작품 감상하기</a>
+              <a class="button button-secondary" href="#about" data-i18n="home.hero.secondaryAction">작가 소개 보기</a>
             </div>
 
             <ul class="hero-notes" aria-label="작품 키워드">
-              <li>바다</li>
-              <li>꿈</li>
-              <li>별빛</li>
-              <li>위로</li>
+              <li data-i18n="home.hero.noteSea">바다</li>
+              <li data-i18n="home.hero.noteDream">꿈</li>
+              <li data-i18n="home.hero.noteStarlight">별빛</li>
+              <li data-i18n="home.hero.noteComfort">위로</li>
             </ul>
           </div>
 
           <div class="hero-visual reveal">
             <article class="floating-card floating-card-main">
-              <img src="artworks/DSC_0377.jpg" alt="거북이가 헤엄치는 작품" />
+              <img
+                id="hero-image-main"
+                src="assets/profile.jpg"
+                alt="거북이가 헤엄치는 작품"
+              />
             </article>
             <article class="floating-card floating-card-top">
-              <img src="artworks/DSC_0189.jpg" alt="푸른 배경 위에 인물이 등장하는 작품" />
+              <img
+                id="hero-image-top"
+                src="assets/profile.jpg"
+                alt="푸른 배경 위에 인물이 등장하는 작품"
+              />
             </article>
             <article class="floating-card floating-card-bottom">
-              <img src="artworks/DSC_0370.jpg" alt="밤하늘과 별을 담은 작품" />
-            </article>
-          </div>
-        </section>
-
-        <section class="section highlights reveal" aria-labelledby="highlights-title">
-          <div class="section-heading">
-            <p class="eyebrow">대표 작품</p>
-            <h2 id="highlights-title">대표 작품 미리보기</h2>
-          </div>
-
-          <div class="highlight-grid">
-            <article class="highlight-card">
-              <img src="artworks/DSC_0179.jpg" alt="바다 속 인물과 생명체를 담은 작품" />
-              <div>
-                <p>부드러운 물결과 다정한 동행</p>
-                <strong>바다의 품</strong>
-              </div>
-            </article>
-            <article class="highlight-card">
-              <img src="artworks/DSC_0378.jpg" alt="해파리 위에 앉은 인물을 그린 작품" />
-              <div>
-                <p>고요한 바다를 건너는 움직임</p>
-                <strong>해파리 산책</strong>
-              </div>
-            </article>
-            <article class="highlight-card">
-              <img src="artworks/DSC_0182.jpg" alt="밤하늘 속 고래 형상을 담은 작품" />
-              <div>
-                <p>경이로움이 머무는 밤의 풍경</p>
-                <strong>밤의 고래</strong>
-              </div>
+              <img
+                id="hero-image-bottom"
+                src="assets/profile.jpg"
+                alt="밤하늘과 별을 담은 작품"
+              />
             </article>
           </div>
         </section>
 
         <section class="section gallery-section" id="gallery" aria-labelledby="gallery-title">
           <div class="section-heading reveal">
-            <p class="eyebrow">갤러리</p>
-            <h2 id="gallery-title">작품 아카이브</h2>
-            <p>
-              현재 등록된 24점의 작품을 한 자리에서 감상할 수 있습니다. 지금
-              올라가 있는 작품들은 10x10 캔버스 위에 아크릴로 작업되었으며,
-              이후에는 다른 크기와 형식의 작품도 함께 추가될 수 있습니다.
-              카드를 누르면 큰 화면으로 확대해서 볼 수 있습니다.
+            <p class="eyebrow" data-i18n="home.archive.eyebrow">갤러리</p>
+            <h2 id="gallery-title" data-i18n="home.archive.title">작품 모음</h2>
+            <p id="gallery-summary">
+              바다, 해파리, 돌고래와 별빛처럼 화면 안에 오래 머무는 장면들
+              가운데 몇 작품을 먼저 소개합니다. 전체 작품과 시리즈별 흐름은
+              하위 갤러리 페이지에서 이어서 감상할 수 있습니다.
             </p>
+            <div class="section-heading-actions" id="archive-entry-links"></div>
           </div>
 
-          <div class="gallery-toolbar reveal">
-            <span class="pill">총 24점</span>
-            <span class="pill">현재 등록 작품: 10x10 캔버스</span>
-            <span class="pill">현재 등록 작품: 아크릴 작업</span>
-            <span class="pill">아카이브 전시</span>
-          </div>
-
-          <div class="gallery-grid" id="gallery-grid"></div>
+          <div class="archive-preview-grid" id="archive-preview-grid"></div>
         </section>
 
         <section class="section about-section" id="about" aria-labelledby="about-title">
           <div class="about-layout">
             <div class="about-copy reveal">
-              <p class="eyebrow">작가 소개</p>
-              <h2 id="about-title">작은 생명과 상상의 장면을 그리는 NYH</h2>
-              <p>
-                NYH는 바다, 별, 동행, 휴식 같은 감각을 바탕으로 화면 안에
-                조용한 위로를 담아냅니다. 관람자는 작품 속 존재들과 시선을
-                나누며 잠시 쉬어갈 수 있고, 각 장면은 꿈과 기억 사이의 풍경처럼
-                느껴집니다.
+              <p class="eyebrow" data-i18n="home.about.eyebrow">작가 소개</p>
+              <h2 id="about-title" data-i18n="home.about.title">흘러가는 순간을 그림으로 붙잡아 모으는 마음</h2>
+              <p data-i18n="home.about.body1">
+                세상 모든 것은 멈추지 않고 그저 흘러갑니다. 붙잡을 수 없는
+                시간의 무심함 속에서 꿈을 꾸는 찰나의 순간들을 흘려보내지 않고,
+                그림의 형태로 잡아 모아 기록해봅니다.
               </p>
-              <p>
-                이 홈페이지는 작품 포트폴리오이자 온라인 전시 공간으로
-                설계되었습니다. 이후 실제 작품명, 연도, 전시 이력, 판매 가능
-                여부를 순차적으로 확장할 수 있도록 구조를 단순하게 유지했습니다.
+              <p data-i18n="home.about.body2">
+                꿈결 같은 이미지의 조각모음들을 통해 그림을 보시는 분들도 마음
+                한 켠에 간직한 꿈을 떠올리고, 작품 속에서 작은 위로와 환기를
+                얻으시기를 소망합니다.
               </p>
             </div>
-
-            <aside class="about-panel reveal">
-              <h3>사이트 방향</h3>
-              <ul>
-                <li>넓은 여백과 전시형 레이아웃</li>
-                <li>바다빛 블루와 크림 계열의 부드러운 색감</li>
-                <li>모바일에서도 작품이 먼저 보이는 구조</li>
-                <li>추후 다국어 및 전시 소식 확장 가능</li>
-              </ul>
-            </aside>
           </div>
         </section>
 
         <section class="section notes-section" id="notes" aria-labelledby="notes-title">
           <div class="section-heading reveal">
-            <p class="eyebrow">작품 세계</p>
-            <h2 id="notes-title">작품을 관통하는 감정의 키워드</h2>
+            <p class="eyebrow" data-i18n="home.notes.eyebrow">작품 세계</p>
+            <h2 id="notes-title" data-i18n="home.notes.title">작품을 이루는 장면들</h2>
           </div>
 
           <div class="note-grid">
             <article class="note-card reveal">
-              <h3>바다</h3>
-              <p>
-                바다는 화면 속에서 가장 큰 공간이자 감정을 감싸는 배경입니다.
-                작품 전체에 고요한 호흡을 만들어 줍니다.
+              <h3 data-i18n="home.notes.seaTitle">바다</h3>
+              <p data-i18n="home.notes.seaBody">
+                바다는 작가에게 주어진 환경이자 모든 장면을 감싸는 커다란
+                배경입니다. 화면 안의 존재들은 그 흐름 속을 천천히 지나가며,
+                삶의 시간과 마음의 결을 함께 품고 있습니다.
               </p>
             </article>
             <article class="note-card reveal">
-              <h3>동행</h3>
-              <p>
-                사람과 생명체가 나란히 머무는 장면은 낯설면서도 다정한 관계를
-                떠올리게 합니다.
+              <h3 data-i18n="home.notes.jellyfishTitle">해파리</h3>
+              <p data-i18n="home.notes.jellyfishBody">
+                해파리는 유연한 마음의 상징입니다. 물결을 거스르기보다 흐름에
+                몸을 맡기며 움직이는 모습은, 흔들리면서도 다시 나아가는 마음의
+                형태를 닮아 있습니다.
               </p>
             </article>
             <article class="note-card reveal">
-              <h3>별빛</h3>
-              <p>
-                우주와 별빛의 모티프는 작은 캔버스를 더 넓은 상상의 공간으로
-                확장시킵니다.
-              </p>
-            </article>
-            <article class="note-card reveal">
-              <h3>위로</h3>
-              <p>
-                선명한 자극보다 잔잔한 위로를 전달하는 것이 이 작업 세계의
-                핵심입니다.
+              <h3 data-i18n="home.notes.dolphinTitle">돌고래</h3>
+              <p data-i18n="home.notes.dolphinBody">
+                돌고래는 무한한 애정을 상징합니다. 화면 속에서 인물을 감싸고
+                함께 머무는 존재로 나타나며, 따뜻한 위로와 다정한 관계의 감각을
+                조용히 전합니다.
               </p>
             </article>
           </div>
@@ -209,7 +217,7 @@
     </div>
 
     <div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-label="작품 확대 보기">
-      <button class="lightbox-close" type="button" aria-label="닫기">닫기</button>
+      <button class="lightbox-close" type="button" aria-label="닫기" data-i18n="common.close">닫기</button>
       <div class="lightbox-content">
         <img id="lightbox-image" alt="" />
         <div class="lightbox-meta">
@@ -220,6 +228,34 @@
       </div>
     </div>
 
-    <script src="script.js"></script>
+    <div class="contact-panel" id="contact-panel" hidden>
+      <div class="contact-panel-card">
+        <p class="contact-panel-label" data-i18n="contact.label">Contact</p>
+        <div class="contact-panel-links">
+          <a class="contact-icon-link" href="https://www.instagram.com/nyh_doodles" target="_blank" rel="noreferrer" aria-label="Instagram @nyh_doodles">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="3.25" y="3.25" width="17.5" height="17.5" rx="5"></rect>
+              <circle cx="12" cy="12" r="4.1"></circle>
+              <circle cx="17.35" cy="6.65" r="1.1" class="icon-fill"></circle>
+            </svg>
+            <span>instagram.com/nyh_doodles</span>
+          </a>
+          <a class="contact-icon-link" href="mailto:nyhillust@gmail.com" aria-label="nyhillust@gmail.com">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 6.5h16v11H4z"></path>
+              <path d="M4.8 7.2 12 13l7.2-5.8"></path>
+            </svg>
+            <span>nyhillust@gmail.com</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <button class="back-to-top" id="back-to-top" type="button" data-i18n="common.backToTop">
+      맨 위로
+    </button>
+
+    <script src="locale-data.js"></script>
+    <script type="module" src="script.js"></script>
   </body>
 </html>
