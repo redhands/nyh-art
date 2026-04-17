@@ -1172,6 +1172,15 @@ main {
     letter-spacing: -0.03em;
   }
 
+  .hero {
+    justify-items: center;
+  }
+
+  .hero-copy {
+    width: 100%;
+    max-width: none;
+  }
+
   .highlight-grid,
   .note-grid {
     grid-template-columns: 1fr;
@@ -1219,8 +1228,8 @@ main {
 
   .floating-card-main {
     position: absolute;
-    width: 72%;
-    top: 12%;
+    width: 82%;
+    top: 8%;
     left: 50%;
     right: auto;
     margin: 0;
@@ -1228,25 +1237,26 @@ main {
   }
 
   .floating-card-top {
-    width: 30%;
-    top: 2%;
-    left: 0;
+    width: 34%;
+    top: 1.5%;
+    left: 2%;
   }
 
   .floating-card-bottom {
-    width: 32%;
+    width: 36%;
     left: auto;
-    right: 0;
-    bottom: 2%;
+    right: 2%;
+    bottom: 1.5%;
   }
 
   .hero-visual {
-    width: min(18.5rem, 82vw);
+    width: min(24.5rem, 92vw);
     aspect-ratio: 1;
     max-width: none;
     min-height: 0;
     margin: 0 auto;
     padding: 0;
+    display: block;
   }
 
   .note-card,
