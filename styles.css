@@ -139,6 +139,8 @@ button {
 .site-nav {
   display: flex;
   align-items: center;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
   gap: 1.25rem;
   padding: 0.7rem 1rem;
   border: 1px solid var(--line);
@@ -192,6 +194,72 @@ button {
   z-index: 31;
 }
 
+.locale-switcher {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  margin-left: 0.1rem;
+  padding-left: 1rem;
+  border-left: 1px solid rgba(46, 74, 96, 0.12);
+}
+
+.locale-current-button,
+.locale-switcher-button {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 0.95rem;
+  line-height: 1.2;
+  cursor: pointer;
+}
+
+.locale-current-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.locale-current-button::after {
+  content: "";
+  width: 0.45rem;
+  height: 0.45rem;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: translateY(-0.08rem) rotate(45deg);
+}
+
+.locale-switcher-menu {
+  position: absolute;
+  top: calc(100% + 0.7rem);
+  right: 0;
+  display: grid;
+  gap: 0.45rem;
+  min-width: 8rem;
+  padding: 0.8rem 0.9rem;
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 20px 40px rgba(38, 57, 77, 0.12);
+  backdrop-filter: blur(16px);
+}
+
+.locale-switcher-menu[hidden] {
+  display: none;
+}
+
+.locale-switcher-button:hover,
+.locale-switcher-button:focus-visible,
+.locale-current-button:hover,
+.locale-current-button:focus-visible {
+  color: var(--accent-deep);
+}
+
+.locale-switcher-button.is-active {
+  color: var(--accent-deep);
+}
+
 main {
   width: min(calc(100% - 2rem), var(--max-width));
   margin: 0 auto;
@@ -231,6 +299,11 @@ main {
   font-size: clamp(3.6rem, 8vw, 6.9rem);
   max-width: 7.2em;
   white-space: nowrap;
+  text-shadow:
+    -1px 0 rgba(255, 255, 255, 0.55),
+    1px 0 rgba(255, 255, 255, 0.55),
+    0 -1px rgba(255, 255, 255, 0.45),
+    0 1px rgba(255, 255, 255, 0.45);
 }
 
 .hero-copy {
@@ -551,6 +624,11 @@ main {
   font-family: "Nanum Myeongjo", Georgia, serif;
   font-size: clamp(3rem, 7vw, 5.5rem);
   line-height: 1.02;
+  text-shadow:
+    -1px 0 rgba(255, 255, 255, 0.5),
+    1px 0 rgba(255, 255, 255, 0.5),
+    0 -1px rgba(255, 255, 255, 0.4),
+    0 1px rgba(255, 255, 255, 0.4);
 }
 
 .page-hero-body {
@@ -951,10 +1029,48 @@ main {
     width: 100%;
     max-width: calc(100vw - 2rem);
     justify-content: space-between;
+    flex-wrap: wrap;
     border-radius: 1.25rem;
     padding: 0.9rem 1rem;
     top: 4.4rem;
     right: 1rem;
+  }
+
+  .locale-switcher {
+    width: 100%;
+    margin-left: 0;
+    padding-left: 0;
+    border-left: 0;
+    margin-top: 0.35rem;
+    padding-top: 0.55rem;
+    border-top: 1px solid rgba(46, 74, 96, 0.12);
+  }
+
+  .locale-current-button {
+    display: none;
+  }
+
+  .locale-switcher-menu {
+    position: static;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.9rem;
+    min-width: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
+    right: auto;
+    left: 0;
+    grid-auto-flow: unset;
+    grid-auto-columns: unset;
+    align-items: center;
+  }
+
+  .locale-switcher-menu[hidden] {
+    display: flex;
   }
 
   .contact-panel {
