@@ -5,6 +5,10 @@ function listGalleryFolders(rootFolderId) {
 
   while (iterator.hasNext()) {
     const folder = iterator.next();
+    if (folder.isTrashed && folder.isTrashed()) {
+      continue;
+    }
+
     folders.push({
       id: folder.getId(),
       name: folder.getName(),
@@ -61,6 +65,10 @@ function listArtworkPairs(folder) {
 
   while (iterator.hasNext()) {
     const file = iterator.next();
+    if (file.isTrashed && file.isTrashed()) {
+      continue;
+    }
+
     const name = file.getName();
 
     if (name === "artworks.txt" || name === "README.md") {

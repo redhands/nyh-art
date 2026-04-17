@@ -26,11 +26,11 @@ function uploadFileToR2(objectPath, blob, contentType, config) {
     status: response.getResponseCode()
   });
 
-  return config.r2PublicBaseUrl + "/" + objectPath;
+  return buildR2PublicUrl_(objectPath, config);
 }
 
 function fetchJsonFromR2(objectPath, config) {
-  const url = config.r2PublicBaseUrl + "/" + objectPath;
+  const url = buildR2PublicUrl_(objectPath, config);
   const response = UrlFetchApp.fetch(url, {
     method: "get",
     muteHttpExceptions: true
@@ -51,14 +51,13 @@ function fetchJsonFromR2(objectPath, config) {
 }
 
 function objectExistsInR2(objectPath, config) {
-  const url = buildR2ApiUrl_(objectPath, config);
-  const headers = buildR2SignedHeaders_("GET", objectPath, "", [], config);
+  const url = buildR2PublicUrl_(objectPath, config);
   const response = UrlFetchApp.fetch(url, {
     method: "get",
     muteHttpExceptions: true,
-    headers: Object.assign({}, headers, {
+    headers: {
       Range: "bytes=0-0"
-    })
+    }
   });
 
   if (response.getResponseCode() === 404) {
@@ -103,7 +102,7 @@ function deleteFileFromR2(objectPath, config) {
 }
 
 function buildR2ApiUrl_(objectPath, config) {
-  return "https://" + config.r2AccountId + ".r2.cloudflarestorage.com/" + config.r2BucketName + "/" + objectPath;
+  return "https://" + config.r2AccountId + ".r2.cloudflarestorage.com/" + config.r2BucketName + "/" + encodeR2ObjectPath_(objectPath);
 }
 
 function buildR2SignedHeaders_(method, objectPath, contentType, bodyBytes, config) {
@@ -111,7 +110,7 @@ function buildR2SignedHeaders_(method, objectPath, contentType, bodyBytes, confi
   const amzDate = formatAmzDate_(now);
   const dateStamp = amzDate.slice(0, 8);
   const host = config.r2AccountId + ".r2.cloudflarestorage.com";
-  const canonicalUri = "/" + config.r2BucketName + "/" + objectPath;
+  const canonicalUri = "/" + config.r2BucketName + "/" + encodeR2ObjectPath_(objectPath);
   const payloadHash = sha256Hex_(bodyBytes || []);
 
   const canonicalHeaders =
@@ -155,6 +154,19 @@ function buildR2SignedHeaders_(method, objectPath, contentType, bodyBytes, confi
   }
 
   return headers;
+}
+
+function buildR2PublicUrl_(objectPath, config) {
+  return String(config.r2PublicBaseUrl).replace(/\/+$/u, "") + "/" + encodeR2ObjectPath_(objectPath);
+}
+
+function encodeR2ObjectPath_(objectPath) {
+  return String(objectPath || "")
+    .split("/")
+    .map(function(part) {
+      return encodeURIComponent(part);
+    })
+    .join("/");
 }
 
 function getSignatureKey_(key, dateStamp, regionName, serviceName) {

@@ -83,6 +83,8 @@ showInArchive: false
 - 이미지: `https://img.nyh-art.com/<gallery>/<filename>`
 - JSON: `site-data/gallery.json`
 
+한글이나 공백이 들어간 파일명도 업로드/삭제/존재 확인 시 URL 인코딩해서 처리합니다.
+
 ## 참고
 
 이 초안은 현재 repo의 `same-name image + txt` 규칙과 맞춰져 있습니다.
