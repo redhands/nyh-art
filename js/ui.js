@@ -69,14 +69,32 @@ export function bindMenu() {
 }
 
 export function bindImageProtection() {
+  const isProtectedImage = (target) => target instanceof HTMLImageElement;
+
   document.addEventListener("contextmenu", (event) => {
-    if (event.target instanceof HTMLImageElement) {
+    if (isProtectedImage(event.target)) {
       event.preventDefault();
     }
   });
 
   document.addEventListener("dragstart", (event) => {
-    if (event.target instanceof HTMLImageElement) {
+    if (isProtectedImage(event.target)) {
+      event.preventDefault();
+    }
+  });
+
+  document.addEventListener(
+    "touchstart",
+    (event) => {
+      if (!isProtectedImage(event.target)) return;
+
+      event.target.setAttribute("draggable", "false");
+    },
+    { passive: true }
+  );
+
+  document.addEventListener("selectstart", (event) => {
+    if (isProtectedImage(event.target)) {
       event.preventDefault();
     }
   });
