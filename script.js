@@ -21,6 +21,8 @@ const lightboxMeta = document.querySelector(".lightbox-meta");
 const lightboxClose = document.querySelector(".lightbox-close");
 const menuToggle = document.querySelector(".menu-toggle");
 const siteNav = document.querySelector(".site-nav");
+const contactPanel = document.querySelector("#contact-panel");
+const contactTriggers = document.querySelectorAll(".nav-contact-trigger");
 
 function getGalleryBySlug(slug) {
   return galleries.find((gallery) => gallery.slug === slug) || null;
@@ -47,6 +49,23 @@ function getGalleryDataSourceUrl() {
   }
 
   return "data/gallery.json";
+}
+
+function getHomeUrl() {
+  return document.body?.dataset.homeUrl || "index.html";
+}
+
+function getGalleryIndexUrl() {
+  return document.body?.dataset.galleryIndexUrl || "gallery.html";
+}
+
+function getSeriesBaseUrl() {
+  return document.body?.dataset.seriesBaseUrl || "series";
+}
+
+function getSeriesPageUrl(slug) {
+  const baseUrl = getSeriesBaseUrl().replace(/\/+$/u, "");
+  return `${baseUrl}/${encodeURIComponent(slug)}/`;
 }
 
 function getArtworkThumbnailMarkup(artwork, eager = false) {
@@ -119,6 +138,11 @@ function renderHeroImages() {
 }
 
 function getSelectedSeriesSlug() {
+  const datasetSeriesSlug = document.body?.dataset.selectedSeries;
+  if (datasetSeriesSlug) {
+    return datasetSeriesSlug;
+  }
+
   const params = new URLSearchParams(window.location.search);
   return params.get("series") || "";
 }
@@ -207,12 +231,12 @@ function renderSeriesFilter() {
   const selectedSeriesSlug = getSelectedSeriesSlug();
   const items = [
     {
-      href: "gallery.html",
+      href: getGalleryIndexUrl(),
       label: "전체 보기",
       active: !selectedSeriesSlug
     },
     ...galleries.map((gallery) => ({
-      href: `gallery.html?series=${encodeURIComponent(gallery.slug)}#gallery-group-${gallery.slug}`,
+      href: getSeriesPageUrl(gallery.slug),
       label: gallery.title,
       active: selectedSeriesSlug === gallery.slug
     }))
@@ -234,7 +258,7 @@ function renderArchiveEntryLinks() {
 
   const items = [
     `
-      <a class="archive-entry-link archive-entry-link-primary" href="gallery.html">
+      <a class="archive-entry-link archive-entry-link-primary" href="${getGalleryIndexUrl()}">
         <span class="archive-entry-icon" aria-hidden="true">+</span>
         <span>전체 갤러리 보기</span>
       </a>
@@ -242,7 +266,7 @@ function renderArchiveEntryLinks() {
     ...galleries.map((gallery) => `
       <a
         class="archive-entry-link"
-        href="gallery.html?series=${encodeURIComponent(gallery.slug)}#gallery-group-${gallery.slug}"
+        href="${getSeriesPageUrl(gallery.slug)}"
       >
         <span class="archive-entry-icon" aria-hidden="true">+</span>
         <span>${gallery.title}</span>
@@ -279,7 +303,7 @@ function renderGallery() {
         </div>
         <div class="gallery-group-actions">
           <span class="pill">${gallery.total}점</span>
-          <a class="series-direct-link" href="gallery.html?series=${encodeURIComponent(gallery.slug)}#gallery-group-${gallery.slug}">
+          <a class="series-direct-link" href="${getSeriesPageUrl(gallery.slug)}">
             시리즈 링크
           </a>
         </div>
@@ -384,6 +408,55 @@ function bindMenu() {
   });
 }
 
+function closeContactPanel() {
+  if (!contactPanel) return;
+
+  contactPanel.setAttribute("hidden", "");
+  contactTriggers.forEach((trigger) => {
+    trigger.setAttribute("aria-expanded", "false");
+  });
+}
+
+function openContactPanel() {
+  if (!contactPanel) return;
+
+  contactPanel.removeAttribute("hidden");
+  contactTriggers.forEach((trigger) => {
+    trigger.setAttribute("aria-expanded", "true");
+  });
+}
+
+function bindContactPanel() {
+  if (!contactPanel || !contactTriggers.length) return;
+
+  contactTriggers.forEach((trigger) => {
+    trigger.addEventListener("click", (event) => {
+      event.stopPropagation();
+      const isHidden = contactPanel.hasAttribute("hidden");
+
+      if (isHidden) {
+        openContactPanel();
+      } else {
+        closeContactPanel();
+      }
+    });
+  });
+
+  contactPanel.addEventListener("click", (event) => {
+    event.stopPropagation();
+  });
+
+  document.addEventListener("click", () => {
+    closeContactPanel();
+  });
+
+  window.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      closeContactPanel();
+    }
+  });
+}
+
 function bindReveal() {
   const revealElements = document.querySelectorAll(".reveal");
   if (!revealElements.length) return;
@@ -478,4 +551,5 @@ async function loadGallery() {
 
 bindLightbox();
 bindMenu();
+bindContactPanel();
 loadGallery();

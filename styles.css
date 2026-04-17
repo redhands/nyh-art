@@ -159,8 +159,23 @@ button {
   white-space: normal;
 }
 
+.site-nav .nav-contact-trigger {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 0.95rem;
+  cursor: pointer;
+  word-break: keep-all;
+  overflow-wrap: normal;
+  white-space: normal;
+}
+
 .site-nav a:hover,
-.site-nav a:focus-visible {
+.site-nav a:focus-visible,
+.site-nav .nav-contact-trigger:hover,
+.site-nav .nav-contact-trigger:focus-visible {
   color: var(--accent-deep);
 }
 
@@ -786,6 +801,91 @@ main {
   background: rgba(255, 255, 255, 0.08);
 }
 
+.contact-panel {
+  position: fixed;
+  top: 5.6rem;
+  right: max(1rem, calc((100vw - var(--max-width)) / 2 + 1rem));
+  z-index: 35;
+}
+
+.contact-panel[hidden] {
+  display: none;
+}
+
+.contact-panel-card {
+  display: grid;
+  gap: 0.72rem;
+  min-width: 0;
+  padding: 0.95rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: 0.9rem;
+  background: rgba(255, 251, 246, 0.97);
+  box-shadow: 0 20px 40px rgba(38, 57, 77, 0.12);
+  backdrop-filter: blur(12px);
+}
+
+.contact-panel-label {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.contact-panel-card a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.contact-panel-links {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.contact-icon-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.72rem;
+  min-height: 2.85rem;
+  padding: 0.55rem 0.8rem;
+  border: 1px solid rgba(46, 74, 96, 0.12);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.8);
+  transition: transform 180ms ease, border-color 180ms ease, color 180ms ease;
+}
+
+.contact-icon-link svg {
+  width: 1.2rem;
+  height: 1.2rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.contact-icon-link .icon-fill {
+  fill: currentColor;
+  stroke: none;
+}
+
+.contact-icon-link span {
+  font-size: 0.92rem;
+  line-height: 1.3;
+}
+
+.contact-panel-card a:hover,
+.contact-panel-card a:focus-visible {
+  color: var(--accent-deep);
+}
+
+.contact-icon-link:hover,
+.contact-icon-link:focus-visible {
+  transform: translateY(-1px);
+  border-color: rgba(37, 83, 114, 0.25);
+}
+
 .reveal {
   opacity: 0;
   transform: translateY(24px);
@@ -855,6 +955,16 @@ main {
     padding: 0.9rem 1rem;
     top: 4.4rem;
     right: 1rem;
+  }
+
+  .contact-panel {
+    top: 8.7rem;
+    left: 1rem;
+    right: 1rem;
+  }
+
+  .contact-panel-card {
+    min-width: 0;
   }
 
   .site-nav.is-open {

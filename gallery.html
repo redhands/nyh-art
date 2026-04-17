@@ -4,9 +4,41 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>어디론가 흘러가는 중.🌙 | NYH's Artwork</title>
+    <meta name="author" content="남영희" />
+    <meta
+      name="keywords"
+      content="남영희, 남영희 작가, NYH, 일러스트레이션, 바다, 우주, 고래상어, 이글레이, 해파리, 돌고래, 고래"
+    />
     <meta
       name="description"
-      content="NYH's Artwork의 전체 작품 아카이브를 폴더별 시리즈 단위로 감상할 수 있는 갤러리 페이지"
+      content="흘러가는 순간을 그림으로 붙잡아 모아둔 NYH의 온라인 갤러리"
+    />
+    <link rel="canonical" href="https://nyh-art.com/gallery.html" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="ko_KR" />
+    <meta property="og:site_name" content="NYH's Artwork" />
+    <meta property="og:title" content="어디론가 흘러가는 중.🌙 | NYH's Artwork" />
+    <meta
+      property="og:description"
+      content="흘러가는 순간을 그림으로 붙잡아 모아둔 NYH의 온라인 갤러리"
+    />
+    <meta property="og:url" content="https://nyh-art.com/gallery.html" />
+    <meta
+      property="og:image"
+      content="https://img.nyh-art.com/ocean/2023-10-03-Cx7axmaOa1e.jpg"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="어디론가 흘러가는 중.🌙 | NYH's Artwork"
+    />
+    <meta
+      name="twitter:description"
+      content="흘러가는 순간을 그림으로 붙잡아 모아둔 NYH의 온라인 갤러리"
+    />
+    <meta
+      name="twitter:image"
+      content="https://img.nyh-art.com/ocean/2023-10-03-Cx7axmaOa1e.jpg"
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -16,7 +48,12 @@
     />
     <link rel="stylesheet" href="styles.css" />
   </head>
-  <body data-gallery-url="https://img.nyh-art.com/site-data/gallery.json">
+  <body
+    data-gallery-url="https://img.nyh-art.com/site-data/gallery.json"
+    data-home-url="index.html"
+    data-gallery-index-url="gallery.html"
+    data-series-base-url="series"
+  >
     <div class="page-shell">
       <header class="site-header">
         <a class="brand" href="index.html">
@@ -44,7 +81,7 @@
           <a href="index.html#about">작가 소개</a>
           <a href="index.html#notes">작품 세계</a>
           <a href="gallery.html">갤러리</a>
-          <a href="https://www.instagram.com/nyh_doodles" target="_blank" rel="noreferrer">인스타그램</a>
+          <button class="nav-contact-trigger" type="button" aria-expanded="false" aria-controls="contact-panel">컨탠트</button>
         </nav>
       </header>
 
@@ -74,6 +111,29 @@
           <p id="lightbox-index"></p>
           <h3 id="lightbox-title"></h3>
           <p id="lightbox-description"></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="contact-panel" id="contact-panel" hidden>
+      <div class="contact-panel-card">
+        <p class="contact-panel-label">컨탠트</p>
+        <div class="contact-panel-links">
+          <a class="contact-icon-link" href="https://www.instagram.com/nyh_doodles" target="_blank" rel="noreferrer" aria-label="Instagram @nyh_doodles">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="3.25" y="3.25" width="17.5" height="17.5" rx="5"></rect>
+              <circle cx="12" cy="12" r="4.1"></circle>
+              <circle cx="17.35" cy="6.65" r="1.1" class="icon-fill"></circle>
+            </svg>
+            <span>instagram.com/nyh_doodles</span>
+          </a>
+          <a class="contact-icon-link" href="mailto:nyhillust@gmail.com" aria-label="nyhillust@gmail.com">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 6.5h16v11H4z"></path>
+              <path d="M4.8 7.2 12 13l7.2-5.8"></path>
+            </svg>
+            <span>nyhillust@gmail.com</span>
+          </a>
         </div>
       </div>
     </div>
