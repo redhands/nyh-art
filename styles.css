@@ -896,11 +896,12 @@ html[lang="zh"] .gallery-group-header p {
 }
 
 .lightbox {
+  --lightbox-inline-padding: 1.5rem;
   position: fixed;
   inset: 0;
   display: grid;
   place-items: center;
-  padding: 1.5rem;
+  padding: var(--lightbox-inline-padding);
   overflow: auto;
   background: rgba(9, 25, 31, 0.84);
   opacity: 0;
@@ -916,7 +917,7 @@ html[lang="zh"] .gallery-group-header p {
 
 .lightbox-content {
   width: fit-content;
-  max-width: min(92vw, 52rem);
+  max-width: min(calc(100vw - (var(--lightbox-inline-padding) * 2)), 52rem);
   max-height: min(84vh, 52rem);
   display: flex;
   flex-direction: column;
@@ -926,7 +927,7 @@ html[lang="zh"] .gallery-group-header p {
 
 .lightbox-content.lightbox-content-image-only {
   width: fit-content;
-  max-width: min(92vw, 52rem);
+  max-width: min(calc(100vw - (var(--lightbox-inline-padding) * 2)), 52rem);
 }
 
 .lightbox-content.lightbox-content-compact,
@@ -942,7 +943,7 @@ html[lang="zh"] .gallery-group-header p {
 
 .lightbox img {
   width: auto;
-  max-width: min(92vw, 52rem);
+  max-width: min(calc(100vw - (var(--lightbox-inline-padding) * 2)), 52rem);
   max-height: 78vh;
   object-fit: contain;
   padding: 0.35rem;
@@ -954,9 +955,8 @@ html[lang="zh"] .gallery-group-header p {
 }
 
 .lightbox-meta {
-  width: fit-content;
-  min-width: min(72vw, 24rem);
-  max-width: min(calc(92vw - 2rem), 30rem);
+  width: max-content;
+  max-width: min(calc(100vw - (var(--lightbox-inline-padding) * 2)), 36rem);
   margin-top: 0;
   min-height: 3.25rem;
   padding: 0.72rem 0.95rem 0.78rem;
@@ -983,21 +983,8 @@ html[lang="zh"] .gallery-group-header p {
   line-height: 1.25;
   text-align: center;
   word-break: keep-all;
-  overflow-wrap: normal;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.lightbox-close {
-  position: absolute;
-  top: 1.2rem;
-  right: 1.2rem;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  border-radius: 999px;
-  padding: 0.75rem 1rem;
-  color: white;
-  background: rgba(255, 255, 255, 0.08);
+  overflow-wrap: anywhere;
+  white-space: normal;
 }
 
 .contact-panel {
@@ -1205,6 +1192,10 @@ html[lang="zh"] .gallery-group-header p {
 }
 
 @media (max-width: 720px) {
+  .lightbox {
+    --lightbox-inline-padding: 0.9rem;
+  }
+
   .site-header {
     padding-top: 0.8rem;
     align-items: flex-start;
@@ -1317,16 +1308,12 @@ html[lang="zh"] .gallery-group-header p {
   }
 
   .lightbox-meta {
+    max-width: min(calc(100vw - (var(--lightbox-inline-padding) * 2)), 28rem);
     padding: 0.62rem 0.82rem 0.68rem;
-    border-radius: 1.2rem;
   }
 
   .lightbox-meta h3 {
     font-size: 0.96rem;
-    white-space: normal;
-    overflow-wrap: anywhere;
-    overflow: visible;
-    text-overflow: clip;
   }
 
   .gallery-group-header {

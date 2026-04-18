@@ -43,12 +43,8 @@ export function closeLightbox() {
 }
 
 export function bindLightbox() {
-  elements.lightboxClose?.addEventListener("click", closeLightbox);
-
   elements.lightbox?.addEventListener("click", (event) => {
-    if (event.target === elements.lightbox) {
-      closeLightbox();
-    }
+    closeLightbox();
   });
 
   window.addEventListener("keydown", (event) => {
