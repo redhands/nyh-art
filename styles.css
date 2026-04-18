@@ -14,6 +14,8 @@
   --radius-lg: 24px;
   --radius-md: 18px;
   --max-width: 1180px;
+  --font-sans: "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --font-serif: "Noto Serif KR", Georgia, serif;
 }
 
 * {
@@ -31,13 +33,23 @@ html {
 body {
   margin: 0;
   color: var(--text);
-  font-family: "Nanum Gothic", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  font-family: var(--font-sans);
   word-break: keep-all;
   overflow-wrap: normal;
   background:
     radial-gradient(circle at top left, rgba(105, 197, 219, 0.26), transparent 28%),
     radial-gradient(circle at 85% 15%, rgba(217, 194, 122, 0.2), transparent 22%),
     linear-gradient(180deg, #f8fbfd 0%, var(--bg) 42%, #eef7f2 100%);
+}
+
+html[lang="ja"] {
+  --font-sans: "Noto Sans JP", "Hiragino Sans", "Yu Gothic", sans-serif;
+  --font-serif: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", serif;
+}
+
+html[lang="zh"] {
+  --font-sans: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+  --font-serif: "Noto Serif TC", "PMingLiU", "Microsoft JhengHei", serif;
 }
 
 html[lang="ja"],
@@ -150,7 +162,7 @@ button {
 }
 
 .brand-text strong {
-  font-family: "Nanum Myeongjo", Georgia, serif;
+  font-family: var(--font-serif);
   font-size: 1.45rem;
   letter-spacing: 0.02em;
 }
@@ -336,7 +348,7 @@ main {
 .hero h1,
 .section h2 {
   margin: 0;
-  font-family: "Nanum Myeongjo", Georgia, serif;
+  font-family: var(--font-serif);
   line-height: 1.08;
   letter-spacing: -0.015em;
   word-break: keep-all;
@@ -690,7 +702,7 @@ html[lang="zh"] .gallery-group-header p {
 
 .page-hero h1 {
   margin: 0;
-  font-family: "Nanum Myeongjo", Georgia, serif;
+  font-family: var(--font-serif);
   font-size: clamp(3rem, 7vw, 5.5rem);
   line-height: 1.02;
   text-shadow:
@@ -769,7 +781,7 @@ html[lang="zh"] .gallery-group-header p {
 
 .gallery-group-header h3 {
   margin: 0;
-  font-family: "Nanum Myeongjo", Georgia, serif;
+  font-family: var(--font-serif);
   font-size: clamp(2rem, 3vw, 3rem);
   line-height: 1.05;
   word-break: keep-all;
@@ -879,7 +891,7 @@ html[lang="zh"] .gallery-group-header p {
 
 .note-card h3 {
   margin: 0 0 0.45rem;
-  font-family: "Nanum Myeongjo", Georgia, serif;
+  font-family: var(--font-serif);
   font-size: 2rem;
 }
 
@@ -902,17 +914,20 @@ html[lang="zh"] .gallery-group-header p {
 }
 
 .lightbox-content {
-  width: min(100%, 52rem);
+  width: fit-content;
+  max-width: min(92vw, 52rem);
   max-height: min(84vh, 52rem);
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   grid-template-rows: minmax(0, 1fr) auto;
-  gap: 0.55rem;
-  align-items: stretch;
+  gap: 0;
+  align-items: start;
+  justify-items: center;
 }
 
 .lightbox-content.lightbox-content-image-only {
-  width: min(100%, 52rem);
+  width: fit-content;
+  max-width: min(92vw, 52rem);
   grid-template-columns: minmax(0, 1fr);
   grid-template-rows: minmax(0, 1fr);
 }
@@ -924,15 +939,21 @@ html[lang="zh"] .gallery-group-header p {
 }
 
 .lightbox img {
-  width: 100%;
+  width: auto;
+  max-width: min(92vw, 52rem);
   max-height: 78vh;
   object-fit: contain;
-  padding: 0.6rem;
+  padding: 0.35rem;
 }
 
 .lightbox-meta {
-  padding: 0.72rem 1rem 0.8rem;
+  width: fit-content;
+  max-width: min(calc(92vw - 2rem), 30rem);
+  margin-top: -0.3rem;
+  padding: 0.48rem 0.95rem 0.55rem;
   overflow: hidden;
+  border-radius: 1.15rem 1.15rem 1.15rem 1.15rem;
+  box-shadow: 0 10px 28px rgba(12, 34, 42, 0.12);
 }
 
 .lightbox-meta[hidden] {
@@ -945,9 +966,10 @@ html[lang="zh"] .gallery-group-header p {
 
 .lightbox-meta h3 {
   margin: 0;
-  font-family: "Nanum Myeongjo", Georgia, serif;
+  font-family: var(--font-sans);
   font-size: clamp(1.05rem, 2vw, 1.28rem);
   line-height: 1.25;
+  text-align: center;
   word-break: keep-all;
   overflow-wrap: normal;
   white-space: nowrap;
