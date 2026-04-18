@@ -6,6 +6,7 @@ const localeLabels = i18nData.localeLabels || { ko: "한국어" };
 const supportedLocales = i18nData.supportedLocales || ["ko"];
 
 let currentLocale = getPreferredLocale();
+const mobileLocaleMediaQuery = window.matchMedia("(max-width: 720px)");
 
 function getSavedLocale() {
   try {
@@ -124,7 +125,22 @@ export function redirectRootToPreferredLocale() {
 }
 
 export function bindLocaleSwitcher() {
+  const syncLocaleMenuVisibility = () => {
+    const isMobile = mobileLocaleMediaQuery.matches;
+
+    if (isMobile) {
+      elements.localeSwitcherMenu?.removeAttribute("hidden");
+      elements.localeCurrentButton?.setAttribute("aria-expanded", "true");
+      return;
+    }
+
+    elements.localeSwitcherMenu?.setAttribute("hidden", "");
+    elements.localeCurrentButton?.setAttribute("aria-expanded", "false");
+  };
+
   elements.localeCurrentButton?.addEventListener("click", (event) => {
+    if (mobileLocaleMediaQuery.matches) return;
+
     event.stopPropagation();
     const isHidden = elements.localeSwitcherMenu?.hasAttribute("hidden");
 
@@ -157,7 +173,12 @@ export function bindLocaleSwitcher() {
   });
 
   document.addEventListener("click", () => {
+    if (mobileLocaleMediaQuery.matches) return;
+
     elements.localeSwitcherMenu?.setAttribute("hidden", "");
     elements.localeCurrentButton?.setAttribute("aria-expanded", "false");
   });
+
+  syncLocaleMenuVisibility();
+  mobileLocaleMediaQuery.addEventListener("change", syncLocaleMenuVisibility);
 }

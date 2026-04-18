@@ -4,6 +4,7 @@ import { t } from "./i18n.js";
 import {
   getArtworkDescription,
   getArtworkImageUrl,
+  getThumbnailSizeClass,
   getArtworkTitle,
   hasArtworkTitle
 } from "./content.js";
@@ -16,6 +17,7 @@ export function openLightboxForArtwork(artwork) {
 
   const showTitle = hasArtworkTitle(artwork);
   const artworkTitle = getArtworkTitle(artwork);
+  const isCompactArtwork = getThumbnailSizeClass(artwork) === "thumbnail-size-icon";
 
   elements.lightboxImage.src = getArtworkImageUrl(artwork);
   elements.lightboxImage.alt = artworkTitle || t("common.untitledArtwork");
@@ -24,6 +26,7 @@ export function openLightboxForArtwork(artwork) {
   elements.lightboxTitle.textContent = showTitle ? artworkTitle : "";
   elements.lightboxMeta?.toggleAttribute("hidden", !showTitle);
   elements.lightboxContent?.classList.toggle("lightbox-content-image-only", !showTitle);
+  elements.lightboxContent?.classList.toggle("lightbox-content-compact", isCompactArtwork);
   elements.lightbox?.classList.add("is-open");
   elements.lightbox?.setAttribute("aria-hidden", "false");
   document.body.style.overflow = "hidden";
@@ -35,6 +38,7 @@ export function closeLightbox() {
   elements.lightboxImage.src = "";
   elements.lightboxMeta?.removeAttribute("hidden");
   elements.lightboxContent?.classList.remove("lightbox-content-image-only");
+  elements.lightboxContent?.classList.remove("lightbox-content-compact");
   document.body.style.overflow = "";
 }
 
