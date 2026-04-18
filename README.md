@@ -59,11 +59,11 @@ title.ja: 星明かりの場面
 title.zh: 星光場景
 
 subtitle.ko: 인스타그램 기록 2025.10.16
-subtitle.en: Instagram Archive 2025.10.16
+subtitle.en: Artwork Archive 2025.10.16
 
 medium.ko: 디지털 드로잉
 medium.en: Digital Drawing
-size: 인스타그램 원본
+size: 원본 비율
 year: 2025
 
 description.ko:
