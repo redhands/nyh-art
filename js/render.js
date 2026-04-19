@@ -325,6 +325,8 @@ export function renderGallery() {
     if (gallery.thumbnailSize === "icon") {
       const cardMap = new Map();
       let selectedIndex = -1;
+      let pointerDragState = null;
+      const supportsCoarsePointer = window.matchMedia("(pointer: coarse)").matches;
 
       const clearSelectedCard = () => {
         grid.querySelectorAll(".gallery-card.is-selected").forEach((card) => {
@@ -356,6 +358,131 @@ export function renderGallery() {
         syncIconGrid();
       };
 
+      const clearDropTargets = () => {
+        grid.querySelectorAll(".gallery-card.is-drop-target").forEach((card) => {
+          card.classList.remove("is-drop-target");
+        });
+      };
+
+      const getDropTargetFromPoint = (clientX, clientY, excludedCard = null) => {
+        const directTarget = document.elementFromPoint(clientX, clientY)?.closest(".gallery-card.thumbnail-size-icon");
+        if (directTarget && directTarget !== excludedCard) {
+          return directTarget;
+        }
+
+        const candidates = Array.from(grid.querySelectorAll(".gallery-card.thumbnail-size-icon"));
+        return (
+          candidates.find((candidate) => {
+            if (candidate === excludedCard) return false;
+
+            const rect = candidate.getBoundingClientRect();
+            return clientX >= rect.left && clientX <= rect.right && clientY >= rect.top && clientY <= rect.bottom;
+          }) || null
+        );
+      };
+
+      const handleIconTap = (tappedIndex) => {
+        if (Number.isNaN(tappedIndex) || tappedIndex < 0) return;
+
+        if (selectedIndex === tappedIndex) {
+          selectedIndex = -1;
+          clearSelectedCard();
+          return;
+        }
+
+        if (selectedIndex >= 0) {
+          commitIconSwap(selectedIndex, tappedIndex);
+          return;
+        }
+
+        selectedIndex = tappedIndex;
+        setSelectedCard(tappedIndex);
+      };
+
+      const finishPointerDrag = (card, event) => {
+        if (!pointerDragState) return;
+
+        const { startIndex, moved, currentDropIndex } = pointerDragState;
+
+        card.classList.remove("is-touch-dragging");
+        card.style.transform = "";
+        card.style.zIndex = "";
+        card.style.pointerEvents = "";
+        clearDropTargets();
+
+        if (moved && !Number.isNaN(currentDropIndex) && currentDropIndex >= 0 && currentDropIndex !== startIndex) {
+          commitIconSwap(startIndex, currentDropIndex);
+        } else {
+          handleIconTap(startIndex);
+        }
+
+        pointerDragState = null;
+      };
+
+      const handleTouchMove = (touch) => {
+        if (!pointerDragState?.card) return;
+
+        const card = pointerDragState.card;
+        const deltaX = touch.clientX - pointerDragState.startX;
+        const deltaY = touch.clientY - pointerDragState.startY;
+        const distance = Math.hypot(deltaX, deltaY);
+
+        if (distance > 10) {
+          pointerDragState.moved = true;
+        }
+
+        if (!pointerDragState.moved) return;
+
+        card.classList.add("is-touch-dragging");
+        card.style.transform = `translate(${deltaX}px, ${deltaY}px) scale(0.98)`;
+        card.style.zIndex = "5";
+        card.style.pointerEvents = "none";
+
+        clearDropTargets();
+        const draggedCenterX = pointerDragState.originCenterX + deltaX;
+        const draggedCenterY = pointerDragState.originCenterY + deltaY;
+        const pointerTarget = getDropTargetFromPoint(draggedCenterX, draggedCenterY, card);
+        const nextDropIndex = Number.parseInt(pointerTarget?.dataset.index || "-1", 10);
+        pointerDragState.currentDropIndex = nextDropIndex;
+        if (pointerTarget && pointerTarget !== card) {
+          pointerTarget.classList.add("is-drop-target");
+        }
+      };
+
+      const handleTouchEnd = (touch) => {
+        if (!pointerDragState?.card) return;
+        finishPointerDrag(pointerDragState.card, touch);
+      };
+
+      const detachWindowTouchListeners = () => {
+        window.removeEventListener("touchmove", onWindowTouchMove);
+        window.removeEventListener("touchend", onWindowTouchEnd);
+        window.removeEventListener("touchcancel", onWindowTouchEnd);
+      };
+
+      const attachWindowTouchListeners = () => {
+        detachWindowTouchListeners();
+        window.addEventListener("touchmove", onWindowTouchMove, { passive: false });
+        window.addEventListener("touchend", onWindowTouchEnd, { passive: true });
+        window.addEventListener("touchcancel", onWindowTouchEnd, { passive: true });
+      };
+
+      const onWindowTouchMove = (event) => {
+        if (!pointerDragState || !supportsCoarsePointer) return;
+        const touch = event.touches[0];
+        if (!touch) return;
+        event.preventDefault();
+        handleTouchMove(touch);
+      };
+
+      const onWindowTouchEnd = (event) => {
+        if (!pointerDragState || !supportsCoarsePointer) return;
+        const touch = event.changedTouches[0];
+        if (!touch) return;
+        handleTouchEnd(touch);
+        detachWindowTouchListeners();
+      };
+
       const syncIconGrid = () => {
         const orderedArtworks = getPuzzleOrder(gallery);
         const fragment = document.createDocumentFragment();
@@ -364,7 +491,7 @@ export function renderGallery() {
           let card = cardMap.get(artwork.fileName);
           if (!card) {
             card = createGalleryCard(artwork, artworkIndex + index, { disableLightbox: true });
-            card.draggable = true;
+            card.draggable = !supportsCoarsePointer;
             card.setAttribute("aria-pressed", "false");
             card.addEventListener("dragstart", (event) => {
               event.dataTransfer?.setData("text/plain", card.dataset.index || "-1");
@@ -388,24 +515,90 @@ export function renderGallery() {
               commitIconSwap(fromIndex, toIndex);
             });
             card.addEventListener("click", (event) => {
+              if (supportsCoarsePointer || pointerDragState?.moved) {
+                event.preventDefault();
+                return;
+              }
+
               event.preventDefault();
-              const tappedIndex = Number.parseInt(card.dataset.index || "-1", 10);
-              if (Number.isNaN(tappedIndex) || tappedIndex < 0) return;
-
-              if (selectedIndex === tappedIndex) {
-                selectedIndex = -1;
-                clearSelectedCard();
-                return;
-              }
-
-              if (selectedIndex >= 0) {
-                commitIconSwap(selectedIndex, tappedIndex);
-                return;
-              }
-
-              selectedIndex = tappedIndex;
-              setSelectedCard(tappedIndex);
+              handleIconTap(Number.parseInt(card.dataset.index || "-1", 10));
             });
+            if (supportsCoarsePointer) {
+              card.addEventListener(
+                "touchstart",
+                (event) => {
+                  const touch = event.touches[0];
+                  if (!touch) return;
+
+                  pointerDragState = {
+                    card,
+                    startIndex: Number.parseInt(card.dataset.index || "-1", 10),
+                    startX: touch.clientX,
+                    startY: touch.clientY,
+                    originCenterX: card.getBoundingClientRect().left + card.getBoundingClientRect().width / 2,
+                    originCenterY: card.getBoundingClientRect().top + card.getBoundingClientRect().height / 2,
+                    moved: false,
+                    currentDropIndex: -1
+                  };
+                  attachWindowTouchListeners();
+                },
+                { passive: true }
+              );
+            } else {
+              card.addEventListener("pointerdown", (event) => {
+                if (event.pointerType === "mouse" || event.button !== 0) return;
+
+                pointerDragState = {
+                  pointerId: event.pointerId,
+                  card,
+                  startIndex: Number.parseInt(card.dataset.index || "-1", 10),
+                  startX: event.clientX,
+                  startY: event.clientY,
+                  originCenterX: card.getBoundingClientRect().left + card.getBoundingClientRect().width / 2,
+                  originCenterY: card.getBoundingClientRect().top + card.getBoundingClientRect().height / 2,
+                  moved: false,
+                  currentDropIndex: -1
+                };
+                card.setPointerCapture?.(event.pointerId);
+              });
+              card.addEventListener("pointermove", (event) => {
+                if (!pointerDragState || pointerDragState.pointerId !== event.pointerId) return;
+
+                const deltaX = event.clientX - pointerDragState.startX;
+                const deltaY = event.clientY - pointerDragState.startY;
+                const distance = Math.hypot(deltaX, deltaY);
+
+                if (distance > 10) {
+                  pointerDragState.moved = true;
+                }
+
+                if (!pointerDragState.moved) return;
+
+                event.preventDefault();
+                card.classList.add("is-touch-dragging");
+                card.style.transform = `translate(${deltaX}px, ${deltaY}px) scale(0.98)`;
+                card.style.zIndex = "5";
+                card.style.pointerEvents = "none";
+
+                clearDropTargets();
+                const draggedCenterX = pointerDragState.originCenterX + deltaX;
+                const draggedCenterY = pointerDragState.originCenterY + deltaY;
+                const pointerTarget = getDropTargetFromPoint(draggedCenterX, draggedCenterY, card);
+                const nextDropIndex = Number.parseInt(pointerTarget?.dataset.index || "-1", 10);
+                pointerDragState.currentDropIndex = nextDropIndex;
+                if (pointerTarget && pointerTarget !== card) {
+                  pointerTarget.classList.add("is-drop-target");
+                }
+              });
+              card.addEventListener("pointerup", (event) => {
+                if (!pointerDragState || pointerDragState.pointerId !== event.pointerId) return;
+                finishPointerDrag(card, event);
+              });
+              card.addEventListener("pointercancel", (event) => {
+                if (!pointerDragState || pointerDragState.pointerId !== event.pointerId) return;
+                finishPointerDrag(card, event);
+              });
+            }
             cardMap.set(artwork.fileName, card);
           }
 
