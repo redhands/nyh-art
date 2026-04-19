@@ -939,7 +939,6 @@ html[lang="zh"] .gallery-group-header p {
   border-radius: 0.54rem;
   background: transparent;
   box-shadow: none;
-  touch-action: none;
 }
 
 .gallery-card.thumbnail-size-icon:hover,
@@ -951,12 +950,6 @@ html[lang="zh"] .gallery-group-header p {
 .gallery-card.thumbnail-size-icon.is-dragging {
   opacity: 0.72;
   cursor: grabbing;
-}
-
-.gallery-card.thumbnail-size-icon.is-touch-dragging {
-  opacity: 0.9;
-  cursor: grabbing;
-  transition: none;
 }
 
 .gallery-card.thumbnail-size-icon.is-selected > .thumbnail-frame {
