@@ -48,13 +48,57 @@ function shouldPrioritizeGalleryImage(index, thumbnailSizeClass) {
   return index < 16;
 }
 
+function pickFeaturedIndices(
+  artworks,
+  ratio = 0.2,
+  maxCount = Number.POSITIVE_INFINITY,
+  minCount = 1
+) {
+  const candidateIndices = artworks
+    .map((artwork, index) => ({ artwork, index }))
+    .filter(({ artwork }) => getThumbnailSizeClass(artwork) !== "thumbnail-size-icon")
+    .map(({ index }) => index);
+
+  if (!candidateIndices.length) {
+    return new Set();
+  }
+
+  const targetCount = Math.min(
+    maxCount,
+    Math.max(minCount, Math.round(candidateIndices.length * ratio))
+  );
+  const shuffledCandidates = shuffleArtworks(candidateIndices);
+  const selected = [];
+
+  const fillWithDistance = (minimumDistance) => {
+    shuffledCandidates.forEach((candidateIndex) => {
+      if (selected.length >= targetCount) return;
+      if (selected.includes(candidateIndex)) return;
+
+      const isTooClose = selected.some(
+        (selectedIndex) => Math.abs(selectedIndex - candidateIndex) <= minimumDistance
+      );
+
+      if (!isTooClose) {
+        selected.push(candidateIndex);
+      }
+    });
+  };
+
+  fillWithDistance(2);
+  if (selected.length < targetCount) fillWithDistance(1);
+  if (selected.length < targetCount) fillWithDistance(0);
+
+  return new Set(selected);
+}
+
 function createGalleryCard(artwork, index, options = {}) {
-  const { disableLightbox = false } = options;
+  const { disableLightbox = false, featured = false } = options;
   const card = document.createElement("button");
   const thumbnailSizeClass = getThumbnailSizeClass(artwork);
   const artworkTitle = getArtworkTitle(artwork);
   const eager = shouldPrioritizeGalleryImage(index, thumbnailSizeClass);
-  card.className = `gallery-card reveal ${thumbnailSizeClass}`;
+  card.className = `gallery-card reveal ${thumbnailSizeClass}${featured ? " thumbnail-featured" : ""}`;
   card.type = "button";
   card.setAttribute("aria-label", `${artworkTitle || t("common.untitledArtwork")} ${t("common.viewArtwork")}`);
   card.innerHTML = getArtworkThumbnailMarkup(artwork, eager);
@@ -118,11 +162,12 @@ function getPuzzleOrder(gallery) {
   return puzzleOrders.get(gallery.slug) || [];
 }
 
-function createArchivePreviewCard(artwork) {
+function createArchivePreviewCard(artwork, options = {}) {
+  const { featured = false } = options;
   const card = document.createElement("button");
   const thumbnailSizeClass = getThumbnailSizeClass(artwork);
   const artworkTitle = getArtworkTitle(artwork);
-  card.className = `archive-preview-card reveal ${thumbnailSizeClass}`;
+  card.className = `archive-preview-card reveal ${thumbnailSizeClass}${featured ? " thumbnail-featured" : ""}`;
   card.type = "button";
   card.setAttribute("aria-label", `${artworkTitle || t("common.untitledArtwork")} ${t("common.viewArtwork")}`);
   card.innerHTML = getArtworkThumbnailMarkup(artwork, true);
@@ -171,7 +216,13 @@ function bindMasonryGrid(grid) {
       return;
     }
 
-    image.addEventListener("load", () => layoutMasonryItem(grid, item), { once: true });
+    image.addEventListener(
+      "load",
+      () => {
+        layoutMasonryItem(grid, item);
+      },
+      { once: true }
+    );
     image.addEventListener("error", () => layoutMasonryItem(grid, item), { once: true });
   });
 
@@ -277,9 +328,8 @@ export function renderArchivePreview() {
 
     return leftIsIcon ? 1 : -1;
   });
-
-  selectedArtworks.forEach((artwork) => {
-    fragment.appendChild(createArchivePreviewCard(artwork));
+  selectedArtworks.forEach((artwork, index) => {
+    fragment.appendChild(createArchivePreviewCard(artwork, { featured: index === 2 }));
   });
 
   archivePreviewGrid.appendChild(fragment);
@@ -429,8 +479,9 @@ export function renderGallery() {
       syncIconGrid();
       artworkIndex += displayedArtworks.length;
     } else {
-      displayedArtworks.forEach((artwork) => {
-        grid.appendChild(createGalleryCard(artwork, artworkIndex));
+      const featuredIndices = pickFeaturedIndices(displayedArtworks, 0.1);
+      displayedArtworks.forEach((artwork, index) => {
+        grid.appendChild(createGalleryCard(artwork, artworkIndex, { featured: featuredIndices.has(index) }));
         artworkIndex += 1;
       });
     }

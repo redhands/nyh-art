@@ -1,4 +1,4 @@
-import { cp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
+import { cp, mkdir, readFile, readdir, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import vm from "node:vm";
@@ -11,6 +11,7 @@ const siteBaseUrl = "https://nyh-art.com";
 const defaultGalleryDataUrl = "https://img.nyh-art.com/site-data/gallery.json";
 const defaultOgImage = "https://img.nyh-art.com/ocean/2023-10-03-Cx7axmaOa1e.jpg";
 const supportedLocales = ["ko", "en", "ja", "zh"];
+const assetVersion = new Date().toISOString().replaceAll(/[-:.TZ]/g, "");
 const ogLocaleMap = {
   ko: "ko_KR",
   en: "en_US",
@@ -80,11 +81,15 @@ function serializeInlineJson(value) {
     .replaceAll("<!--", "<\\!--");
 }
 
+function withAssetVersion(assetPath) {
+  return `${assetPath}?v=${assetVersion}`;
+}
+
 function injectInlineGalleryData(html, galleryData) {
   const inlineScript = `<script>window.__NYH_GALLERY__=${serializeInlineJson(galleryData)};</script>`;
   return html.replace(
     /<script src="(?:\/)?locale-data\.js"><\/script>/u,
-    `${inlineScript}\n    <script src="/locale-data.js"></script>`
+    `${inlineScript}\n    <script src="${withAssetVersion("/locale-data.js")}"></script>`
   );
 }
 
@@ -151,9 +156,9 @@ function buildHomePageHtml(template, locale, i18n, galleryData) {
   html = localizeStaticText(html, locale, i18n);
   html = injectInlineGalleryData(html, galleryData);
   html = updateMetaTag(html, /<html lang="[^"]*">/u, `<html lang="${escapeAttribute(locale)}">`);
-  html = updateMetaTag(html, /<link rel="stylesheet" href="styles\.css" \/>/u, `<link rel="stylesheet" href="/styles.css" />`);
-  html = updateMetaTag(html, /<script type="module" src="script\.js"><\/script>/u, `<script type="module" src="/script.js"></script>`);
-  html = updateMetaTag(html, /src="assets\/profile\.jpg"/gu, `src="/assets/profile.jpg"`);
+  html = updateMetaTag(html, /<link rel="stylesheet" href="styles\.css" \/>/u, `<link rel="stylesheet" href="${withAssetVersion("/styles.css")}" />`);
+  html = updateMetaTag(html, /<script type="module" src="script\.js"><\/script>/u, `<script type="module" src="${withAssetVersion("/script.js")}"></script>`);
+  html = updateMetaTag(html, /src="assets\/profile\.jpg"/gu, `src="${withAssetVersion("/assets/profile.jpg")}"`);
   html = updateMetaTag(html, /href="gallery\.html"/gu, `href="${escapeAttribute(getLocalizedGalleryPath(locale))}"`);
   html = updateMetaTag(html, /<meta\s+name="description"[\s\S]*?\/>/u, `<meta name="description" content="${escapeAttribute(pageDescription)}" />`);
   html = updateMetaTag(html, /<link rel="canonical" href="[^"]*" \/>/u, `<link rel="canonical" href="${escapeAttribute(pageUrl)}" />`);
@@ -198,9 +203,9 @@ function buildGalleryPageHtml(template, locale, i18n, galleryData, gallery = nul
   html = localizeStaticText(html, locale, i18n);
   html = injectInlineGalleryData(html, galleryData);
   html = updateMetaTag(html, /<html lang="[^"]*">/u, `<html lang="${escapeAttribute(locale)}">`);
-  html = updateMetaTag(html, /<link rel="stylesheet" href="styles\.css" \/>/u, `<link rel="stylesheet" href="/styles.css" />`);
-  html = updateMetaTag(html, /<script type="module" src="script\.js"><\/script>/u, `<script type="module" src="/script.js"></script>`);
-  html = updateMetaTag(html, /src="assets\/profile\.jpg"/gu, `src="/assets/profile.jpg"`);
+  html = updateMetaTag(html, /<link rel="stylesheet" href="styles\.css" \/>/u, `<link rel="stylesheet" href="${withAssetVersion("/styles.css")}" />`);
+  html = updateMetaTag(html, /<script type="module" src="script\.js"><\/script>/u, `<script type="module" src="${withAssetVersion("/script.js")}"></script>`);
+  html = updateMetaTag(html, /src="assets\/profile\.jpg"/gu, `src="${withAssetVersion("/assets/profile.jpg")}"`);
 
   html = updateMetaTag(
     html,
@@ -351,6 +356,40 @@ ${entries}
 `;
 }
 
+async function collectJsFiles(directory) {
+  const entries = await readdir(directory, { withFileTypes: true });
+  const files = [];
+
+  for (const entry of entries) {
+    const fullPath = path.join(directory, entry.name);
+    if (entry.isDirectory()) {
+      files.push(...(await collectJsFiles(fullPath)));
+      continue;
+    }
+
+    if (entry.isFile() && entry.name.endsWith(".js")) {
+      files.push(fullPath);
+    }
+  }
+
+  return files;
+}
+
+async function rewriteModuleSpecifiers(filePath) {
+  const source = await readFile(filePath, "utf8");
+  const rewritten = source.replace(
+    /(from\s+["'](\.\/|\.\.\/)[^"']+\.js)(["'])/g,
+    `$1?v=${assetVersion}$3`
+  ).replace(
+    /(import\s+["'](\.\/|\.\.\/)[^"']+\.js)(["'])/g,
+    `$1?v=${assetVersion}$3`
+  );
+
+  if (rewritten !== source) {
+    await writeFile(filePath, rewritten, "utf8");
+  }
+}
+
 const galleryData = await loadGalleryData();
 const i18nData = await loadI18nData();
 const galleries = Array.isArray(galleryData.galleries) ? galleryData.galleries : [];
@@ -370,6 +409,12 @@ for (const directory of directoriesToCopy) {
   });
 }
 
+const jsFiles = await collectJsFiles(path.join(distDir, "js"));
+jsFiles.push(path.join(distDir, "script.js"));
+for (const jsFile of jsFiles) {
+  await rewriteModuleSpecifiers(jsFile);
+}
+
 for (const locale of supportedLocales) {
   const localeRootDir = path.join(distDir, locale);
   const localeGalleryDir = path.join(localeRootDir, "gallery");
@@ -387,6 +432,23 @@ for (const locale of supportedLocales) {
       );
   }
 }
+
+const rootHomeHtml = buildHomePageHtml(indexTemplate, "ko", i18nData, galleryData)
+  .replace(/data-home-url="\/ko\/"/u, 'data-home-url="index.html"')
+  .replace(/data-gallery-index-url="\/ko\/gallery\/"/u, 'data-gallery-index-url="gallery.html"')
+  .replace(/data-series-base-url="\/ko\/series"/u, 'data-series-base-url="series"')
+  .replace(/href="\/ko\/gallery\/"/gu, 'href="gallery.html"')
+  .replace(/src="\/assets\//gu, 'src="/assets/');
+
+const rootGalleryHtml = buildGalleryPageHtml(galleryTemplate, "ko", i18nData, galleryData)
+  .replace(/data-home-url="\/ko\/"/u, 'data-home-url="index.html"')
+  .replace(/data-gallery-index-url="\/ko\/gallery\/"/u, 'data-gallery-index-url="gallery.html"')
+  .replace(/data-series-base-url="\/ko\/series"/u, 'data-series-base-url="series"')
+  .replace(/href="\/ko\/"/gu, 'href="index.html"')
+  .replace(/href="\/ko\/gallery\/"/gu, 'href="gallery.html"');
+
+await writeFile(path.join(distDir, "index.html"), rootHomeHtml, "utf8");
+await writeFile(path.join(distDir, "gallery.html"), rootGalleryHtml, "utf8");
 
 for (const gallery of galleries) {
   const seriesDir = path.join(distDir, "series", gallery.slug);

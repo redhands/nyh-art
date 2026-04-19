@@ -166,6 +166,45 @@ export function bindBackToTop() {
   window.addEventListener("resize", toggleVisibility, { passive: true });
 }
 
+export function bindViewportDebug() {
+  const params = new URLSearchParams(window.location.search);
+  const shouldDebug = params.get("debug") === "viewport";
+  if (!shouldDebug) return;
+
+  const panel = document.createElement("aside");
+  panel.className = "viewport-debug";
+  panel.setAttribute("role", "status");
+  panel.setAttribute("aria-live", "polite");
+  document.body.appendChild(panel);
+
+  const updateViewportDebug = () => {
+    const vv = window.visualViewport;
+    const clientWidth = document.documentElement.clientWidth;
+    const innerWidth = window.innerWidth;
+    const visualWidth = vv?.width ?? 0;
+    const scale = vv?.scale ?? 1;
+    const dpr = window.devicePixelRatio || 1;
+    const orientation = window.innerWidth > window.innerHeight ? "landscape" : "portrait";
+
+    panel.innerHTML = `
+      <strong>viewport debug</strong>
+      <span>client: ${Math.round(clientWidth)}px</span>
+      <span>inner: ${Math.round(innerWidth)}px</span>
+      <span>visual: ${Math.round(visualWidth)}px</span>
+      <span>scale: ${scale.toFixed(2)}</span>
+      <span>dpr: ${dpr.toFixed(2)}</span>
+      <span>lang: ${document.documentElement.lang || "n/a"}</span>
+      <span>mode: ${orientation}</span>
+    `;
+  };
+
+  updateViewportDebug();
+  window.addEventListener("resize", updateViewportDebug, { passive: true });
+  window.addEventListener("orientationchange", updateViewportDebug, { passive: true });
+  window.visualViewport?.addEventListener("resize", updateViewportDebug, { passive: true });
+  window.visualViewport?.addEventListener("scroll", updateViewportDebug, { passive: true });
+}
+
 function adjustHashScroll() {
   const hash = window.location.hash;
   if (!hash) return;
