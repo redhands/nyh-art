@@ -17,7 +17,9 @@ import {
 import { openLightboxForArtwork, bindReveal } from "./ui.js";
 
 const masonryStates = new Map();
+const puzzleOrders = new Map();
 let masonryResizeBound = false;
+const PUZZLE_COOKIE_PREFIX = "nyh-puzzle-order-";
 
 function getArtworkThumbnailMarkup(artwork, eager = false) {
   const loadingMode = eager ? "eager" : "lazy";
@@ -46,7 +48,8 @@ function shouldPrioritizeGalleryImage(index, thumbnailSizeClass) {
   return index < 16;
 }
 
-function createGalleryCard(artwork, index) {
+function createGalleryCard(artwork, index, options = {}) {
+  const { disableLightbox = false } = options;
   const card = document.createElement("button");
   const thumbnailSizeClass = getThumbnailSizeClass(artwork);
   const artworkTitle = getArtworkTitle(artwork);
@@ -55,8 +58,64 @@ function createGalleryCard(artwork, index) {
   card.type = "button";
   card.setAttribute("aria-label", `${artworkTitle || t("common.untitledArtwork")} ${t("common.viewArtwork")}`);
   card.innerHTML = getArtworkThumbnailMarkup(artwork, eager);
-  card.addEventListener("click", () => openLightboxForArtwork(artwork));
+  if (!disableLightbox) {
+    card.addEventListener("click", () => openLightboxForArtwork(artwork));
+  }
   return card;
+}
+
+function swapItems(items, fromIndex, toIndex) {
+  const next = [...items];
+  [next[fromIndex], next[toIndex]] = [next[toIndex], next[fromIndex]];
+  return next;
+}
+
+function getPuzzleCookieName(slug) {
+  return `${PUZZLE_COOKIE_PREFIX}${slug}`;
+}
+
+function readPuzzleCookie(slug) {
+  const cookieName = `${getPuzzleCookieName(slug)}=`;
+  const cookie = document.cookie
+    .split(";")
+    .map((part) => part.trim())
+    .find((part) => part.startsWith(cookieName));
+
+  if (!cookie) return [];
+
+  try {
+    return JSON.parse(decodeURIComponent(cookie.slice(cookieName.length)));
+  } catch {
+    return [];
+  }
+}
+
+function writePuzzleCookie(slug, artworks) {
+  const value = encodeURIComponent(JSON.stringify(artworks.map((artwork) => artwork.fileName)));
+  document.cookie = `${getPuzzleCookieName(slug)}=${value}; path=/; max-age=31536000; samesite=lax`;
+}
+
+function getPuzzleOrder(gallery) {
+  if (!gallery?.artworks?.length) return [];
+
+  if (!puzzleOrders.has(gallery.slug)) {
+    const savedFileNames = readPuzzleCookie(gallery.slug);
+    const artworkMap = new Map(gallery.artworks.map((artwork) => [artwork.fileName, artwork]));
+    const savedOrder = savedFileNames
+      .map((fileName) => artworkMap.get(fileName))
+      .filter(Boolean);
+    const missingArtworks = gallery.artworks.filter(
+      (artwork) => !savedOrder.find((savedArtwork) => savedArtwork.fileName === artwork.fileName)
+    );
+    const initialOrder = savedOrder.length
+      ? [...savedOrder, ...missingArtworks]
+      : pickRandomArtworks(gallery.artworks.length, gallery.artworks);
+
+    puzzleOrders.set(gallery.slug, initialOrder);
+    writePuzzleCookie(gallery.slug, initialOrder);
+  }
+
+  return puzzleOrders.get(gallery.slug) || [];
 }
 
 function createArchivePreviewCard(artwork) {
@@ -260,13 +319,112 @@ export function renderGallery() {
     const grid = section.querySelector(".gallery-grid");
     const displayedArtworks =
       gallery.thumbnailSize === "icon"
-        ? pickRandomArtworks(gallery.artworks.length, gallery.artworks)
+        ? getPuzzleOrder(gallery)
         : shuffleArtworks(gallery.artworks);
 
-    displayedArtworks.forEach((artwork) => {
-      grid.appendChild(createGalleryCard(artwork, artworkIndex));
-      artworkIndex += 1;
-    });
+    if (gallery.thumbnailSize === "icon") {
+      const cardMap = new Map();
+      let selectedIndex = -1;
+
+      const clearSelectedCard = () => {
+        grid.querySelectorAll(".gallery-card.is-selected").forEach((card) => {
+          card.classList.remove("is-selected");
+          card.setAttribute("aria-pressed", "false");
+        });
+      };
+
+      const setSelectedCard = (index) => {
+        clearSelectedCard();
+        if (index < 0) return;
+
+        const selectedCard = grid.querySelector(`.gallery-card[data-index="${index}"]`);
+        if (!selectedCard) return;
+
+        selectedCard.classList.add("is-selected");
+        selectedCard.setAttribute("aria-pressed", "true");
+      };
+
+      const commitIconSwap = (fromIndex, toIndex) => {
+        if (Number.isNaN(fromIndex) || Number.isNaN(toIndex) || fromIndex < 0 || toIndex < 0 || fromIndex === toIndex) {
+          return;
+        }
+
+        const nextOrder = swapItems(getPuzzleOrder(gallery), fromIndex, toIndex);
+        puzzleOrders.set(gallery.slug, nextOrder);
+        writePuzzleCookie(gallery.slug, nextOrder);
+        selectedIndex = -1;
+        syncIconGrid();
+      };
+
+      const syncIconGrid = () => {
+        const orderedArtworks = getPuzzleOrder(gallery);
+        const fragment = document.createDocumentFragment();
+
+        orderedArtworks.forEach((artwork, index) => {
+          let card = cardMap.get(artwork.fileName);
+          if (!card) {
+            card = createGalleryCard(artwork, artworkIndex + index, { disableLightbox: true });
+            card.draggable = true;
+            card.setAttribute("aria-pressed", "false");
+            card.addEventListener("dragstart", (event) => {
+              event.dataTransfer?.setData("text/plain", card.dataset.index || "-1");
+              card.classList.add("is-dragging");
+            });
+            card.addEventListener("dragend", () => {
+              card.classList.remove("is-dragging");
+            });
+            card.addEventListener("dragover", (event) => {
+              event.preventDefault();
+              card.classList.add("is-drop-target");
+            });
+            card.addEventListener("dragleave", () => {
+              card.classList.remove("is-drop-target");
+            });
+            card.addEventListener("drop", (event) => {
+              event.preventDefault();
+              card.classList.remove("is-drop-target");
+              const fromIndex = Number.parseInt(event.dataTransfer?.getData("text/plain") || "-1", 10);
+              const toIndex = Number.parseInt(card.dataset.index || "-1", 10);
+              commitIconSwap(fromIndex, toIndex);
+            });
+            card.addEventListener("click", (event) => {
+              event.preventDefault();
+              const tappedIndex = Number.parseInt(card.dataset.index || "-1", 10);
+              if (Number.isNaN(tappedIndex) || tappedIndex < 0) return;
+
+              if (selectedIndex === tappedIndex) {
+                selectedIndex = -1;
+                clearSelectedCard();
+                return;
+              }
+
+              if (selectedIndex >= 0) {
+                commitIconSwap(selectedIndex, tappedIndex);
+                return;
+              }
+
+              selectedIndex = tappedIndex;
+              setSelectedCard(tappedIndex);
+            });
+            cardMap.set(artwork.fileName, card);
+          }
+
+          card.dataset.index = String(index);
+          fragment.appendChild(card);
+        });
+
+        grid.replaceChildren(fragment);
+        setSelectedCard(selectedIndex);
+      };
+
+      syncIconGrid();
+      artworkIndex += displayedArtworks.length;
+    } else {
+      displayedArtworks.forEach((artwork) => {
+        grid.appendChild(createGalleryCard(artwork, artworkIndex));
+        artworkIndex += 1;
+      });
+    }
 
     bindMasonryGrid(grid);
 

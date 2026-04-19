@@ -45,6 +45,11 @@ window.__NYH_I18N__ = {
         rootTitle: "어디론가 흘러가는 중.🌙",
         rootSummary: "바다를 지나 해파리와 돌고래를 만나고, 다시 별빛을 향해 흘러가는 장면들을 시리즈별로 모아둔 아카이브입니다.",
         seriesEyebrow: "시리즈",
+        puzzleEyebrow: "재미있는 기능",
+        puzzleTitle: "10x10 퍼즐 놀이",
+        puzzleHint: "썸네일을 드래그하거나, 모바일에서는 두 칸을 차례로 눌러 위치를 바꿔보세요.",
+        puzzleShuffle: "섞기",
+        puzzleReset: "원래 순서",
         count: (count) => `${count}점`,
         loadError: "갤러리 데이터를 불러오지 못했습니다. 외부 gallery.json 경로와 접근 권한을 확인해 주세요."
       }
@@ -94,6 +99,11 @@ window.__NYH_I18N__ = {
         rootTitle: "正在流向某處。🌙",
         rootSummary: "這是一個按系列整理的檔案，收集了從海、水母、海豚，再次流向星光的那些場景。",
         seriesEyebrow: "系列",
+        puzzleEyebrow: "有趣功能",
+        puzzleTitle: "10x10 拼圖遊戲",
+        puzzleHint: "拖曳縮圖來移動位置，或在手機上依序點兩個格子互換位置。",
+        puzzleShuffle: "打散",
+        puzzleReset: "恢復順序",
         count: (count) => `${count} 件作品`,
         loadError: "無法載入畫廊資料。請檢查外部 gallery.json 路徑與存取權限。"
       }
@@ -143,6 +153,11 @@ window.__NYH_I18N__ = {
         rootTitle: "Drifting Somewhere.🌙",
         rootSummary: "An archive that gathers scenes flowing from the sea through jellyfish and dolphins, and onward toward starlight, arranged by series.",
         seriesEyebrow: "Series",
+        puzzleEyebrow: "Playful Mode",
+        puzzleTitle: "10x10 Puzzle Board",
+        puzzleHint: "Drag thumbnails to move them around, or tap two tiles in sequence on mobile to swap positions.",
+        puzzleShuffle: "Shuffle",
+        puzzleReset: "Reset order",
         count: (count) => `${count} works`,
         loadError: "The gallery data could not be loaded. Please check the external gallery.json path and access settings."
       }
@@ -192,6 +207,11 @@ window.__NYH_I18N__ = {
         rootTitle: "どこかへ流れている途中。🌙",
         rootSummary: "海を過ぎ、クラゲやイルカに出会い、再び星明かりへと流れていく場面をシリーズごとに集めたアーカイブです。",
         seriesEyebrow: "シリーズ",
+        puzzleEyebrow: "たのしい機能",
+        puzzleTitle: "10x10 パズルあそび",
+        puzzleHint: "サムネイルをドラッグして動かすか、モバイルでは2枚を順番に押して位置を入れ替えてみてください。",
+        puzzleShuffle: "シャッフル",
+        puzzleReset: "元の順番",
         count: (count) => `${count}点`,
         loadError: "ギャラリーデータを読み込めませんでした。外部 gallery.json のパスとアクセス権限を確認してください。"
       }
