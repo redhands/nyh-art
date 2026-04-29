@@ -28,7 +28,7 @@
 - 전체 갤러리: `https://img.nyh-art.com/site-data/gallery.json`
 - 시리즈: `https://img.nyh-art.com/site-data/series/<slug>.json`
 
-이전 호환 경로인 `/api/gallery/...`와 `/_data/...`는 Worker에서 당분간 유지합니다.
+이전 호환 경로인 `/api/gallery/...`와 `/_data/...`는 Worker가 위 정적 JSON으로 redirect하는 방식으로 당분간 유지합니다.
 
 ## 작가가 하는 일
 
@@ -305,4 +305,4 @@ R2 버킷 CORS는 `site-data/*.json`과 이미지가 사이트 도메인에서 �
 
 한 줄로 정리하면:
 
-`작가는 Drive에 이미지와 txt를 올리고, Apps Script가 R2와 gallery.json을 갱신하고, 사이트는 언어별 정적 페이지 + Worker API로 자동 반영됩니다.`
+`작가는 Drive에 이미지와 txt를 올리고, Apps Script가 R2 이미지와 정적 JSON을 갱신하고, 사이트는 언어별 정적 페이지에서 그 JSON을 직접 읽습니다.`
