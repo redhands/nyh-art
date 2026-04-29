@@ -10,6 +10,61 @@ function buildGalleryPayload(galleries) {
   };
 }
 
+function selectSampleArtworks(artworks, targetCount) {
+  if (!Array.isArray(artworks) || artworks.length <= targetCount) {
+    return Array.isArray(artworks) ? artworks : [];
+  }
+
+  const selected = [];
+  const usedIndices = {};
+
+  for (let slot = 0; slot < targetCount; slot += 1) {
+    const index = Math.round((slot * (artworks.length - 1)) / Math.max(1, targetCount - 1));
+    if (usedIndices[index]) {
+      continue;
+    }
+
+    usedIndices[index] = true;
+    selected.push(artworks[index]);
+  }
+
+  return selected;
+}
+
+function buildHomeGalleryData(galleryData) {
+  const galleries = Array.isArray(galleryData.galleries) ? galleryData.galleries : [];
+
+  return {
+    generatedAt: galleryData.generatedAt,
+    total: galleryData.total,
+    galleries: galleries.map(function(gallery) {
+      return Object.assign({}, gallery, {
+        artworks: gallery.showInArchive === false
+          ? []
+          : selectSampleArtworks(gallery.artworks || [], gallery.thumbnailSize === "icon" ? 8 : 4)
+      });
+    })
+  };
+}
+
+function buildSeriesGalleryData(galleryData, selectedSlug) {
+  const galleries = Array.isArray(galleryData.galleries) ? galleryData.galleries : [];
+
+  return {
+    generatedAt: galleryData.generatedAt,
+    total: galleryData.total,
+    galleries: galleries.map(function(gallery) {
+      if (gallery.slug === selectedSlug) {
+        return gallery;
+      }
+
+      return Object.assign({}, gallery, {
+        artworks: []
+      });
+    })
+  };
+}
+
 function buildGalleryObject(galleryFolder, galleryMeta, artworks) {
   return {
     slug: galleryFolder.name,

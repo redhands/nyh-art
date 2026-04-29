@@ -9,17 +9,27 @@ function getConfig() {
     r2SecretAccessKey: requireProperty_(props, "R2_SECRET_ACCESS_KEY"),
     r2PublicBaseUrl: requireProperty_(props, "R2_PUBLIC_BASE_URL").replace(/\/$/, ""),
     r2GalleryJsonPath: props.getProperty("R2_GALLERY_JSON_PATH") || "site-data/gallery.json",
+    r2HomeJsonPath: props.getProperty("R2_HOME_JSON_PATH") || defaultSiblingJsonPath_(props.getProperty("R2_GALLERY_JSON_PATH") || "site-data/gallery.json", "home.json"),
+    r2SeriesJsonPrefix: ensureTrailingSlash_(props.getProperty("R2_SERIES_JSON_PREFIX") || defaultSiblingJsonPath_(props.getProperty("R2_GALLERY_JSON_PATH") || "site-data/gallery.json", "series/")),
     r2SyncManifestJsonPath: props.getProperty("R2_SYNC_MANIFEST_JSON_PATH") || defaultSyncManifestPath_(props.getProperty("R2_GALLERY_JSON_PATH") || "site-data/gallery.json"),
     lastSyncAt: props.getProperty("LAST_SYNC_AT") || "",
     syncManifestJson: props.getProperty("SYNC_MANIFEST_JSON") || "[]"
   };
 }
 
-function defaultSyncManifestPath_(galleryJsonPath) {
+function ensureTrailingSlash_(value) {
+  return String(value || "").replace(/\/?$/u, "/");
+}
+
+function defaultSiblingJsonPath_(galleryJsonPath, siblingName) {
   const normalized = String(galleryJsonPath || "site-data/gallery.json");
   const slashIndex = normalized.lastIndexOf("/");
   const prefix = slashIndex === -1 ? "" : normalized.slice(0, slashIndex + 1);
-  return prefix + "sync-manifest.json";
+  return prefix + siblingName;
+}
+
+function defaultSyncManifestPath_(galleryJsonPath) {
+  return defaultSiblingJsonPath_(galleryJsonPath, "sync-manifest.json");
 }
 
 function requireProperty_(props, key) {

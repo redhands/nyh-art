@@ -2,16 +2,15 @@
 
 이 사이트는 `Google Drive -> Apps Script -> Cloudflare R2 -> 홈페이지` 흐름으로 운영합니다.
 
-작가는 Google Drive에 작품 이미지와 같은 이름의 `.txt` 파일만 올리면 되고, Apps Script가 이를 읽어 R2의 이미지와 `gallery.json`을 갱신합니다. 홈페이지는 그 데이터를 기준으로 자동 반영됩니다.
+작가는 Google Drive에 작품 이미지와 같은 이름의 `.txt` 파일만 올리면 되고, Apps Script가 이를 읽어 R2의 이미지와 정적 JSON을 갱신합니다. 홈페이지는 그 데이터를 기준으로 자동 반영됩니다.
 
 ## 한눈에 보기
 
 1. 작가가 Google Drive의 시리즈 폴더에 이미지 업로드
 2. 같은 이름의 `.txt` 설명 파일 업로드
 3. Apps Script `runSyncNow`가 Drive 내용을 읽음
-4. 이미지와 `site-data/gallery.json`을 Cloudflare R2에 업로드
-5. Cloudflare Worker가 R2의 `gallery.json`을 페이지별 JSON API로 변환
-6. 사이트가 Worker API 데이터를 읽어 자동 반영
+4. 이미지와 `site-data/*.json`을 Cloudflare R2에 업로드
+5. 사이트가 정적 JSON 데이터를 읽어 자동 반영
 
 ## 현재 사이트 구조
 
@@ -23,13 +22,13 @@
 
 기본 루트 `/`는 브라우저 언어와 저장된 언어 설정을 보고 적절한 언어 경로로 이동합니다.
 
-작품 데이터는 페이지가 직접 R2 JSON을 읽지 않고 Worker API를 통해 읽습니다.
+작품 데이터는 Apps Script가 R2에 만들어 둔 정적 JSON을 읽습니다.
 
-- 홈: `/api/gallery/home.json`
-- 전체 갤러리: `/api/gallery/index.json`
-- 시리즈: `/api/gallery/series/<slug>.json`
+- 홈: `https://img.nyh-art.com/site-data/home.json`
+- 전체 갤러리: `https://img.nyh-art.com/site-data/gallery.json`
+- 시리즈: `https://img.nyh-art.com/site-data/series/<slug>.json`
 
-이전 호환 경로인 `/_data/...`도 Worker에서 처리하지만, 새 페이지는 `/api/gallery/...`를 기준으로 생성합니다.
+이전 호환 경로인 `/api/gallery/...`와 `/_data/...`는 Worker에서 당분간 유지합니다.
 
 ## 작가가 하는 일
 
@@ -169,22 +168,20 @@ Apps Script에서 `runSyncNow`를 실행하면 Drive 내용을 읽어서 R2에 �
   - 예: `https://img.nyh-art.com/ocean/2025-10-16.jpg`
 - 데이터 URL
   - `https://img.nyh-art.com/site-data/gallery.json`
+  - `https://img.nyh-art.com/site-data/home.json`
+  - `https://img.nyh-art.com/site-data/series/ocean.json`
 
 ## 사이트가 실제로 읽는 데이터
 
-원본 데이터는 아래 R2 URL입니다.
+데이터는 아래 R2 URL입니다.
 
 - `https://img.nyh-art.com/site-data/gallery.json`
-
-운영 페이지는 원본을 직접 fetch하지 않고 Cloudflare Worker가 만든 API를 읽습니다.
-
-- `/api/gallery/home.json`: 홈에 필요한 샘플 작품만 포함
-- `/api/gallery/index.json`: 전체 갤러리 데이터
-- `/api/gallery/series/<slug>.json`: 선택한 시리즈의 작품만 포함
+- `https://img.nyh-art.com/site-data/home.json`
+- `https://img.nyh-art.com/site-data/series/<slug>.json`
 
 빌드 시에는 원격 `gallery.json`을 로컬 [data/gallery.json](/Users/redhands/Devel/nyh-art/data/gallery.json)에 저장합니다. 원격 fetch가 실패하면 이 로컬 파일을 fallback으로 사용합니다.
 
-로컬 Worker 개발 서버에서는 원격 R2 대신 빌드 산출물의 `/__source/gallery.json` 스냅샷을 읽습니다. 운영 Worker에서는 항상 R2의 최신 `gallery.json`을 읽습니다.
+로컬 빌드도 확인용 `dist/site-data/*.json`을 생성하지만, 빌드된 페이지는 R2/CDN의 정적 JSON을 직접 읽습니다. Worker의 `/api/gallery/...` 경로는 호환용으로 남아 있습니다.
 
 ## 로컬 개발
 
@@ -203,9 +200,13 @@ npm run build
 
 ### 로컬 테스트
 
-현재 사이트는 Worker API가 필요하므로 정적 서버만으로는 제대로 확인할 수 없습니다. `python -m http.server`로 `dist/`를 띄우면 `/api/gallery/...`가 404가 납니다.
+현재 사이트는 정적 JSON을 읽으므로 `dist/` 정적 서버만으로도 확인할 수 있습니다.
 
-로컬에서는 Cloudflare Worker 개발 서버를 사용합니다.
+```bash
+python3 -m http.server 3000 --directory dist
+```
+
+Cloudflare Worker redirect와 호환 API까지 같이 확인하려면 Worker 개발 서버를 사용합니다.
 
 ```bash
 npx wrangler dev --local --ip 127.0.0.1 --port 3000
@@ -216,7 +217,7 @@ npx wrangler dev --local --ip 127.0.0.1 --port 3000
 - `http://127.0.0.1:3000/ko/`
 - `http://127.0.0.1:3000/en/gallery/`
 - `http://127.0.0.1:3000/ja/series/ocean/`
-- `http://127.0.0.1:3000/api/gallery/series/etc.json`
+- `https://img.nyh-art.com/site-data/series/etc.json`
 
 작품 txt를 바꾼 뒤 로컬에서 최신 내용을 확인하려면:
 
@@ -224,13 +225,13 @@ npx wrangler dev --local --ip 127.0.0.1 --port 3000
 2. `https://img.nyh-art.com/site-data/gallery.json`에서 변경 확인
 3. `curl -L 'https://img.nyh-art.com/site-data/gallery.json?_ts=...' -o data/gallery.json`
 4. `npm run build`
-5. `npx wrangler dev --local --ip 127.0.0.1 --port 3000`
+5. `python3 -m http.server 3000 --directory dist`
 
 ### CORS
 
-운영 페이지는 같은 도메인의 Worker API를 읽으므로 `gallery.json` API에는 브라우저 CORS가 직접 필요하지 않습니다. 이미지는 `https://img.nyh-art.com/...`에서 로드됩니다.
+운영 페이지는 정적 JSON과 이미지를 `https://img.nyh-art.com/...`에서 직접 읽습니다.
 
-R2 버킷 CORS는 이미지나 원본 JSON을 브라우저에서 직접 검사할 때 필요할 수 있습니다.
+R2 버킷 CORS는 `site-data/*.json`과 이미지가 사이트 도메인에서 읽히도록 허용되어야 합니다.
 
 ## 문제 생겼을 때 체크리스트
 
@@ -240,7 +241,7 @@ R2 버킷 CORS는 이미지나 원본 JSON을 브라우저에서 직접 검사�
 2. 같은 이름의 `.txt`가 있는지
 3. `runSyncNow` 실행이 성공했는지
 4. `https://img.nyh-art.com/site-data/gallery.json`이 열리는지
-5. `https://nyh-art.com/api/gallery/series/<slug>.json`에 작품이 있는지
+5. `https://img.nyh-art.com/site-data/series/<slug>.json`에 작품이 있는지
 6. 이미지 URL이 열리는지
 
 ### 다국어 제목이 안 바뀔 때
@@ -249,7 +250,7 @@ R2 버킷 CORS는 이미지나 원본 JSON을 브라우저에서 직접 검사�
 2. Apps Script `clasp push`를 했는지
 3. `runSyncNow`를 다시 실행했는지
 4. 원격 `gallery.json` 안에 `titleI18n`, `descriptionI18n` 등이 실제로 생겼는지
-5. `https://nyh-art.com/api/gallery/series/<slug>.json`에도 같은 값이 있는지
+5. `https://img.nyh-art.com/site-data/series/<slug>.json`에도 같은 값이 있는지
 
 ### 삭제가 반영되지 않을 때
 

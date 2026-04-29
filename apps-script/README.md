@@ -1,6 +1,6 @@
 # NYH Artwork Drive Sync for Apps Script
 
-Google Drive의 작품 폴더를 읽어 Cloudflare R2와 `gallery.json`을 갱신하는 Apps Script 초안입니다.
+Google Drive의 작품 폴더를 읽어 Cloudflare R2 이미지와 정적 JSON을 갱신하는 Apps Script 초안입니다.
 
 ## 파일 구성
 
@@ -23,6 +23,8 @@ Google Drive의 작품 폴더를 읽어 Cloudflare R2와 `gallery.json`을 갱�
 - `R2_SECRET_ACCESS_KEY`
 - `R2_PUBLIC_BASE_URL`
 - `R2_GALLERY_JSON_PATH`
+- `R2_HOME_JSON_PATH`
+- `R2_SERIES_JSON_PREFIX`
 - `R2_SYNC_MANIFEST_JSON_PATH`
 - `LAST_SYNC_AT`
 - `SYNC_MANIFEST_JSON` (이전 버전 fallback용)
@@ -30,6 +32,8 @@ Google Drive의 작품 폴더를 읽어 Cloudflare R2와 `gallery.json`을 갱�
 권장 기본값:
 
 - `R2_GALLERY_JSON_PATH`: `site-data/gallery.json`
+- `R2_HOME_JSON_PATH`: `site-data/home.json`
+- `R2_SERIES_JSON_PREFIX`: `site-data/series/`
 - `R2_SYNC_MANIFEST_JSON_PATH`: `site-data/sync-manifest.json`
 - `SYNC_MANIFEST_JSON`: `[]` (기존 Script Property manifest가 있다면 첫 전환 fallback으로만 사용)
 
@@ -127,28 +131,28 @@ A quiet scene of a jellyfish rising through a moonlit sea.
 - Drive 시리즈 폴더 로드
 - 시리즈 메타데이터 읽기
 - 작품 메타데이터 읽기
-- 변경 파일 업로드 / 미변경 파일 건너뜀
 - 변경된 이미지 업로드 / 미변경 파일 건너뜀
-- 갤러리 하나가 끝날 때마다 `gallery.json`과 manifest 중간 저장
+- 갤러리 하나가 끝날 때마다 정적 JSON과 manifest 중간 저장
 - R2 삭제
-- `gallery.json` 업로드
+- 정적 JSON 업로드
 - 마지막 요약 통계
 
 ## 출력
 
 - 이미지: `https://img.nyh-art.com/<gallery>/<filename>`
-- JSON: `site-data/gallery.json`
+- 전체 JSON: `site-data/gallery.json`
+- 홈 JSON: `site-data/home.json`
+- 시리즈 JSON: `site-data/series/<slug>.json`
 
 한글이나 공백이 들어간 파일명도 업로드/삭제/존재 확인 시 URL 인코딩해서 처리합니다.
 
-사이트는 이 원본 JSON을 직접 브라우저에서 읽지 않고 Cloudflare Worker API를 통해 읽습니다.
+사이트는 Apps Script가 만든 정적 JSON을 직접 읽습니다.
 
-- 원본: `https://img.nyh-art.com/site-data/gallery.json`
-- 홈: `https://nyh-art.com/api/gallery/home.json`
-- 전체 갤러리: `https://nyh-art.com/api/gallery/index.json`
-- 시리즈: `https://nyh-art.com/api/gallery/series/<slug>.json`
+- 전체: `https://img.nyh-art.com/site-data/gallery.json`
+- 홈: `https://img.nyh-art.com/site-data/home.json`
+- 시리즈: `https://img.nyh-art.com/site-data/series/<slug>.json`
 
-`.txt` 수정 후에는 `runSyncNow` 실행 결과가 먼저 원본 `gallery.json`에 반영되어야 하고, 이후 Worker API가 같은 값을 반환해야 정상입니다.
+`.txt` 수정 후에는 `runSyncNow` 실행 결과가 위 정적 JSON에 반영되어야 정상입니다.
 
 ## 참고
 

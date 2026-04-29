@@ -175,13 +175,15 @@ function runSync_() {
     deleteFileFromR2(entry.path, config);
   });
 
+  removeStaleSeriesJsonFiles_(previousGalleryMap, galleries, config);
+
   logInfo_("Uploading gallery JSON", {
     path: config.r2GalleryJsonPath,
     galleries: galleries.length
   });
 
   const payload = buildGalleryPayload(galleries);
-  uploadJsonToR2(config.r2GalleryJsonPath, payload, config);
+  uploadGalleryJsonFiles_(payload, config);
   setSyncState(new Date().toISOString(), currentManifest, config);
 
   Logger.log(JSON.stringify({
@@ -288,7 +290,7 @@ function persistProgress_(config, previousPayload, previousGalleryMap, processed
   const interimPayload = buildInterimPayload_(previousPayload, previousGalleryMap, processedGalleryMap);
   const interimManifest = buildInterimManifest_(currentManifest, previousManifest, processedGalleryMap);
 
-  uploadJsonToR2(config.r2GalleryJsonPath, interimPayload, config);
+  uploadGalleryJsonFiles_(interimPayload, config);
   setSyncState(new Date().toISOString(), interimManifest, config);
 
   logInfo_("Progress persisted", {
@@ -313,6 +315,35 @@ function buildInterimPayload_(previousPayload, previousGalleryMap, processedGall
   mergedGalleries.sort(compareGalleries_);
 
   return buildGalleryPayload(mergedGalleries);
+}
+
+function uploadGalleryJsonFiles_(payload, config) {
+  uploadJsonToR2(config.r2GalleryJsonPath, payload, config);
+  uploadJsonToR2(config.r2HomeJsonPath, buildHomeGalleryData(payload), config);
+
+  const galleries = Array.isArray(payload.galleries) ? payload.galleries : [];
+  galleries.forEach(function(gallery) {
+    uploadJsonToR2(
+      config.r2SeriesJsonPrefix + gallery.slug + ".json",
+      buildSeriesGalleryData(payload, gallery.slug),
+      config
+    );
+  });
+}
+
+function removeStaleSeriesJsonFiles_(previousGalleryMap, galleries, config) {
+  const currentGalleryMap = galleries.reduce(function(map, gallery) {
+    map[gallery.slug] = true;
+    return map;
+  }, {});
+
+  Object.keys(previousGalleryMap).forEach(function(slug) {
+    if (currentGalleryMap[slug]) {
+      return;
+    }
+
+    deleteFileFromR2(config.r2SeriesJsonPrefix + slug + ".json", config);
+  });
 }
 
 function buildInterimManifest_(currentManifest, previousManifest, processedGalleryMap) {

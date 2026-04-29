@@ -9,6 +9,7 @@ const rootDir = path.resolve(__dirname, "..");
 const distDir = path.join(rootDir, "dist");
 const siteBaseUrl = "https://nyh-art.com";
 const defaultGalleryDataUrl = "https://img.nyh-art.com/site-data/gallery.json";
+const staticDataBaseUrl = "https://img.nyh-art.com/site-data";
 const defaultOgImage = "https://img.nyh-art.com/ocean/2023-10-03-Cx7axmaOa1e.jpg";
 const supportedLocales = ["ko", "en", "ja", "zh"];
 const assetVersion = new Date().toISOString().replaceAll(/[-:.TZ]/g, "");
@@ -163,6 +164,18 @@ function getLocalizedSeriesPath(locale, slug) {
   return `${getLocalePathPrefix(locale)}/series/${slug}/`;
 }
 
+function getStaticHomeDataPath() {
+  return `${staticDataBaseUrl}/home.json`;
+}
+
+function getStaticGalleryDataPath() {
+  return `${staticDataBaseUrl}/gallery.json`;
+}
+
+function getStaticSeriesDataPath(slug) {
+  return `${staticDataBaseUrl}/series/${slug}.json`;
+}
+
 function assertValidGallerySlug(slug) {
   if (!/^[A-Za-z0-9][A-Za-z0-9_-]*$/u.test(String(slug || ""))) {
     throw new Error(`Invalid gallery slug: ${slug}`);
@@ -211,7 +224,7 @@ function buildHomePageHtml(template, locale, i18n) {
     html,
     /<body[\s\S]*?>/u,
     `<body
-    data-gallery-url="/api/gallery/home.json"
+    data-gallery-url="${escapeAttribute(getStaticHomeDataPath())}"
     data-home-url="${escapeAttribute(getLocalizedHomePath(locale))}"
     data-gallery-index-url="${escapeAttribute(getLocalizedGalleryPath(locale))}"
     data-series-base-url="${escapeAttribute(getLocalePathPrefix(locale) + "/series")}"
@@ -306,7 +319,7 @@ function buildGalleryPageHtml(template, locale, i18n, galleryData, gallery = nul
     html,
     /<body[\s\S]*?>/u,
     `<body
-    data-gallery-url="${escapeAttribute(gallery ? `/api/gallery/series/${gallery.slug}.json` : "/api/gallery/index.json")}"
+    data-gallery-url="${escapeAttribute(gallery ? getStaticSeriesDataPath(gallery.slug) : getStaticGalleryDataPath())}"
     data-home-url="${escapeAttribute(getLocalizedHomePath(locale))}"
     data-gallery-index-url="${escapeAttribute(getLocalizedGalleryPath(locale))}"
     data-series-base-url="${escapeAttribute(getLocalePathPrefix(locale) + "/series")}"
@@ -440,6 +453,7 @@ const galleryTemplate = await readFile(path.join(rootDir, "gallery.html"), "utf8
 await rm(distDir, { recursive: true, force: true });
 await mkdir(distDir, { recursive: true });
 await mkdir(path.join(distDir, "_data", "series"), { recursive: true });
+await mkdir(path.join(distDir, "site-data", "series"), { recursive: true });
 await mkdir(path.join(distDir, "__source"), { recursive: true });
 
 for (const file of filesToCopy) {
@@ -454,6 +468,8 @@ for (const directory of directoriesToCopy) {
 
 await writeFile(path.join(distDir, "_data", "gallery.json"), `${JSON.stringify(galleryData, null, 2)}\n`, "utf8");
 await writeFile(path.join(distDir, "_data", "home.json"), `${JSON.stringify(buildHomeGalleryData(galleryData), null, 2)}\n`, "utf8");
+await writeFile(path.join(distDir, "site-data", "gallery.json"), `${JSON.stringify(galleryData, null, 2)}\n`, "utf8");
+await writeFile(path.join(distDir, "site-data", "home.json"), `${JSON.stringify(buildHomeGalleryData(galleryData), null, 2)}\n`, "utf8");
 await writeFile(path.join(distDir, "__source", "gallery.json"), `${JSON.stringify(galleryData, null, 2)}\n`, "utf8");
 
 const jsFiles = await collectJsFiles(path.join(distDir, "js"));
@@ -509,6 +525,11 @@ for (const gallery of galleries) {
   await writeFile(path.join(seriesDir, "index.html"), seriesHtml, "utf8");
   await writeFile(
     path.join(distDir, "_data", "series", `${gallery.slug}.json`),
+    `${JSON.stringify(buildSeriesGalleryData(galleryData, gallery.slug), null, 2)}\n`,
+    "utf8"
+  );
+  await writeFile(
+    path.join(distDir, "site-data", "series", `${gallery.slug}.json`),
     `${JSON.stringify(buildSeriesGalleryData(galleryData, gallery.slug), null, 2)}\n`,
     "utf8"
   );
