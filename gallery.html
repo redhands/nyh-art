@@ -13,6 +13,76 @@
       name="description"
       content="흘러가는 순간을 그림으로 붙잡아 모아둔 NYH의 온라인 갤러리"
     />
+    <script>
+      (function() {
+        function getCookieValue(name) {
+          var cookieName = name + "=";
+          var parts = document.cookie.split(";");
+
+          for (var i = 0; i < parts.length; i += 1) {
+            var part = parts[i].trim();
+            if (part.indexOf(cookieName) === 0) {
+              return decodeURIComponent(part.slice(cookieName.length));
+            }
+          }
+
+          return "";
+        }
+
+        var pathname = window.location.pathname || "/";
+        var isLocalizedPath = /^\/(ko|en|ja|zh)(\/|$)/.test(pathname);
+        var match = pathname.match(/^\/series\/([^/]+)\/?$/);
+        var targetPath = "";
+        var savedLocale = getCookieValue("nyh-locale");
+
+        if (isLocalizedPath) return;
+
+        if (!savedLocale) {
+          try {
+            savedLocale = window.localStorage.getItem("nyh-locale") || "";
+          } catch (error) {}
+        }
+
+        var candidates = Array.isArray(window.navigator.languages) && window.navigator.languages.length
+          ? window.navigator.languages
+          : [window.navigator.language];
+        var locale = savedLocale || "ko";
+
+        if (!savedLocale) {
+          for (var index = 0; index < candidates.length; index += 1) {
+            var normalized = String(candidates[index] || "").toLowerCase();
+            if (normalized.indexOf("ja") === 0) {
+              locale = "ja";
+              break;
+            }
+            if (normalized.indexOf("zh") === 0) {
+              locale = "zh";
+              break;
+            }
+            if (normalized.indexOf("en") === 0) {
+              locale = "en";
+              break;
+            }
+            if (normalized.indexOf("ko") === 0) {
+              locale = "ko";
+              break;
+            }
+          }
+        }
+
+        if (pathname === "/" || pathname === "/index.html") {
+          targetPath = "/" + locale + "/";
+        } else if (pathname === "/gallery.html") {
+          targetPath = "/" + locale + "/gallery/";
+        } else if (match) {
+          targetPath = "/" + locale + "/series/" + encodeURIComponent(match[1]) + "/";
+        }
+
+        if (!targetPath) return;
+
+        window.location.replace(targetPath + window.location.search + window.location.hash);
+      })();
+    </script>
     <link rel="canonical" href="https://nyh-art.com/gallery.html" />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="ko_KR" />

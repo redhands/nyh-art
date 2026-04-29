@@ -524,7 +524,7 @@ export function updateGallerySummary() {
 
   if (elements.gallerySummary) {
     if (isHomePage) {
-      elements.gallerySummary.textContent = t("home.archive.summary", state.artworks.length);
+      elements.gallerySummary.textContent = t("home.archive.summary", state.totalArtworks || state.artworks.length);
     } else if (selectedGallery) {
       elements.gallerySummary.textContent = getGalleryDescription(selectedGallery);
     } else {

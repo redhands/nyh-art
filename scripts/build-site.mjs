@@ -32,6 +32,56 @@ const directoriesToCopy = [
   "js"
 ];
 
+function selectSampleArtworks(artworks, targetCount) {
+  if (!Array.isArray(artworks) || artworks.length <= targetCount) {
+    return Array.isArray(artworks) ? artworks : [];
+  }
+
+  const selected = [];
+  const usedIndices = new Set();
+
+  for (let slot = 0; slot < targetCount; slot += 1) {
+    const index = Math.round((slot * (artworks.length - 1)) / Math.max(1, targetCount - 1));
+    if (usedIndices.has(index)) continue;
+    usedIndices.add(index);
+    selected.push(artworks[index]);
+  }
+
+  return selected;
+}
+
+function buildHomeGalleryData(galleryData) {
+  const galleries = Array.isArray(galleryData.galleries) ? galleryData.galleries : [];
+
+  return {
+    generatedAt: galleryData.generatedAt,
+    total: galleryData.total,
+    galleries: galleries.map((gallery) => ({
+      ...gallery,
+      artworks: gallery.showInArchive === false
+        ? []
+        : selectSampleArtworks(gallery.artworks || [], gallery.thumbnailSize === "icon" ? 8 : 4)
+    }))
+  };
+}
+
+function buildSeriesGalleryData(galleryData, selectedSlug) {
+  const galleries = Array.isArray(galleryData.galleries) ? galleryData.galleries : [];
+
+  return {
+    generatedAt: galleryData.generatedAt,
+    total: galleryData.total,
+    galleries: galleries.map((gallery) => (
+      gallery.slug === selectedSlug
+        ? gallery
+        : {
+            ...gallery,
+            artworks: []
+          }
+    ))
+  };
+}
+
 function escapeHtml(value = "") {
   return String(value)
     .replaceAll("&", "&amp;")
@@ -155,7 +205,7 @@ function buildHomePageHtml(template, locale, i18n) {
     html,
     /<body[\s\S]*?>/u,
     `<body
-    data-gallery-url="${escapeAttribute(defaultGalleryDataUrl)}"
+    data-gallery-url="/site-data/home.json"
     data-home-url="${escapeAttribute(getLocalizedHomePath(locale))}"
     data-gallery-index-url="${escapeAttribute(getLocalizedGalleryPath(locale))}"
     data-series-base-url="${escapeAttribute(getLocalePathPrefix(locale) + "/series")}"
@@ -250,7 +300,7 @@ function buildGalleryPageHtml(template, locale, i18n, galleryData, gallery = nul
     html,
     /<body[\s\S]*?>/u,
     `<body
-    data-gallery-url="${escapeAttribute(defaultGalleryDataUrl)}"
+    data-gallery-url="${escapeAttribute(gallery ? `/site-data/series/${gallery.slug}.json` : "/site-data/gallery.json")}"
     data-home-url="${escapeAttribute(getLocalizedHomePath(locale))}"
     data-gallery-index-url="${escapeAttribute(getLocalizedGalleryPath(locale))}"
     data-series-base-url="${escapeAttribute(getLocalePathPrefix(locale) + "/series")}"
@@ -382,6 +432,7 @@ const galleryTemplate = await readFile(path.join(rootDir, "gallery.html"), "utf8
 
 await rm(distDir, { recursive: true, force: true });
 await mkdir(distDir, { recursive: true });
+await mkdir(path.join(distDir, "site-data", "series"), { recursive: true });
 
 for (const file of filesToCopy) {
   await cp(path.join(rootDir, file), path.join(distDir, file));
@@ -392,6 +443,9 @@ for (const directory of directoriesToCopy) {
     recursive: true
   });
 }
+
+await writeFile(path.join(distDir, "site-data", "gallery.json"), `${JSON.stringify(galleryData, null, 2)}\n`, "utf8");
+await writeFile(path.join(distDir, "site-data", "home.json"), `${JSON.stringify(buildHomeGalleryData(galleryData), null, 2)}\n`, "utf8");
 
 const jsFiles = await collectJsFiles(path.join(distDir, "js"));
 jsFiles.push(path.join(distDir, "script.js"));
@@ -444,6 +498,11 @@ for (const gallery of galleries) {
     .replace(/data-default-locale="ko"/u, 'data-default-locale="ko"')
     .replace(/data-page-kind="series"/u, 'data-page-kind="series"');
   await writeFile(path.join(seriesDir, "index.html"), seriesHtml, "utf8");
+  await writeFile(
+    path.join(distDir, "site-data", "series", `${gallery.slug}.json`),
+    `${JSON.stringify(buildSeriesGalleryData(galleryData, gallery.slug), null, 2)}\n`,
+    "utf8"
+  );
 }
 
 await writeFile(path.join(distDir, "sitemap.xml"), buildSitemapXml(galleries), "utf8");

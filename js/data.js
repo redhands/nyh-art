@@ -4,9 +4,15 @@ import { t } from "./i18n.js";
 import { getGalleryDataSourceUrl } from "./content.js";
 import { refreshView } from "./render.js";
 
-function hydrateGalleryState(galleries) {
+function hydrateGalleryState(payload) {
+  const galleries = normalizeGalleries(payload);
+  const totalArtworks = typeof payload?.total === "number"
+    ? payload.total
+    : galleries.reduce((sum, gallery) => sum + Number(gallery.total || (gallery.artworks || []).length || 0), 0);
+
   state.galleries = galleries;
   state.artworks = galleries.flatMap((gallery) => gallery.artworks || []);
+  state.totalArtworks = totalArtworks;
   refreshView();
 }
 
@@ -26,8 +32,7 @@ export async function loadGallery() {
     }
 
     const data = await response.json();
-    const galleries = normalizeGalleries(data);
-    hydrateGalleryState(galleries);
+    hydrateGalleryState(data);
   } catch (error) {
     console.error("갤러리 데이터를 불러오지 못했습니다.", error);
 

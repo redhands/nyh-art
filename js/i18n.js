@@ -4,13 +4,32 @@ const i18nData = window.__NYH_I18N__ || {};
 const translations = i18nData.translations || {};
 const localeLabels = i18nData.localeLabels || { ko: "한국어" };
 const supportedLocales = i18nData.supportedLocales || ["ko"];
+const localeCookieName = "nyh-locale";
 
 let currentLocale = getPreferredLocale();
 const mobileLocaleMediaQuery = window.matchMedia("(max-width: 720px)");
 
+function getSavedLocaleFromCookie() {
+  const cookieName = `${localeCookieName}=`;
+  const cookie = document.cookie
+    .split(";")
+    .map((part) => part.trim())
+    .find((part) => part.startsWith(cookieName));
+
+  if (!cookie) return "";
+
+  const savedLocale = decodeURIComponent(cookie.slice(cookieName.length));
+  return supportedLocales.includes(savedLocale) ? savedLocale : "";
+}
+
 function getSavedLocale() {
+  const savedLocaleFromCookie = getSavedLocaleFromCookie();
+  if (savedLocaleFromCookie) {
+    return savedLocaleFromCookie;
+  }
+
   try {
-    const savedLocale = window.localStorage.getItem("nyh-locale");
+    const savedLocale = window.localStorage.getItem(localeCookieName);
     if (savedLocale && supportedLocales.includes(savedLocale)) {
       return savedLocale;
     }
@@ -19,6 +38,16 @@ function getSavedLocale() {
   }
 
   return "";
+}
+
+function persistLocale(nextLocale) {
+  try {
+    window.localStorage.setItem(localeCookieName, nextLocale);
+  } catch {
+    // Ignore storage errors and continue with navigation.
+  }
+
+  document.cookie = `${localeCookieName}=${encodeURIComponent(nextLocale)}; path=/; max-age=31536000; samesite=lax`;
 }
 
 function getBrowserPreferredLocale() {
@@ -158,12 +187,7 @@ export function bindLocaleSwitcher() {
       const nextLocale = button.dataset.locale;
       if (!nextLocale || nextLocale === currentLocale) return;
 
-      try {
-        window.localStorage.setItem("nyh-locale", nextLocale);
-      } catch {
-        // Ignore storage errors and continue with navigation.
-      }
-
+      persistLocale(nextLocale);
       window.location.href = buildLocalePageUrl(nextLocale);
     });
   });
