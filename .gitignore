@@ -1,6 +1,8 @@
 .DS_Store
 artworks/.DS_Store
 dist/
+node_modules/
+*.swp
 # wrangler files
 .wrangler
 .dev.vars*

@@ -84,6 +84,11 @@ async function loadHomeContent() {
   return JSON.parse(source);
 }
 
+async function loadSearchKeywords() {
+  const source = await readFile(path.join(rootDir, "data", "search-keywords.json"), "utf8");
+  return JSON.parse(source);
+}
+
 function applyHomeContent(i18n, homeContent) {
   Object.entries(homeContent || {}).forEach(([locale, home]) => {
     if (!i18n.translations?.[locale]) return;
@@ -91,6 +96,13 @@ function applyHomeContent(i18n, homeContent) {
     const normalizedHome = normalizeHomeContent(home);
     const archiveSummaryTemplate = String(home.archive?.summary || "");
     const existingHome = i18n.translations[locale].home || {};
+    if (normalizedHome.hero?.title) {
+      i18n.translations[locale].brand = {
+        ...i18n.translations[locale].brand,
+        subtitle: normalizedHome.hero.title
+      };
+    }
+
     i18n.translations[locale].home = {
       ...existingHome,
       hero: {
@@ -174,6 +186,18 @@ async function writeGeneratedLocaleData(i18n) {
 
 function updateMetaTag(html, matcher, replacement) {
   return html.replace(matcher, replacement);
+}
+
+function updateKeywordsMeta(html, locale, searchKeywords) {
+  const keywords = Array.isArray(searchKeywords?.[locale])
+    ? searchKeywords[locale]
+    : searchKeywords?.ko || [];
+
+  return updateMetaTag(
+    html,
+    /<meta\s+name="keywords"[\s\S]*?\/>/u,
+    `<meta name="keywords" content="${escapeAttribute(keywords.join(", "))}" />`
+  );
 }
 
 function withAssetVersion(assetPath) {
@@ -367,6 +391,7 @@ function buildHomePageHtml(template, locale, i18n, galleryData) {
   let html = template;
   html = localizeStaticText(html, locale, i18n);
   html = updateMetaTag(html, /<html lang="[^"]*">/u, `<html lang="${escapeAttribute(locale)}">`);
+  html = updateKeywordsMeta(html, locale, searchKeywords);
   html = updateMetaTag(html, /<link rel="stylesheet" href="styles\.css" \/>/u, `<link rel="stylesheet" href="${withAssetVersion("/styles.css")}" />`);
   html = updateMetaTag(html, /<script type="module" src="\/?script\.js"><\/script>/u, `<script type="module" src="${withAssetVersion("/script.js")}"></script>`);
   html = updateMetaTag(html, /src="assets\/profile\.jpg"/gu, `src="${withAssetVersion("/assets/profile.jpg")}"`);
@@ -443,6 +468,7 @@ function buildGalleryPageHtml(template, locale, i18n, galleryData, gallery = nul
   let html = template;
   html = localizeStaticText(html, locale, i18n);
   html = updateMetaTag(html, /<html lang="[^"]*">/u, `<html lang="${escapeAttribute(locale)}">`);
+  html = updateKeywordsMeta(html, locale, searchKeywords);
   html = updateMetaTag(html, /<link rel="stylesheet" href="styles\.css" \/>/u, `<link rel="stylesheet" href="${withAssetVersion("/styles.css")}" />`);
   html = updateMetaTag(html, /<script type="module" src="\/?script\.js"><\/script>/u, `<script type="module" src="${withAssetVersion("/script.js")}"></script>`);
   html = updateMetaTag(html, /src="assets\/profile\.jpg"/gu, `src="${withAssetVersion("/assets/profile.jpg")}"`);
@@ -636,6 +662,7 @@ async function rewriteModuleSpecifiers(filePath) {
 
 const galleryData = await loadGalleryData();
 const i18nData = applyHomeContent(await loadI18nData(), await loadHomeContent());
+const searchKeywords = await loadSearchKeywords();
 const galleries = Array.isArray(galleryData.galleries) ? galleryData.galleries : [];
 galleries.forEach((gallery) => assertValidGallerySlug(gallery.slug));
 const indexTemplate = await readFile(path.join(rootDir, "index.html"), "utf8");
