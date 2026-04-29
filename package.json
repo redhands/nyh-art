@@ -2,6 +2,11 @@
   "name": "nyh-art",
   "private": true,
   "scripts": {
-    "build": "node scripts/build-site.mjs"
+    "build": "node scripts/build-site.mjs",
+    "check": "npm run build && node --check scripts/build-site.mjs && node --check src/worker.js",
+    "dev": "npm run build && python3 -m http.server 3000 --directory dist",
+    "dev:worker": "npm run build && wrangler dev --local --ip 127.0.0.1 --port 3000",
+    "deploy": "npm run build && wrangler deploy",
+    "apps:push": "cd apps-script && clasp push"
   }
 }

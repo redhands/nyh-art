@@ -140,8 +140,7 @@ showInArchive: true
 Apps Script 프로젝트 코드가 바뀌었으면 먼저 푸시합니다.
 
 ```bash
-cd /Users/redhands/Devel/nyh-art/apps-script
-clasp push
+npm run apps:push
 ```
 
 ### 2. Apps Script 실행
@@ -203,13 +202,13 @@ npm run build
 현재 사이트는 정적 JSON을 읽으므로 `dist/` 정적 서버만으로도 확인할 수 있습니다.
 
 ```bash
-python3 -m http.server 3000 --directory dist
+npm run dev
 ```
 
 Cloudflare Worker redirect와 호환 API까지 같이 확인하려면 Worker 개발 서버를 사용합니다.
 
 ```bash
-npx wrangler dev --local --ip 127.0.0.1 --port 3000
+npm run dev:worker
 ```
 
 예:
@@ -224,8 +223,16 @@ npx wrangler dev --local --ip 127.0.0.1 --port 3000
 1. Apps Script `runSyncNow` 실행
 2. `https://img.nyh-art.com/site-data/gallery.json`에서 변경 확인
 3. `curl -L 'https://img.nyh-art.com/site-data/gallery.json?_ts=...' -o data/gallery.json`
-4. `npm run build`
-5. `python3 -m http.server 3000 --directory dist`
+4. `npm run dev`
+
+### 검증 / 배포
+
+```bash
+npm run check
+npm run deploy
+```
+
+`npm run deploy`는 Cloudflare `CLOUDFLARE_API_TOKEN`이 설정된 환경에서만 동작합니다.
 
 ### CORS
 
