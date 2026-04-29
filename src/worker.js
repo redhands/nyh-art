@@ -142,17 +142,17 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
-    if (url.pathname === "/site-data/home.json") {
+    if (url.pathname === "/_data/home.json") {
       const galleryData = await fetchRemoteGalleryData();
       return jsonResponse(buildHomeGalleryData(galleryData));
     }
 
-    if (url.pathname === "/site-data/gallery.json") {
+    if (url.pathname === "/_data/gallery.json") {
       const galleryData = await fetchRemoteGalleryData();
       return jsonResponse(galleryData);
     }
 
-    const seriesDataMatch = url.pathname.match(/^\/site-data\/series\/([^/]+)\.json$/);
+    const seriesDataMatch = url.pathname.match(/^\/_data\/series\/([^/]+)\.json$/);
     if (seriesDataMatch) {
       const galleryData = await fetchRemoteGalleryData();
       return jsonResponse(buildSeriesGalleryData(galleryData, decodeURIComponent(seriesDataMatch[1])));
