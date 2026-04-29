@@ -75,22 +75,8 @@ function updateMetaTag(html, matcher, replacement) {
   return html.replace(matcher, replacement);
 }
 
-function serializeInlineJson(value) {
-  return JSON.stringify(value)
-    .replaceAll("</script", "<\\/script")
-    .replaceAll("<!--", "<\\!--");
-}
-
 function withAssetVersion(assetPath) {
   return `${assetPath}?v=${assetVersion}`;
-}
-
-function injectInlineGalleryData(html, galleryData) {
-  const inlineScript = `<script>window.__NYH_GALLERY__=${serializeInlineJson(galleryData)};</script>`;
-  return html.replace(
-    /<script src="(?:\/)?locale-data\.js"><\/script>/u,
-    `${inlineScript}\n    <script src="${withAssetVersion("/locale-data.js")}"></script>`
-  );
 }
 
 function getLocalizedValue(locale, valueMap, fallbackValue = "") {
@@ -146,7 +132,7 @@ function localizeStaticText(html, locale, i18n) {
   return staticReplacements.reduce((result, item) => result.replace(item.pattern, item.value), html);
 }
 
-function buildHomePageHtml(template, locale, i18n, galleryData) {
+function buildHomePageHtml(template, locale, i18n) {
   const translations = i18n.translations?.[locale] || {};
   const pageTitle = "NYH's Artwork";
   const pageDescription = translations.home?.hero?.body || "흘러가는 순간을 그림으로 붙잡아 모아둔 NYH의 온라인 갤러리";
@@ -154,7 +140,6 @@ function buildHomePageHtml(template, locale, i18n, galleryData) {
 
   let html = template;
   html = localizeStaticText(html, locale, i18n);
-  html = injectInlineGalleryData(html, galleryData);
   html = updateMetaTag(html, /<html lang="[^"]*">/u, `<html lang="${escapeAttribute(locale)}">`);
   html = updateMetaTag(html, /<link rel="stylesheet" href="styles\.css" \/>/u, `<link rel="stylesheet" href="${withAssetVersion("/styles.css")}" />`);
   html = updateMetaTag(html, /<script type="module" src="script\.js"><\/script>/u, `<script type="module" src="${withAssetVersion("/script.js")}"></script>`);
@@ -201,7 +186,6 @@ function buildGalleryPageHtml(template, locale, i18n, galleryData, gallery = nul
 
   let html = template;
   html = localizeStaticText(html, locale, i18n);
-  html = injectInlineGalleryData(html, galleryData);
   html = updateMetaTag(html, /<html lang="[^"]*">/u, `<html lang="${escapeAttribute(locale)}">`);
   html = updateMetaTag(html, /<link rel="stylesheet" href="styles\.css" \/>/u, `<link rel="stylesheet" href="${withAssetVersion("/styles.css")}" />`);
   html = updateMetaTag(html, /<script type="module" src="script\.js"><\/script>/u, `<script type="module" src="${withAssetVersion("/script.js")}"></script>`);
@@ -419,7 +403,7 @@ for (const locale of supportedLocales) {
   const localeRootDir = path.join(distDir, locale);
   const localeGalleryDir = path.join(localeRootDir, "gallery");
   await mkdir(localeGalleryDir, { recursive: true });
-  await writeFile(path.join(localeRootDir, "index.html"), buildHomePageHtml(indexTemplate, locale, i18nData, galleryData), "utf8");
+  await writeFile(path.join(localeRootDir, "index.html"), buildHomePageHtml(indexTemplate, locale, i18nData), "utf8");
   await writeFile(path.join(localeGalleryDir, "index.html"), buildGalleryPageHtml(galleryTemplate, locale, i18nData, galleryData), "utf8");
 
   for (const gallery of galleries) {
@@ -433,7 +417,7 @@ for (const locale of supportedLocales) {
   }
 }
 
-const rootHomeHtml = buildHomePageHtml(indexTemplate, "ko", i18nData, galleryData)
+const rootHomeHtml = buildHomePageHtml(indexTemplate, "ko", i18nData)
   .replace(/data-home-url="\/ko\/"/u, 'data-home-url="index.html"')
   .replace(/data-gallery-index-url="\/ko\/gallery\/"/u, 'data-gallery-index-url="gallery.html"')
   .replace(/data-series-base-url="\/ko\/series"/u, 'data-series-base-url="series"')

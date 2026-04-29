@@ -142,21 +142,30 @@ function writePuzzleCookie(slug, artworks) {
 function getPuzzleOrder(gallery) {
   if (!gallery?.artworks?.length) return [];
 
-  if (!puzzleOrders.has(gallery.slug)) {
+  const artworkMap = new Map(gallery.artworks.map((artwork) => [artwork.fileName, artwork]));
+  const currentOrder = puzzleOrders.get(gallery.slug) || [];
+  const validCurrentOrder = currentOrder
+    .map((artwork) => artworkMap.get(artwork.fileName))
+    .filter(Boolean);
+  const missingArtworks = gallery.artworks.filter(
+    (artwork) => !validCurrentOrder.find((orderedArtwork) => orderedArtwork.fileName === artwork.fileName)
+  );
+
+  if (!puzzleOrders.has(gallery.slug) || missingArtworks.length || validCurrentOrder.length !== gallery.artworks.length) {
     const savedFileNames = readPuzzleCookie(gallery.slug);
-    const artworkMap = new Map(gallery.artworks.map((artwork) => [artwork.fileName, artwork]));
     const savedOrder = savedFileNames
       .map((fileName) => artworkMap.get(fileName))
       .filter(Boolean);
-    const missingArtworks = gallery.artworks.filter(
-      (artwork) => !savedOrder.find((savedArtwork) => savedArtwork.fileName === artwork.fileName)
+    const baseOrder = savedOrder.length ? savedOrder : validCurrentOrder;
+    const nextMissingArtworks = gallery.artworks.filter(
+      (artwork) => !baseOrder.find((orderedArtwork) => orderedArtwork.fileName === artwork.fileName)
     );
-    const initialOrder = savedOrder.length
-      ? [...savedOrder, ...missingArtworks]
+    const nextOrder = baseOrder.length
+      ? [...baseOrder, ...nextMissingArtworks]
       : pickRandomArtworks(gallery.artworks.length, gallery.artworks);
 
-    puzzleOrders.set(gallery.slug, initialOrder);
-    writePuzzleCookie(gallery.slug, initialOrder);
+    puzzleOrders.set(gallery.slug, nextOrder);
+    writePuzzleCookie(gallery.slug, nextOrder);
   }
 
   return puzzleOrders.get(gallery.slug) || [];
