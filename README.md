@@ -10,17 +10,26 @@
 2. 같은 이름의 `.txt` 설명 파일 업로드
 3. Apps Script `runSyncNow`가 Drive 내용을 읽음
 4. 이미지와 `site-data/gallery.json`을 Cloudflare R2에 업로드
-5. 사이트가 R2 데이터를 읽어 자동 반영
+5. Cloudflare Worker가 R2의 `gallery.json`을 페이지별 JSON API로 변환
+6. 사이트가 Worker API 데이터를 읽어 자동 반영
 
 ## 현재 사이트 구조
 
-사이트는 정적 빌드 결과를 배포합니다.
+사이트는 정적 빌드 결과와 Cloudflare Worker를 함께 배포합니다.
 
 - 홈: `/ko/`, `/en/`, `/ja/`, `/zh/`
 - 갤러리: `/ko/gallery/`, `/en/gallery/`, `/ja/gallery/`, `/zh/gallery/`
 - 시리즈: `/ko/series/<slug>/`, `/en/series/<slug>/`, `/ja/series/<slug>/`, `/zh/series/<slug>/`
 
 기본 루트 `/`는 브라우저 언어와 저장된 언어 설정을 보고 적절한 언어 경로로 이동합니다.
+
+작품 데이터는 페이지가 직접 R2 JSON을 읽지 않고 Worker API를 통해 읽습니다.
+
+- 홈: `/api/gallery/home.json`
+- 전체 갤러리: `/api/gallery/index.json`
+- 시리즈: `/api/gallery/series/<slug>.json`
+
+이전 호환 경로인 `/_data/...`도 Worker에서 처리하지만, 새 페이지는 `/api/gallery/...`를 기준으로 생성합니다.
 
 ## 작가가 하는 일
 
@@ -163,16 +172,19 @@ Apps Script에서 `runSyncNow`를 실행하면 Drive 내용을 읽어서 R2에 �
 
 ## 사이트가 실제로 읽는 데이터
 
-사이트는 아래 URL을 기본 데이터 소스로 사용합니다.
+원본 데이터는 아래 R2 URL입니다.
 
 - `https://img.nyh-art.com/site-data/gallery.json`
 
-빌드된 페이지에는 초기 렌더링 속도를 위해 `gallery.json` 스냅샷이 HTML 안에 인라인으로 들어갑니다. 페이지는 이 데이터로 먼저 화면을 만들고, 이후 원격 `gallery.json`을 다시 읽어 더 최신 데이터가 있으면 한 번 더 갱신합니다.
+운영 페이지는 원본을 직접 fetch하지 않고 Cloudflare Worker가 만든 API를 읽습니다.
 
-즉:
+- `/api/gallery/home.json`: 홈에 필요한 샘플 작품만 포함
+- `/api/gallery/index.json`: 전체 갤러리 데이터
+- `/api/gallery/series/<slug>.json`: 선택한 시리즈의 작품만 포함
 
-- 첫 렌더는 빠르게
-- 최신 다국어 메타는 원격 데이터로 보강
+빌드 시에는 원격 `gallery.json`을 로컬 [data/gallery.json](/Users/redhands/Devel/nyh-art/data/gallery.json)에 저장합니다. 원격 fetch가 실패하면 이 로컬 파일을 fallback으로 사용합니다.
+
+로컬 Worker 개발 서버에서는 원격 R2 대신 빌드 산출물의 `/__source/gallery.json` 스냅샷을 읽습니다. 운영 Worker에서는 항상 R2의 최신 `gallery.json`을 읽습니다.
 
 ## 로컬 개발
 
@@ -191,23 +203,34 @@ npm run build
 
 ### 로컬 테스트
 
-정적 서버로 `dist/`를 서빙해서 확인합니다.
+현재 사이트는 Worker API가 필요하므로 정적 서버만으로는 제대로 확인할 수 없습니다. `python -m http.server`로 `dist/`를 띄우면 `/api/gallery/...`가 404가 납니다.
+
+로컬에서는 Cloudflare Worker 개발 서버를 사용합니다.
+
+```bash
+npx wrangler dev --local --ip 127.0.0.1 --port 3000
+```
 
 예:
 
-- `http://localhost:3000/ko/`
-- `http://localhost:3000/en/gallery/`
-- `http://localhost:3000/ja/series/ocean/`
+- `http://127.0.0.1:3000/ko/`
+- `http://127.0.0.1:3000/en/gallery/`
+- `http://127.0.0.1:3000/ja/series/ocean/`
+- `http://127.0.0.1:3000/api/gallery/series/etc.json`
+
+작품 txt를 바꾼 뒤 로컬에서 최신 내용을 확인하려면:
+
+1. Apps Script `runSyncNow` 실행
+2. `https://img.nyh-art.com/site-data/gallery.json`에서 변경 확인
+3. `curl -L 'https://img.nyh-art.com/site-data/gallery.json?_ts=...' -o data/gallery.json`
+4. `npm run build`
+5. `npx wrangler dev --local --ip 127.0.0.1 --port 3000`
 
 ### CORS
 
-로컬에서 원격 `gallery.json`을 직접 읽을 때는 R2 버킷 CORS 설정이 필요합니다.
+운영 페이지는 같은 도메인의 Worker API를 읽으므로 `gallery.json` API에는 브라우저 CORS가 직접 필요하지 않습니다. 이미지는 `https://img.nyh-art.com/...`에서 로드됩니다.
 
-허용 도메인 예:
-
-- `http://localhost:3000`
-- `https://nyh-art.com`
-- `https://www.nyh-art.com`
+R2 버킷 CORS는 이미지나 원본 JSON을 브라우저에서 직접 검사할 때 필요할 수 있습니다.
 
 ## 문제 생겼을 때 체크리스트
 
@@ -217,7 +240,8 @@ npm run build
 2. 같은 이름의 `.txt`가 있는지
 3. `runSyncNow` 실행이 성공했는지
 4. `https://img.nyh-art.com/site-data/gallery.json`이 열리는지
-5. 이미지 URL이 열리는지
+5. `https://nyh-art.com/api/gallery/series/<slug>.json`에 작품이 있는지
+6. 이미지 URL이 열리는지
 
 ### 다국어 제목이 안 바뀔 때
 
@@ -225,6 +249,7 @@ npm run build
 2. Apps Script `clasp push`를 했는지
 3. `runSyncNow`를 다시 실행했는지
 4. 원격 `gallery.json` 안에 `titleI18n`, `descriptionI18n` 등이 실제로 생겼는지
+5. `https://nyh-art.com/api/gallery/series/<slug>.json`에도 같은 값이 있는지
 
 ### 삭제가 반영되지 않을 때
 
@@ -255,6 +280,8 @@ npm run build
 ### 빌드 / 배포
 
 - [scripts/build-site.mjs](/Users/redhands/Devel/nyh-art/scripts/build-site.mjs)
+- [src/worker.js](/Users/redhands/Devel/nyh-art/src/worker.js)
+- [wrangler.jsonc](/Users/redhands/Devel/nyh-art/wrangler.jsonc)
 - [package.json](/Users/redhands/Devel/nyh-art/package.json)
 
 ### Apps Script
@@ -277,4 +304,4 @@ npm run build
 
 한 줄로 정리하면:
 
-`작가는 Drive에 이미지와 txt를 올리고, Apps Script가 R2와 gallery.json을 갱신하고, 사이트는 언어별 정적 페이지 + 원격 gallery.json으로 자동 반영됩니다.`
+`작가는 Drive에 이미지와 txt를 올리고, Apps Script가 R2와 gallery.json을 갱신하고, 사이트는 언어별 정적 페이지 + Worker API로 자동 반영됩니다.`

@@ -139,6 +139,15 @@ A quiet scene of a jellyfish rising through a moonlit sea.
 
 한글이나 공백이 들어간 파일명도 업로드/삭제/존재 확인 시 URL 인코딩해서 처리합니다.
 
+사이트는 이 원본 JSON을 직접 브라우저에서 읽지 않고 Cloudflare Worker API를 통해 읽습니다.
+
+- 원본: `https://img.nyh-art.com/site-data/gallery.json`
+- 홈: `https://nyh-art.com/api/gallery/home.json`
+- 전체 갤러리: `https://nyh-art.com/api/gallery/index.json`
+- 시리즈: `https://nyh-art.com/api/gallery/series/<slug>.json`
+
+`.txt` 수정 후에는 `runSyncNow` 실행 결과가 먼저 원본 `gallery.json`에 반영되어야 하고, 이후 Worker API가 같은 값을 반환해야 정상입니다.
+
 ## 참고
 
 이 초안은 현재 repo의 `same-name image + txt` 규칙과 맞춰져 있습니다.

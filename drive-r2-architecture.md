@@ -8,7 +8,7 @@
 
 - 작가의 입력 창구는 Google Drive 하나로 통일한다.
 - 서비스용 이미지는 Git이 아니라 Cloudflare R2에 저장한다.
-- 사이트는 R2 이미지 URL과 JSON 데이터만 읽는다.
+- 사이트는 R2 이미지 URL과 Cloudflare Worker가 만든 JSON API를 읽는다.
 - 작품 파일명과 설명 파일명은 항상 같은 basename으로 묶는다.
 
 예:
@@ -24,7 +24,8 @@
 4. 새 이미지/수정 이미지/삭제 이미지를 감지
 5. 이미지 파일을 Cloudflare R2에 업로드
 6. `.txt`와 `artworks.txt`를 읽어서 사이트용 JSON 생성
-7. 사이트는 JSON과 R2 URL을 사용해 렌더링
+7. Cloudflare Worker가 `gallery.json`을 페이지별 JSON API로 변환
+8. 사이트는 Worker API와 R2 이미지 URL을 사용해 렌더링
 
 ## 권장 Drive 폴더 구조
 
@@ -136,6 +137,20 @@ Apps Script가 최종적으로 아래 형태의 JSON을 생성하는 것을 권�
   ]
 }
 ```
+
+## 사이트 데이터 제공 경로
+
+원본 JSON은 R2에 저장합니다.
+
+- `https://img.nyh-art.com/site-data/gallery.json`
+
+운영 사이트는 이 원본을 직접 브라우저에서 읽지 않고 Cloudflare Worker API를 읽습니다.
+
+- 홈: `/api/gallery/home.json`
+- 전체 갤러리: `/api/gallery/index.json`
+- 시리즈: `/api/gallery/series/<slug>.json`
+
+Worker는 홈과 시리즈 페이지에 필요한 데이터만 골라 응답하므로 첫 화면 payload가 작고, 정적 파일과 동적 데이터 경로가 충돌하지 않습니다.
 
 ## 동기화 정책
 
