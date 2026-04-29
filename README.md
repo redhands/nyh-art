@@ -180,7 +180,7 @@ Apps Script에서 `runSyncNow`를 실행하면 Drive 내용을 읽어서 R2에 �
 
 빌드 시에는 원격 `gallery.json`을 로컬 [data/gallery.json](/Users/redhands/Devel/nyh-art/data/gallery.json)에 저장합니다. 원격 fetch가 실패하면 이 로컬 파일을 fallback으로 사용합니다.
 
-로컬 빌드도 확인용 `dist/site-data/*.json`을 생성하지만, 빌드된 페이지는 R2/CDN의 정적 JSON을 직접 읽습니다. Worker의 `/api/gallery/...` 경로는 호환용으로 남아 있습니다.
+빌드된 페이지는 R2/CDN의 정적 JSON을 직접 읽습니다. Worker의 `/api/gallery/...` 경로는 호환용으로 남아 있습니다.
 
 ## 로컬 개발
 
