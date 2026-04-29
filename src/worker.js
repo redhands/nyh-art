@@ -1,6 +1,5 @@
 const supportedLocales = ["ko", "en", "ja", "zh"];
 const localeCookieName = "nyh-locale";
-const staticDataBaseUrl = "https://img.nyh-art.com/site-data";
 
 function getCookieValue(cookieHeader, name) {
   if (!cookieHeader) return "";
@@ -65,31 +64,9 @@ function shouldBypassLocaleRedirect(pathname) {
   return /^\/(ko|en|ja|zh)(\/|$)/.test(pathname);
 }
 
-function buildStaticDataRedirect(pathname) {
-  if (pathname === "/api/gallery/home.json" || pathname === "/_data/home.json") {
-    return `${staticDataBaseUrl}/home.json`;
-  }
-
-  if (pathname === "/api/gallery/index.json" || pathname === "/_data/gallery.json") {
-    return `${staticDataBaseUrl}/gallery.json`;
-  }
-
-  const seriesMatch = pathname.match(/^\/(?:api\/gallery|_data)\/series\/([^/]+)\.json$/);
-  if (seriesMatch) {
-    return `${staticDataBaseUrl}/series/${encodeURIComponent(decodeURIComponent(seriesMatch[1]))}.json`;
-  }
-
-  return "";
-}
-
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
-    const staticDataUrl = buildStaticDataRedirect(url.pathname);
-
-    if (staticDataUrl) {
-      return Response.redirect(staticDataUrl, 302);
-    }
 
     if (!shouldBypassLocaleRedirect(url.pathname)) {
       const locale = getPreferredLocale(request);
