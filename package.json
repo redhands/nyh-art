@@ -3,7 +3,8 @@
   "private": true,
   "scripts": {
     "build": "node scripts/build-site.mjs",
-    "check": "npm run build && node --check scripts/build-site.mjs && node --check src/worker.js",
+    "check": "npm run build && node --check scripts/build-site.mjs && node --check src/worker.js && npm run check:apps",
+    "check:apps": "node -e \"const fs=require('fs'),vm=require('vm'); for (const name of fs.readdirSync('apps-script').filter((file)=>file.endsWith('.gs'))) { const file='apps-script/'+name; new vm.Script(fs.readFileSync(file,'utf8'),{filename:file}); }\"",
     "dev": "npm run build && python3 -m http.server 3000 --directory dist",
     "dev:worker": "npm run build && wrangler dev --local --ip 127.0.0.1 --port 3000",
     "deploy": "npm run build && wrangler deploy",
