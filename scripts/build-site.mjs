@@ -80,6 +80,26 @@ function withAssetVersion(assetPath) {
   return `${assetPath}?v=${assetVersion}`;
 }
 
+function setGalleryDataPreload(html, dataUrl) {
+  return updateMetaTag(
+    html,
+    /<link\s+rel="preload"\s+href="https:\/\/img\.nyh-art\.com\/site-data\/(?:home|gallery)\.json"\s+as="fetch"\s+crossorigin\s+\/>/u,
+    `<link
+      rel="preload"
+      href="${escapeAttribute(dataUrl)}"
+      as="fetch"
+      crossorigin
+    />`
+  );
+}
+
+function insertPreloadAfterGalleryData(html, preloadHtml) {
+  return html.replace(
+    /(<link\s+rel="preload"\s+href="https:\/\/img\.nyh-art\.com\/site-data\/(?:home|gallery)\.json"\s+as="fetch"\s+crossorigin\s+\/>)/u,
+    `$1\n    ${preloadHtml}`
+  );
+}
+
 function getLocalizedValue(locale, valueMap, fallbackValue = "") {
   if (valueMap && typeof valueMap === "object") {
     if (valueMap[locale]) {
@@ -92,6 +112,54 @@ function getLocalizedValue(locale, valueMap, fallbackValue = "") {
   }
 
   return fallbackValue || "";
+}
+
+function getTranslationValue(translations, key) {
+  return key.split(".").reduce((value, segment) => value?.[segment], translations);
+}
+
+function getArtworkTitle(locale, artwork) {
+  return getLocalizedValue(locale, artwork?.titleI18n, artwork?.title || "");
+}
+
+function getHomeHeroArtworks(galleryData) {
+  const galleries = Array.isArray(galleryData?.galleries) ? galleryData.galleries : [];
+  const artworks = galleries
+    .filter((gallery) => gallery.showInArchive !== false && gallery.thumbnailSize !== "icon")
+    .flatMap((gallery) => gallery.artworks || [])
+    .filter((artwork) => artwork.imageUrl);
+
+  return artworks.slice(0, 3);
+}
+
+function replaceHomeHeroImages(html, locale, galleryData) {
+  const heroArtworks = getHomeHeroArtworks(galleryData);
+  const heroTargets = [
+    { id: "hero-image-main", width: 640, height: 640 },
+    { id: "hero-image-top", width: 320, height: 320 },
+    { id: "hero-image-bottom", width: 320, height: 320 }
+  ];
+
+  return heroTargets.reduce((result, target, index) => {
+    const artwork = heroArtworks[index];
+    if (!artwork) {
+      return result;
+    }
+
+    const title = getArtworkTitle(locale, artwork) || "NYH artwork";
+    return result.replace(
+      new RegExp(`<img\\s+id="${target.id}"[\\s\\S]*?\\/>`, "u"),
+      `<img
+                id="${target.id}"
+                src="${escapeAttribute(artwork.imageUrl)}"
+                alt="${escapeAttribute(title)}"
+                width="${target.width}"
+                height="${target.height}"
+                ${index === 0 ? 'fetchpriority="high"' : 'loading="lazy"'}
+                decoding="async"
+              />`
+    );
+  }, html);
 }
 
 function getLocalePathPrefix(locale) {
@@ -148,13 +216,35 @@ function localizeStaticText(html, locale, i18n) {
     { pattern: /<button class="back-to-top" id="back-to-top" type="button" data-i18n="common\.backToTop">[\s\S]*?<\/button>/u, value: `<button class="back-to-top" id="back-to-top" type="button" data-i18n="common.backToTop">${escapeHtml(translations.common?.backToTop || "")}</button>` }
   ];
 
-  return staticReplacements.reduce((result, item) => result.replace(item.pattern, item.value), html);
+  const partiallyLocalizedHtml = staticReplacements.reduce((result, item) => result.replace(item.pattern, item.value), html);
+  const localizedHtml = partiallyLocalizedHtml.replace(
+    /<(?<tag>p|h1|h2|h3|li|a|button|span|small)(?<attrs>[^>]*\sdata-i18n="(?<key>[^"]+)"[^>]*)>[\s\S]*?<\/\k<tag>>/gu,
+    (match, ...args) => {
+      const { tag, attrs, key } = args.at(-1);
+      const value = getTranslationValue(translations, key);
+
+      if (typeof value !== "string") {
+        return match;
+      }
+
+      return `<${tag}${attrs}>${escapeHtml(value)}</${tag}>`;
+    }
+  );
+
+  return localizedHtml.replace(
+    /<span id="locale-current-label">[\s\S]*?<\/span>/u,
+    `<span id="locale-current-label">${escapeHtml(i18n.localeLabels?.[locale] || i18n.localeLabels?.ko || locale)}</span>`
+  );
 }
 
-function buildHomePageHtml(template, locale, i18n) {
+function buildHomePageHtml(template, locale, i18n, galleryData) {
   const translations = i18n.translations?.[locale] || {};
   const pageTitle = "NYH's Artwork";
   const pageDescription = translations.home?.hero?.body || "흘러가는 순간을 그림으로 붙잡아 모아둔 NYH의 온라인 갤러리";
+  const totalArtworks = typeof galleryData?.total === "number" ? galleryData.total : 0;
+  const archiveSummary = typeof translations.home?.archive?.summary === "function"
+    ? translations.home.archive.summary(totalArtworks)
+    : "";
   const pageUrl = `${siteBaseUrl}${getLocalizedHomePath(locale)}`;
 
   let html = template;
@@ -163,6 +253,15 @@ function buildHomePageHtml(template, locale, i18n) {
   html = updateMetaTag(html, /<link rel="stylesheet" href="styles\.css" \/>/u, `<link rel="stylesheet" href="${withAssetVersion("/styles.css")}" />`);
   html = updateMetaTag(html, /<script type="module" src="script\.js"><\/script>/u, `<script type="module" src="${withAssetVersion("/script.js")}"></script>`);
   html = updateMetaTag(html, /src="assets\/profile\.jpg"/gu, `src="${withAssetVersion("/assets/profile.jpg")}"`);
+  html = setGalleryDataPreload(html, getStaticHomeDataPath());
+  const mainHeroArtwork = getHomeHeroArtworks(galleryData)[0];
+  if (mainHeroArtwork?.imageUrl) {
+    html = insertPreloadAfterGalleryData(
+      html,
+      `<link rel="preload" href="${escapeAttribute(mainHeroArtwork.imageUrl)}" as="image" fetchpriority="high" />`
+    );
+  }
+  html = replaceHomeHeroImages(html, locale, galleryData);
   html = updateMetaTag(html, /href="gallery\.html"/gu, `href="${escapeAttribute(getLocalizedGalleryPath(locale))}"`);
   html = updateMetaTag(html, /<meta\s+name="description"[\s\S]*?\/>/u, `<meta name="description" content="${escapeAttribute(pageDescription)}" />`);
   html = updateMetaTag(html, /<link rel="canonical" href="[^"]*" \/>/u, `<link rel="canonical" href="${escapeAttribute(pageUrl)}" />`);
@@ -170,6 +269,13 @@ function buildHomePageHtml(template, locale, i18n) {
   html = updateMetaTag(html, /<meta property="og:url" content="[^"]*" \/>/u, `<meta property="og:url" content="${escapeAttribute(pageUrl)}" />`);
   html = updateMetaTag(html, /<meta\s+property="og:description"[\s\S]*?\/>/u, `<meta property="og:description" content="${escapeAttribute(pageDescription)}" />`);
   html = updateMetaTag(html, /<meta\s+name="twitter:description"[\s\S]*?\/>/u, `<meta name="twitter:description" content="${escapeAttribute(pageDescription)}" />`);
+  if (archiveSummary) {
+    html = updateMetaTag(
+      html,
+      /<p id="gallery-summary">[\s\S]*?<\/p>/u,
+      `<p id="gallery-summary">${escapeHtml(archiveSummary)}</p>`
+    );
+  }
   html = updateMetaTag(
     html,
     /<body[\s\S]*?>/u,
@@ -209,6 +315,7 @@ function buildGalleryPageHtml(template, locale, i18n, galleryData, gallery = nul
   html = updateMetaTag(html, /<link rel="stylesheet" href="styles\.css" \/>/u, `<link rel="stylesheet" href="${withAssetVersion("/styles.css")}" />`);
   html = updateMetaTag(html, /<script type="module" src="script\.js"><\/script>/u, `<script type="module" src="${withAssetVersion("/script.js")}"></script>`);
   html = updateMetaTag(html, /src="assets\/profile\.jpg"/gu, `src="${withAssetVersion("/assets/profile.jpg")}"`);
+  html = setGalleryDataPreload(html, gallery ? getStaticSeriesDataPath(gallery.slug) : getStaticGalleryDataPath());
 
   html = updateMetaTag(
     html,
@@ -386,6 +493,9 @@ async function rewriteModuleSpecifiers(filePath) {
   ).replace(
     /(import\s+["'](\.\/|\.\.\/)[^"']+\.js)(["'])/g,
     `$1?v=${assetVersion}$3`
+  ).replace(
+    /(import\(\s*["'](\.\/|\.\.\/)[^"']+\.js)(["']\s*\))/g,
+    `$1?v=${assetVersion}$3`
   );
 
   if (rewritten !== source) {
@@ -423,7 +533,7 @@ for (const locale of supportedLocales) {
   const localeRootDir = path.join(distDir, locale);
   const localeGalleryDir = path.join(localeRootDir, "gallery");
   await mkdir(localeGalleryDir, { recursive: true });
-  await writeFile(path.join(localeRootDir, "index.html"), buildHomePageHtml(indexTemplate, locale, i18nData), "utf8");
+  await writeFile(path.join(localeRootDir, "index.html"), buildHomePageHtml(indexTemplate, locale, i18nData, galleryData), "utf8");
   await writeFile(path.join(localeGalleryDir, "index.html"), buildGalleryPageHtml(galleryTemplate, locale, i18nData, galleryData), "utf8");
 
   for (const gallery of galleries) {
@@ -437,7 +547,7 @@ for (const locale of supportedLocales) {
   }
 }
 
-const rootHomeHtml = buildHomePageHtml(indexTemplate, "ko", i18nData)
+const rootHomeHtml = buildHomePageHtml(indexTemplate, "ko", i18nData, galleryData)
   .replace(/data-home-url="\/ko\/"/u, 'data-home-url="index.html"')
   .replace(/data-gallery-index-url="\/ko\/gallery\/"/u, 'data-gallery-index-url="gallery.html"')
   .replace(/data-series-base-url="\/ko\/series"/u, 'data-series-base-url="series"')

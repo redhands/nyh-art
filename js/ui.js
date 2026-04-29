@@ -1,20 +1,27 @@
 import { elements } from "./dom.js";
-import { state } from "./store.js";
 import { t } from "./i18n.js";
-import {
-  getArtworkDescription,
-  getArtworkImageUrl,
-  getThumbnailSizeClass,
-  getArtworkTitle,
-  hasArtworkTitle
-} from "./content.js";
 
 let revealObserver;
 let revealListenersBound = false;
+let contentHelpersPromise;
 
-export function openLightboxForArtwork(artwork) {
+function loadContentHelpers() {
+  if (!contentHelpersPromise) {
+    contentHelpersPromise = import("./content.js");
+  }
+
+  return contentHelpersPromise;
+}
+
+export async function openLightboxForArtwork(artwork) {
   if (!artwork) return;
 
+  const {
+    getArtworkImageUrl,
+    getThumbnailSizeClass,
+    getArtworkTitle,
+    hasArtworkTitle
+  } = await loadContentHelpers();
   const showTitle = hasArtworkTitle(artwork);
   const artworkTitle = getArtworkTitle(artwork);
   const isCompactArtwork = getThumbnailSizeClass(artwork) === "thumbnail-size-icon";

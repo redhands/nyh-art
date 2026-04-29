@@ -307,11 +307,18 @@ export function refreshVisibleState() {
 export function renderHeroImages() {
   if (!elements.heroImageMain || !elements.heroImageTop || !elements.heroImageBottom) return;
 
+  const targets = [elements.heroImageMain, elements.heroImageTop, elements.heroImageBottom];
+  const hasServerRenderedHeroImages = targets.every((target) => target.currentSrc || target.src)
+    && targets.some((target) => (target.currentSrc || target.src).includes("img.nyh-art.com/"));
+
+  if (hasServerRenderedHeroImages) {
+    return;
+  }
+
   const heroCandidates = state.artworks.filter(
     (artwork) => getThumbnailSizeClass(artwork) !== "thumbnail-size-icon"
   );
   const selected = pickRandomArtworks(3, heroCandidates.length ? heroCandidates : state.artworks);
-  const targets = [elements.heroImageMain, elements.heroImageTop, elements.heroImageBottom];
 
   selected.forEach((artwork, index) => {
     const target = targets[index];
@@ -553,7 +560,7 @@ export function updateGallerySummary() {
     } else if (selectedGallery) {
       elements.gallerySummary.textContent = getGalleryDescription(selectedGallery);
     } else {
-      elements.gallerySummary.textContent = "";
+      elements.gallerySummary.textContent = t("gallery.rootSummary");
     }
   }
 }

@@ -21,7 +21,7 @@ function normalizeGalleries(data) {
 }
 
 export async function loadGallery() {
-  if (elements.gallerySummary) {
+  if (elements.gallerySummary && !elements.gallerySummary.textContent.trim()) {
     elements.gallerySummary.textContent = t("gallery.loading");
   }
 
