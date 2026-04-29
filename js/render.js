@@ -21,23 +21,24 @@ const puzzleOrders = new Map();
 let masonryResizeBound = false;
 const PUZZLE_COOKIE_PREFIX = "nyh-puzzle-order-";
 
-function getArtworkThumbnailMarkup(artwork, eager = false) {
+function createArtworkThumbnail(artwork, eager = false) {
   const loadingMode = eager ? "eager" : "lazy";
   const fetchPriority = eager ? "high" : "auto";
   const thumbnailSizeClass = getThumbnailSizeClass(artwork);
   const artworkTitle = getArtworkTitle(artwork) || t("common.untitledArtwork");
 
-  return `
-    <div class="thumbnail-frame ${thumbnailSizeClass}">
-      <img
-        src="${getArtworkImageUrl(artwork)}"
-        alt="${artworkTitle}"
-        loading="${loadingMode}"
-        fetchpriority="${fetchPriority}"
-        decoding="async"
-      />
-    </div>
-  `;
+  const frame = document.createElement("div");
+  frame.className = `thumbnail-frame ${thumbnailSizeClass}`;
+
+  const image = document.createElement("img");
+  image.src = getArtworkImageUrl(artwork);
+  image.alt = artworkTitle;
+  image.loading = loadingMode;
+  image.setAttribute("fetchpriority", fetchPriority);
+  image.decoding = "async";
+
+  frame.appendChild(image);
+  return frame;
 }
 
 function shouldPrioritizeGalleryImage(index, thumbnailSizeClass) {
@@ -101,7 +102,7 @@ function createGalleryCard(artwork, index, options = {}) {
   card.className = `gallery-card reveal ${thumbnailSizeClass}${featured ? " thumbnail-featured" : ""}`;
   card.type = "button";
   card.setAttribute("aria-label", `${artworkTitle || t("common.untitledArtwork")} ${t("common.viewArtwork")}`);
-  card.innerHTML = getArtworkThumbnailMarkup(artwork, eager);
+  card.appendChild(createArtworkThumbnail(artwork, eager));
   if (!disableLightbox) {
     card.addEventListener("click", () => openLightboxForArtwork(artwork));
   }
@@ -179,9 +180,63 @@ function createArchivePreviewCard(artwork, options = {}) {
   card.className = `archive-preview-card reveal ${thumbnailSizeClass}${featured ? " thumbnail-featured" : ""}`;
   card.type = "button";
   card.setAttribute("aria-label", `${artworkTitle || t("common.untitledArtwork")} ${t("common.viewArtwork")}`);
-  card.innerHTML = getArtworkThumbnailMarkup(artwork, true);
+  card.appendChild(createArtworkThumbnail(artwork, true));
   card.addEventListener("click", () => openLightboxForArtwork(artwork));
   return card;
+}
+
+function createSeriesFilterLink(item) {
+  const link = document.createElement("a");
+  link.className = `series-filter-link${item.active ? " is-active" : ""}`;
+  link.href = item.href;
+  link.textContent = item.label;
+  return link;
+}
+
+function createArchiveEntryLink(href, label, isPrimary = false) {
+  const link = document.createElement("a");
+  link.className = `archive-entry-link${isPrimary ? " archive-entry-link-primary" : ""}`;
+  link.href = href;
+
+  const icon = document.createElement("span");
+  icon.className = "archive-entry-icon";
+  icon.setAttribute("aria-hidden", "true");
+  icon.textContent = "+";
+
+  const text = document.createElement("span");
+  text.textContent = label;
+
+  link.append(icon, text);
+  return link;
+}
+
+function createGalleryGroupHeader(gallery, galleryTitle, galleryDescription) {
+  const header = document.createElement("div");
+  header.className = "gallery-group-header";
+
+  const copy = document.createElement("div");
+
+  const eyebrow = document.createElement("p");
+  eyebrow.className = "eyebrow";
+  eyebrow.textContent = t("gallery.seriesEyebrow");
+
+  const title = document.createElement("h3");
+  title.textContent = galleryTitle;
+
+  copy.append(eyebrow, title);
+
+  if (galleryDescription) {
+    const description = document.createElement("p");
+    description.textContent = galleryDescription;
+    copy.appendChild(description);
+  }
+
+  header.appendChild(copy);
+
+  const grid = document.createElement("div");
+  grid.className = `gallery-grid${gallery.thumbnailSize === "icon" ? " gallery-grid-icon" : ""}`;
+
+  return { header, grid };
 }
 
 function layoutMasonryItem(grid, item) {
@@ -284,36 +339,20 @@ export function renderSeriesFilter() {
     }))
   ];
 
-  elements.seriesFilter.innerHTML = items
-    .map(
-      (item) => `
-        <a class="series-filter-link${item.active ? " is-active" : ""}" href="${item.href}">
-          ${item.label}
-        </a>
-      `
-    )
-    .join("");
+  elements.seriesFilter.replaceChildren(...items.map(createSeriesFilterLink));
 }
 
 export function renderArchiveEntryLinks() {
   if (!elements.archiveEntryLinks || !state.galleries.length) return;
 
   const items = [
-    `
-      <a class="archive-entry-link archive-entry-link-primary" href="${getGalleryIndexUrl()}">
-        <span class="archive-entry-icon" aria-hidden="true">+</span>
-        <span>${t("common.wholeGallery")}</span>
-      </a>
-    `,
-    ...state.galleries.map((gallery) => `
-      <a class="archive-entry-link" href="${getSeriesPageUrl(gallery.slug)}">
-        <span class="archive-entry-icon" aria-hidden="true">+</span>
-        <span>${getGalleryTitle(gallery)}</span>
-      </a>
-    `)
+    createArchiveEntryLink(getGalleryIndexUrl(), t("common.wholeGallery"), true),
+    ...state.galleries.map((gallery) => (
+      createArchiveEntryLink(getSeriesPageUrl(gallery.slug), getGalleryTitle(gallery))
+    ))
   ];
 
-  elements.archiveEntryLinks.innerHTML = items.join("");
+  elements.archiveEntryLinks.replaceChildren(...items);
 }
 
 export function renderArchivePreview() {
@@ -360,22 +399,8 @@ export function renderGallery() {
     const galleryTitle = getGalleryTitle(gallery);
     const galleryDescription = getGalleryDescription(gallery);
 
-    const description = galleryDescription
-      ? `<p>${galleryDescription}</p>`
-      : "";
-
-    section.innerHTML = `
-      <div class="gallery-group-header">
-        <div>
-          <p class="eyebrow">${t("gallery.seriesEyebrow")}</p>
-          <h3>${galleryTitle}</h3>
-          ${description}
-        </div>
-      </div>
-      <div class="gallery-grid ${gallery.thumbnailSize === "icon" ? "gallery-grid-icon" : ""}"></div>
-    `;
-
-    const grid = section.querySelector(".gallery-grid");
+    const { header, grid } = createGalleryGroupHeader(gallery, galleryTitle, galleryDescription);
+    section.append(header, grid);
     const displayedArtworks =
       gallery.thumbnailSize === "icon"
         ? getPuzzleOrder(gallery)

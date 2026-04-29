@@ -23,13 +23,15 @@ Google Drive의 작품 폴더를 읽어 Cloudflare R2와 `gallery.json`을 갱�
 - `R2_SECRET_ACCESS_KEY`
 - `R2_PUBLIC_BASE_URL`
 - `R2_GALLERY_JSON_PATH`
+- `R2_SYNC_MANIFEST_JSON_PATH`
 - `LAST_SYNC_AT`
-- `SYNC_MANIFEST_JSON`
+- `SYNC_MANIFEST_JSON` (이전 버전 fallback용)
 
 권장 기본값:
 
 - `R2_GALLERY_JSON_PATH`: `site-data/gallery.json`
-- `SYNC_MANIFEST_JSON`: `[]`
+- `R2_SYNC_MANIFEST_JSON_PATH`: `site-data/sync-manifest.json`
+- `SYNC_MANIFEST_JSON`: `[]` (기존 Script Property manifest가 있다면 첫 전환 fallback으로만 사용)
 
 ## Drive 구조
 
@@ -126,7 +128,7 @@ A quiet scene of a jellyfish rising through a moonlit sea.
 - 시리즈 메타데이터 읽기
 - 작품 메타데이터 읽기
 - 변경 파일 업로드 / 미변경 파일 건너뜀
-- manifest에는 없지만 R2에 이미 있는 파일 재사용
+- 변경된 이미지 업로드 / 미변경 파일 건너뜀
 - 갤러리 하나가 끝날 때마다 `gallery.json`과 manifest 중간 저장
 - R2 삭제
 - `gallery.json` 업로드

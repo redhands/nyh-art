@@ -11,7 +11,7 @@ function listGalleryFolders(rootFolderId) {
 
     folders.push({
       id: folder.getId(),
-      name: folder.getName(),
+      name: validateGallerySlug_(folder.getName()),
       folder: folder
     });
   }
@@ -26,6 +26,16 @@ function listGalleryFolders(rootFolderId) {
   });
 
   return folders;
+}
+
+function validateGallerySlug_(slug) {
+  const normalized = String(slug || "").trim();
+
+  if (!/^[A-Za-z0-9][A-Za-z0-9_-]*$/u.test(normalized)) {
+    throw new Error("Invalid gallery folder name for URL/path slug: " + normalized);
+  }
+
+  return normalized;
 }
 
 function readTextFileFromFolder(folder, fileName) {

@@ -163,6 +163,12 @@ function getLocalizedSeriesPath(locale, slug) {
   return `${getLocalePathPrefix(locale)}/series/${slug}/`;
 }
 
+function assertValidGallerySlug(slug) {
+  if (!/^[A-Za-z0-9][A-Za-z0-9_-]*$/u.test(String(slug || ""))) {
+    throw new Error(`Invalid gallery slug: ${slug}`);
+  }
+}
+
 function localizeStaticText(html, locale, i18n) {
   const translations = i18n.translations?.[locale] || {};
 
@@ -427,6 +433,7 @@ async function rewriteModuleSpecifiers(filePath) {
 const galleryData = await loadGalleryData();
 const i18nData = await loadI18nData();
 const galleries = Array.isArray(galleryData.galleries) ? galleryData.galleries : [];
+galleries.forEach((gallery) => assertValidGallerySlug(gallery.slug));
 const indexTemplate = await readFile(path.join(rootDir, "index.html"), "utf8");
 const galleryTemplate = await readFile(path.join(rootDir, "gallery.html"), "utf8");
 

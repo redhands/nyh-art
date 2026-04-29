@@ -204,5 +204,9 @@ export function bindLocaleSwitcher() {
   });
 
   syncLocaleMenuVisibility();
-  mobileLocaleMediaQuery.addEventListener("change", syncLocaleMenuVisibility);
+  if (typeof mobileLocaleMediaQuery.addEventListener === "function") {
+    mobileLocaleMediaQuery.addEventListener("change", syncLocaleMenuVisibility);
+  } else if (typeof mobileLocaleMediaQuery.addListener === "function") {
+    mobileLocaleMediaQuery.addListener(syncLocaleMenuVisibility);
+  }
 }

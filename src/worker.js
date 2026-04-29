@@ -161,7 +161,12 @@ async function loadGalleryData(request, env) {
     return fetchGallerySnapshotFromAssets(request, env);
   }
 
-  return fetchRemoteGalleryData();
+  try {
+    return await fetchRemoteGalleryData();
+  } catch (error) {
+    console.warn("Falling back to packaged gallery snapshot", error);
+    return fetchGallerySnapshotFromAssets(request, env);
+  }
 }
 
 function jsonResponse(payload) {

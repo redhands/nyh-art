@@ -1,4 +1,10 @@
 function runSyncNow() {
+  return withSyncLock_(function() {
+    return runSyncWithRetries_();
+  });
+}
+
+function runSyncWithRetries_() {
   const maxAttempts = 3;
   const retryDelayMs = 2000;
   let lastError = null;
@@ -9,7 +15,7 @@ function runSyncNow() {
         attempt: attempt,
         maxAttempts: maxAttempts
       });
-      return runSync();
+      return runSync_();
     } catch (error) {
       lastError = error;
 
@@ -34,13 +40,33 @@ function runSyncNow() {
 }
 
 function runSync() {
+  return withSyncLock_(function() {
+    return runSync_();
+  });
+}
+
+function withSyncLock_(callback) {
+  const lock = LockService.getScriptLock();
+
+  if (!lock.tryLock(5000)) {
+    throw new Error("Sync is already running. Skipping overlapping execution.");
+  }
+
+  try {
+    return callback();
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+function runSync_() {
   logInfo_("Sync started");
 
   const config = getConfig();
   const previousPayload = fetchJsonFromR2(config.r2GalleryJsonPath, config) || { galleries: [] };
   const previousArtworkMap = buildPreviousArtworkMap_(previousPayload);
   const previousGalleryMap = buildPreviousGalleryMap_(previousPayload);
-  const previousManifest = normalizeManifest_(JSON.parse(config.syncManifestJson || "[]"));
+  const previousManifest = normalizeManifest_(loadSyncManifest(config));
   const previousManifestMap = buildManifestMap_(previousManifest);
   const galleries = [];
   const processedGalleryMap = {};
@@ -49,7 +75,6 @@ function runSync() {
   let uploadedAssets = 0;
   let skippedAssets = 0;
   let reusedMetadataAssets = 0;
-  let reusedExistingR2Assets = 0;
 
   logInfo_("Sync configuration ready", {
     galleryJsonPath: config.r2GalleryJsonPath,
@@ -89,18 +114,10 @@ function runSync() {
         : config.r2PublicBaseUrl + "/" + objectPath;
 
       if (imageChanged) {
-        if (!previousEntry && objectExistsInR2(objectPath, config)) {
-          reusedExistingR2Assets += 1;
-          skippedAssets += 1;
-          logInfo_("Existing R2 object found, skipping re-upload", {
-            path: objectPath
-          });
-        } else {
-          const contentType = pair.imageMimeType || guessContentType_(imageName);
-          const imageBlob = pair.imageFile.getBlob();
-          imageUrl = uploadFileToR2(objectPath, imageBlob, contentType, config);
-          uploadedAssets += 1;
-        }
+        const contentType = pair.imageMimeType || guessContentType_(imageName);
+        const imageBlob = pair.imageFile.getBlob();
+        imageUrl = uploadFileToR2(objectPath, imageBlob, contentType, config);
+        uploadedAssets += 1;
       } else {
         skippedAssets += 1;
         logInfo_("Artwork unchanged, skipping upload", {
@@ -165,7 +182,7 @@ function runSync() {
 
   const payload = buildGalleryPayload(galleries);
   uploadJsonToR2(config.r2GalleryJsonPath, payload, config);
-  setSyncState(new Date().toISOString(), currentManifest);
+  setSyncState(new Date().toISOString(), currentManifest, config);
 
   Logger.log(JSON.stringify({
     galleries: galleries.length,
@@ -173,7 +190,6 @@ function runSync() {
     uploadedAssets: uploadedAssets,
     skippedAssets: skippedAssets,
     reusedMetadataAssets: reusedMetadataAssets,
-    reusedExistingR2Assets: reusedExistingR2Assets,
     removedAssets: removedAssets,
     galleryJsonPath: config.r2GalleryJsonPath
   }, null, 2));
@@ -184,7 +200,6 @@ function runSync() {
     uploadedAssets: uploadedAssets,
     skippedAssets: skippedAssets,
     reusedMetadataAssets: reusedMetadataAssets,
-    reusedExistingR2Assets: reusedExistingR2Assets,
     removedAssets: removedAssets
   });
 
@@ -274,7 +289,7 @@ function persistProgress_(config, previousPayload, previousGalleryMap, processed
   const interimManifest = buildInterimManifest_(currentManifest, previousManifest, processedGalleryMap);
 
   uploadJsonToR2(config.r2GalleryJsonPath, interimPayload, config);
-  setSyncState(new Date().toISOString(), interimManifest);
+  setSyncState(new Date().toISOString(), interimManifest, config);
 
   logInfo_("Progress persisted", {
     galleries: interimPayload.galleries.length,
@@ -332,7 +347,8 @@ function hasArtworkImageChanged_(previousEntry, currentEntry) {
   return (
     previousEntry.path !== currentEntry.path ||
     previousEntry.imageFileId !== currentEntry.imageFileId ||
-    previousEntry.imageSize !== currentEntry.imageSize
+    previousEntry.imageSize !== currentEntry.imageSize ||
+    previousEntry.imageUpdatedAt !== currentEntry.imageUpdatedAt
   );
 }
 
