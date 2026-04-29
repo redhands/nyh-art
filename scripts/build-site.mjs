@@ -205,7 +205,7 @@ function buildHomePageHtml(template, locale, i18n) {
     html,
     /<body[\s\S]*?>/u,
     `<body
-    data-gallery-url="/_data/home.json"
+    data-gallery-url="/api/gallery/home.json"
     data-home-url="${escapeAttribute(getLocalizedHomePath(locale))}"
     data-gallery-index-url="${escapeAttribute(getLocalizedGalleryPath(locale))}"
     data-series-base-url="${escapeAttribute(getLocalePathPrefix(locale) + "/series")}"
@@ -300,7 +300,7 @@ function buildGalleryPageHtml(template, locale, i18n, galleryData, gallery = nul
     html,
     /<body[\s\S]*?>/u,
     `<body
-    data-gallery-url="${escapeAttribute(gallery ? `/_data/series/${gallery.slug}.json` : "/_data/gallery.json")}"
+    data-gallery-url="${escapeAttribute(gallery ? `/api/gallery/series/${gallery.slug}.json` : "/api/gallery/index.json")}"
     data-home-url="${escapeAttribute(getLocalizedHomePath(locale))}"
     data-gallery-index-url="${escapeAttribute(getLocalizedGalleryPath(locale))}"
     data-series-base-url="${escapeAttribute(getLocalePathPrefix(locale) + "/series")}"
@@ -433,6 +433,7 @@ const galleryTemplate = await readFile(path.join(rootDir, "gallery.html"), "utf8
 await rm(distDir, { recursive: true, force: true });
 await mkdir(distDir, { recursive: true });
 await mkdir(path.join(distDir, "_data", "series"), { recursive: true });
+await mkdir(path.join(distDir, "__source"), { recursive: true });
 
 for (const file of filesToCopy) {
   await cp(path.join(rootDir, file), path.join(distDir, file));
@@ -446,6 +447,7 @@ for (const directory of directoriesToCopy) {
 
 await writeFile(path.join(distDir, "_data", "gallery.json"), `${JSON.stringify(galleryData, null, 2)}\n`, "utf8");
 await writeFile(path.join(distDir, "_data", "home.json"), `${JSON.stringify(buildHomeGalleryData(galleryData), null, 2)}\n`, "utf8");
+await writeFile(path.join(distDir, "__source", "gallery.json"), `${JSON.stringify(galleryData, null, 2)}\n`, "utf8");
 
 const jsFiles = await collectJsFiles(path.join(distDir, "js"));
 jsFiles.push(path.join(distDir, "script.js"));

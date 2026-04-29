@@ -1,6 +1,7 @@
 const supportedLocales = ["ko", "en", "ja", "zh"];
 const localeCookieName = "nyh-locale";
 const remoteGalleryDataUrl = "https://img.nyh-art.com/site-data/gallery.json";
+const localGallerySnapshotPath = "/__source/gallery.json";
 
 function getCookieValue(cookieHeader, name) {
   if (!cookieHeader) return "";
@@ -115,10 +116,35 @@ function buildSeriesGalleryData(galleryData, selectedSlug) {
   };
 }
 
+function shouldUseLocalGallerySnapshot(requestUrl) {
+  const hostname = requestUrl.hostname.toLowerCase();
+  return hostname === "localhost" || hostname === "127.0.0.1";
+}
+
+async function fetchGallerySnapshotFromAssets(request, env) {
+  const snapshotUrl = new URL(localGallerySnapshotPath, request.url);
+  const response = await env.ASSETS.fetch(new Request(snapshotUrl.toString(), request));
+
+  if (!response.ok) {
+    throw new Error(`Failed to load local gallery snapshot: HTTP ${response.status}`);
+  }
+
+  return response.json();
+}
+
 async function fetchRemoteGalleryData() {
-  const response = await fetch(remoteGalleryDataUrl, {
+  const requestUrl = new URL(remoteGalleryDataUrl);
+  requestUrl.searchParams.set("_ts", String(Date.now()));
+
+  const response = await fetch(requestUrl.toString(), {
     headers: {
-      Accept: "application/json"
+      Accept: "application/json",
+      "Cache-Control": "no-cache",
+      Pragma: "no-cache"
+    },
+    cf: {
+      cacheTtl: 0,
+      cacheEverything: false
     }
   });
 
@@ -129,11 +155,20 @@ async function fetchRemoteGalleryData() {
   return response.json();
 }
 
+async function loadGalleryData(request, env) {
+  const requestUrl = new URL(request.url);
+  if (shouldUseLocalGallerySnapshot(requestUrl)) {
+    return fetchGallerySnapshotFromAssets(request, env);
+  }
+
+  return fetchRemoteGalleryData();
+}
+
 function jsonResponse(payload) {
   return new Response(`${JSON.stringify(payload)}\n`, {
     headers: {
       "content-type": "application/json; charset=utf-8",
-      "cache-control": "public, max-age=0, must-revalidate"
+      "cache-control": "no-store"
     }
   });
 }
@@ -142,19 +177,19 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
-    if (url.pathname === "/_data/home.json") {
-      const galleryData = await fetchRemoteGalleryData();
+    if (url.pathname === "/api/gallery/home.json" || url.pathname === "/_data/home.json") {
+      const galleryData = await loadGalleryData(request, env);
       return jsonResponse(buildHomeGalleryData(galleryData));
     }
 
-    if (url.pathname === "/_data/gallery.json") {
-      const galleryData = await fetchRemoteGalleryData();
+    if (url.pathname === "/api/gallery/index.json" || url.pathname === "/_data/gallery.json") {
+      const galleryData = await loadGalleryData(request, env);
       return jsonResponse(galleryData);
     }
 
-    const seriesDataMatch = url.pathname.match(/^\/_data\/series\/([^/]+)\.json$/);
+    const seriesDataMatch = url.pathname.match(/^\/(?:api\/gallery|_data)\/series\/([^/]+)\.json$/);
     if (seriesDataMatch) {
-      const galleryData = await fetchRemoteGalleryData();
+      const galleryData = await loadGalleryData(request, env);
       return jsonResponse(buildSeriesGalleryData(galleryData, decodeURIComponent(seriesDataMatch[1])));
     }
 

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-29T12:30:54.818Z",
+  "generatedAt": "2026-04-29T13:00:59.217Z",
   "total": 111,
   "galleries": [
     {
@@ -1413,9 +1413,9 @@
           "imagePath": "etc/07_2022_어떤기다림1_1.jpg",
           "imageUrl": "https://img.nyh-art.com/etc/07_2022_%EC%96%B4%EB%96%A4%EA%B8%B0%EB%8B%A4%EB%A6%BC1_1.jpg",
           "folder": "etc",
-          "title": "어떤 기다림 1",
+          "title": "어떤 기다림 1_2",
           "titleI18n": {
-            "ko": "어떤 기다림 1",
+            "ko": "어떤 기다림 1_2",
             "en": "A Certain Waiting 1",
             "ja": "ある待ち 1",
             "zh": "某種等待 1"
