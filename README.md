@@ -104,6 +104,53 @@ showInArchive: true
 
 ## 다국어 텍스트 규칙
 
+## 홈 화면 문구 편집
+
+홈의 소개, 작가 소개, 작품 세계 문구는 [data/home-content.json](/Users/redhands/Devel/nyh-art/data/home-content.json)에서 수정합니다.
+
+- `hero`: 첫 화면 소개
+- `archive`: 홈의 작품 모음 소개
+- `about`: 작가 소개
+- `notes`: 작품 세계
+
+`ko`, `en`, `ja`, `zh` 언어별로 같은 구조를 유지하면 됩니다. `archive.summary` 안의 `{count}`는 빌드할 때 현재 작품 수로 자동 치환됩니다.
+
+`hero.tags`도 배열입니다. 항목을 추가하거나 지우면 첫 화면 태그 개수도 함께 바뀝니다.
+
+```json
+"hero": {
+  "eyebrow": "NYH의 감성 갤러리",
+  "title": "꿈결 조각 모음",
+  "body": "홈 소개 문장",
+  "tags": ["바다", "꿈", "별빛", "위로"]
+}
+```
+
+`notes.items`는 배열입니다. 항목을 추가하거나 지우면 작품 세계 카드 개수도 함께 바뀝니다.
+
+```json
+"notes": {
+  "eyebrow": "작품 세계",
+  "title": "작품을 이루는 장면들",
+  "items": [
+    {
+      "title": "바다",
+      "body": "바다에 대한 설명"
+    },
+    {
+      "title": "별빛",
+      "body": "별빛에 대한 설명"
+    }
+  ]
+}
+```
+
+수정 후에는 아래 명령으로 빌드 결과를 확인합니다.
+
+```bash
+npm run check
+```
+
 ### 작품 파일 (`파일명.txt`)
 
 지원 키 예시:

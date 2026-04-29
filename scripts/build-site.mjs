@@ -72,6 +72,80 @@ async function loadI18nData() {
   return context.window.__NYH_I18N__ || { translations: {} };
 }
 
+async function loadHomeContent() {
+  const source = await readFile(path.join(rootDir, "data", "home-content.json"), "utf8");
+  return JSON.parse(source);
+}
+
+function applyHomeContent(i18n, homeContent) {
+  Object.entries(homeContent || {}).forEach(([locale, home]) => {
+    if (!i18n.translations?.[locale]) return;
+
+    const archiveSummaryTemplate = String(home.archive?.summary || "");
+    const existingHome = i18n.translations[locale].home || {};
+    i18n.translations[locale].home = {
+      ...existingHome,
+      hero: {
+        ...existingHome.hero,
+        ...home.hero
+      },
+      about: {
+        ...existingHome.about,
+        ...home.about
+      },
+      notes: {
+        ...existingHome.notes,
+        ...home.notes
+      },
+      archive: {
+        ...existingHome.archive,
+        ...home.archive,
+        summary: new Function(
+          "count",
+          `return ${JSON.stringify(archiveSummaryTemplate)}.replaceAll("{count}", count);`
+        )
+      }
+    };
+  });
+
+  return i18n;
+}
+
+function serializeJsValue(value, indent = 0) {
+  if (typeof value === "function") {
+    return value.toString();
+  }
+
+  if (Array.isArray(value)) {
+    if (!value.length) return "[]";
+
+    const nextIndent = indent + 2;
+    const padding = " ".repeat(indent);
+    const childPadding = " ".repeat(nextIndent);
+    return `[\n${value.map((item) => `${childPadding}${serializeJsValue(item, nextIndent)}`).join(",\n")}\n${padding}]`;
+  }
+
+  if (value && typeof value === "object") {
+    const entries = Object.entries(value);
+    if (!entries.length) return "{}";
+
+    const nextIndent = indent + 2;
+    const padding = " ".repeat(indent);
+    const childPadding = " ".repeat(nextIndent);
+    return `{\n${entries.map(([key, item]) => `${childPadding}${JSON.stringify(key)}: ${serializeJsValue(item, nextIndent)}`).join(",\n")}\n${padding}}`;
+  }
+
+  return JSON.stringify(value);
+}
+
+async function writeGeneratedLocaleData(i18n) {
+  await writeFile(
+    path.join(distDir, "locale-data.js"),
+    `window.__NYH_I18N__ = ${serializeJsValue(i18n, 0)};\n`,
+    "utf8"
+  );
+}
+
 function updateMetaTag(html, matcher, replacement) {
   return html.replace(matcher, replacement);
 }
@@ -160,6 +234,23 @@ function replaceHomeHeroImages(html, locale, galleryData) {
               />`
     );
   }, html);
+}
+
+function renderHomeNoteItems(items = []) {
+  return items
+    .filter((item) => item?.title || item?.body)
+    .map((item) => `            <article class="note-card reveal">
+              <h3>${escapeHtml(item.title || "")}</h3>
+              <p>${escapeHtml(item.body || "")}</p>
+            </article>`)
+    .join("\n");
+}
+
+function renderHomeHeroTags(tags = []) {
+  return tags
+    .filter(Boolean)
+    .map((tag) => `              <li>${escapeHtml(tag)}</li>`)
+    .join("\n");
 }
 
 function getLocalePathPrefix(locale) {
@@ -274,6 +365,20 @@ function buildHomePageHtml(template, locale, i18n, galleryData) {
       html,
       /<p id="gallery-summary">[\s\S]*?<\/p>/u,
       `<p id="gallery-summary">${escapeHtml(archiveSummary)}</p>`
+    );
+  }
+  if (Array.isArray(translations.home?.hero?.tags)) {
+    html = updateMetaTag(
+      html,
+      /<ul class="hero-notes" aria-label="[^"]*">[\s\S]*?<\/ul>/u,
+      `<ul class="hero-notes" aria-label="${escapeAttribute(translations.home?.archive?.eyebrow || "Gallery keywords")}">\n${renderHomeHeroTags(translations.home.hero.tags)}\n            </ul>`
+    );
+  }
+  if (Array.isArray(translations.home?.notes?.items)) {
+    html = updateMetaTag(
+      html,
+      /<div class="note-grid">[\s\S]*?<\/div>\s*<\/section>/u,
+      `<div class="note-grid">\n${renderHomeNoteItems(translations.home.notes.items)}\n          </div>\n        </section>`
     );
   }
   html = updateMetaTag(
@@ -504,7 +609,7 @@ async function rewriteModuleSpecifiers(filePath) {
 }
 
 const galleryData = await loadGalleryData();
-const i18nData = await loadI18nData();
+const i18nData = applyHomeContent(await loadI18nData(), await loadHomeContent());
 const galleries = Array.isArray(galleryData.galleries) ? galleryData.galleries : [];
 galleries.forEach((gallery) => assertValidGallerySlug(gallery.slug));
 const indexTemplate = await readFile(path.join(rootDir, "index.html"), "utf8");
@@ -522,6 +627,8 @@ for (const directory of directoriesToCopy) {
     recursive: true
   });
 }
+
+await writeGeneratedLocaleData(i18nData);
 
 const jsFiles = await collectJsFiles(path.join(distDir, "js"));
 jsFiles.push(path.join(distDir, "script.js"));

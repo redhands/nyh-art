@@ -1,0 +1,150 @@
+{
+  "ko": {
+    "hero": {
+      "eyebrow": "NYH의 감성 갤러리",
+      "title": "꿈결 조각 모음",
+      "body": "이 곳은 바다, 해파리, 돌고래와 별빛 같은 상징을 따라 마음의 풍경을 그려내는 온라인 전시 공간입니다. 화면 안을 천천히 흐르는 장면들을 따라가다 보면, 작가가 지나온 시간과 감정의 결을 함께 마주하게 됩니다.",
+      "tags": ["바다", "꿈", "별빛", "위로"]
+    },
+    "archive": {
+      "eyebrow": "갤러리",
+      "title": "작품 모음",
+      "summary": "현재 등록된 {count}점의 작품 중 화면 안에 오래 머무는 장면들을 랜덤으로 소개합니다. 카드를 누르면 작품을 크게 볼 수 있고, 전체 갤러리는 바로가기 버튼으로 이동할 수 있습니다."
+    },
+    "about": {
+      "eyebrow": "작가 소개",
+      "title": "흘러가는 순간을 그림으로 붙잡아 모으는 마음",
+      "body1": "세상 모든 것은 멈추지 않고 그저 흘러갑니다. 붙잡을 수 없는 시간의 무심함 속에서 꿈을 꾸는 찰나의 순간들을 흘려보내지 않고, 그림의 형태로 잡아 모아 기록해봅니다.",
+      "body2": "꿈결 같은 이미지의 조각모음들을 통해 그림을 보시는 분들도 마음 한 켠에 간직한 꿈을 떠올리고, 작품 속에서 작은 위로와 환기를 얻으시기를 소망합니다."
+    },
+    "notes": {
+      "eyebrow": "작품 세계",
+      "title": "작품을 이루는 장면들",
+      "items": [
+        {
+          "title": "바다",
+          "body": "바다는 작가에게 주어진 환경이자 모든 장면을 감싸는 커다란 배경입니다. 화면 안의 존재들은 그 흐름 속을 천천히 지나가며, 삶의 시간과 마음의 결을 함께 품고 있습니다."
+        },
+        {
+          "title": "해파리",
+          "body": "해파리는 유연한 마음의 상징입니다. 물결을 거스르기보다 흐름에 몸을 맡기며 움직이는 모습은, 흔들리면서도 다시 나아가는 마음의 형태를 닮아 있습니다."
+        },
+        {
+          "title": "돌고래",
+          "body": "돌고래는 무한한 애정을 상징합니다. 화면 속에서 인물을 감싸고 함께 머무는 존재로 나타나며, 따뜻한 위로와 다정한 관계의 감각을 조용히 전합니다."
+        }
+      ]
+    }
+  },
+  "zh": {
+    "hero": {
+      "eyebrow": "NYH 的感性畫廊",
+      "title": "夢境碎片集",
+      "body": "這裡是一處沿著海、水母、海豚與星光等象徵描繪心靈風景的線上展覽空間。沿著畫面中緩緩流動的場景前行，也會遇見藝術家走過的時間與情感紋理。",
+      "tags": ["海", "夢", "星光", "慰藉"]
+    },
+    "archive": {
+      "eyebrow": "畫廊",
+      "title": "作品集合",
+      "summary": "這裡會從目前收錄的 {count} 件作品中隨機展示一些久久停留在心中的片段。點擊卡片可以放大觀看，也可以透過下方連結進入完整畫廊。"
+    },
+    "about": {
+      "eyebrow": "作家介紹",
+      "title": "把流逝的瞬間收集成繪畫的心",
+      "body1": "世上的一切都不會停下，只是不斷流逝。在無法抓住的時間冷靜流動之中，我不願讓那些如夢般短暫的瞬間就這樣流走，而是把它們收攏並以繪畫的形式記錄下來。",
+      "body2": "希望這些如夢般的圖像碎片，也能讓觀者想起自己心底珍藏的夢想，並從作品之中獲得一點點慰藉與換氣般的清新感。"
+    },
+    "notes": {
+      "eyebrow": "作品世界",
+      "title": "構成作品的場景",
+      "items": [
+        {
+          "title": "海",
+          "body": "海既是藝術家被賦予的環境，也是包圍所有場景的巨大背景。畫面中的存在沿著這股流動緩慢前行，同時承載著時間與情感的紋理。"
+        },
+        {
+          "title": "水母",
+          "body": "水母象徵柔軟而有彈性的內心。它不逆流而行，而是順著水流漂動，那姿態就像一顆雖會搖晃卻仍繼續前行的心。"
+        },
+        {
+          "title": "海豚",
+          "body": "海豚象徵無限的愛意。它在畫面中作為包圍並陪伴人物的存在出現，靜靜傳遞著溫暖、安慰與溫柔的關係感。"
+        }
+      ]
+    }
+  },
+  "en": {
+    "hero": {
+      "eyebrow": "NYH's Poetic Gallery",
+      "title": "Dreamlike Fragments",
+      "body": "This is an online exhibition space that paints emotional landscapes through symbols such as the sea, jellyfish, dolphins, and starlight. As you follow the scenes drifting slowly across the screen, you encounter the artist's passing time and emotional textures.",
+      "tags": ["Sea", "Dream", "Starlight", "Comfort"]
+    },
+    "archive": {
+      "eyebrow": "Gallery",
+      "title": "Collection of Works",
+      "summary": "A rotating selection from the current {count} works is shown here first. Tap a card to view it larger, or move into the full gallery through the links below."
+    },
+    "about": {
+      "eyebrow": "About",
+      "title": "Gathering fleeting moments into paintings",
+      "body1": "Everything in the world keeps flowing without pause. Within the indifference of time that cannot be held, these brief moments of dreaming are gathered and recorded in the form of paintings instead of being allowed to slip away.",
+      "body2": "Through these dreamlike fragments of imagery, I hope viewers also remember the dreams they keep within and find a small sense of comfort and renewal in the works."
+    },
+    "notes": {
+      "eyebrow": "World of the Works",
+      "title": "Scenes That Shape the Works",
+      "items": [
+        {
+          "title": "Sea",
+          "body": "The sea is both the environment given to the artist and the broad setting that embraces every scene. The beings within it move slowly through its currents, carrying the textures of time and feeling."
+        },
+        {
+          "title": "Jellyfish",
+          "body": "The jellyfish symbolizes a flexible heart. Moving with the current rather than resisting it, it resembles a mind that trembles yet continues forward."
+        },
+        {
+          "title": "Dolphin",
+          "body": "The dolphin symbolizes boundless affection. Appearing as a presence that surrounds and stays beside the figure, it quietly conveys warmth, comfort, and tenderness."
+        }
+      ]
+    }
+  },
+  "ja": {
+    "hero": {
+      "eyebrow": "NYHの感性ギャラリー",
+      "title": "夢のかけら集め",
+      "body": "ここは海、クラゲ、イルカ、星明かりのような象徴をたどりながら、心の風景を描いていくオンライン展示空間です。画面の中をゆっくり流れていく場面を追っていくと、作家が通り過ぎてきた時間と感情の結び目に出会えます。",
+      "tags": ["海", "夢", "星明かり", "慰め"]
+    },
+    "archive": {
+      "eyebrow": "ギャラリー",
+      "title": "作品コレクション",
+      "summary": "現在登録されている{count}点の作品の中から、長く心に残る場面をランダムに紹介しています。カードを押すと大きく表示され、下のリンクから全体ギャラリーにも進めます。"
+    },
+    "about": {
+      "eyebrow": "作家紹介",
+      "title": "流れていく瞬間を絵として集める心",
+      "body1": "世の中のすべては止まらずにただ流れていきます。つかまえることのできない時間の無情さの中で、夢を見る刹那の瞬間を流してしまわず、絵という形で集めて記録しています。",
+      "body2": "夢のようなイメージのかけらを通して、ご覧になる方々も心の片隅にしまっている夢を思い出し、作品の中で小さな慰めと換気のような感覚を得ていただけたらと願っています。"
+    },
+    "notes": {
+      "eyebrow": "作品世界",
+      "title": "作品を形づくる場面",
+      "items": [
+        {
+          "title": "海",
+          "body": "海は作家に与えられた環境であり、すべての場面を抱きしめる大きな背景です。画面の中の存在たちはその流れの中をゆっくりと進み、時間と感情の質感をともに抱えています。"
+        },
+        {
+          "title": "クラゲ",
+          "body": "クラゲはしなやかな心の象徴です。流れに逆らうのではなく身を任せて進む姿は、揺れながらもまた前へ進む心のかたちに似ています。"
+        },
+        {
+          "title": "イルカ",
+          "body": "イルカは尽きることのない愛情を象徴します。人物を包み込み、ともに留まる存在として現れ、温かな慰めとやさしい関係の感覚を静かに伝えます。"
+        }
+      ]
+    }
+  }
+}
