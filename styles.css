@@ -1022,6 +1022,10 @@ html[lang="zh"] .gallery-group-header p {
   max-width: 46rem;
 }
 
+.about-copy p {
+  white-space: pre-line;
+}
+
 .note-card {
   border-radius: var(--radius-xl);
   padding: 1.5rem;

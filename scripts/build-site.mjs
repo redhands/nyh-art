@@ -45,6 +45,13 @@ function escapeAttribute(value = "") {
   return escapeHtml(value).replaceAll("'", "&#39;");
 }
 
+function renderInlineMarkdown(value = "") {
+  return escapeHtml(value).replace(
+    /\*\*([^*\n][\s\S]*?[^*\n]|\S)\*\*/gu,
+    "<strong>$1</strong>"
+  );
+}
+
 async function loadGalleryData() {
   const localDataPath = path.join(rootDir, "data", "gallery.json");
 
@@ -81,25 +88,26 @@ function applyHomeContent(i18n, homeContent) {
   Object.entries(homeContent || {}).forEach(([locale, home]) => {
     if (!i18n.translations?.[locale]) return;
 
+    const normalizedHome = normalizeHomeContent(home);
     const archiveSummaryTemplate = String(home.archive?.summary || "");
     const existingHome = i18n.translations[locale].home || {};
     i18n.translations[locale].home = {
       ...existingHome,
       hero: {
         ...existingHome.hero,
-        ...home.hero
+        ...normalizedHome.hero
       },
       about: {
         ...existingHome.about,
-        ...home.about
+        ...normalizedHome.about
       },
       notes: {
         ...existingHome.notes,
-        ...home.notes
+        ...normalizedHome.notes
       },
       archive: {
         ...existingHome.archive,
-        ...home.archive,
+        ...normalizedHome.archive,
         summary: new Function(
           "count",
           `return ${JSON.stringify(archiveSummaryTemplate)}.replaceAll("{count}", count);`
@@ -109,6 +117,24 @@ function applyHomeContent(i18n, homeContent) {
   });
 
   return i18n;
+}
+
+function normalizeHomeContent(value, key = "") {
+  if (Array.isArray(value)) {
+    if (value.every((item) => typeof item === "string") && /^body\d*$/u.test(key)) {
+      return value.join("\n");
+    }
+
+    return value.map((item) => normalizeHomeContent(item));
+  }
+
+  if (value && typeof value === "object") {
+    return Object.fromEntries(
+      Object.entries(value).map(([childKey, item]) => [childKey, normalizeHomeContent(item, childKey)])
+    );
+  }
+
+  return value;
 }
 
 function serializeJsValue(value, indent = 0) {
@@ -240,8 +266,8 @@ function renderHomeNoteItems(items = []) {
   return items
     .filter((item) => item?.title || item?.body)
     .map((item) => `            <article class="note-card reveal">
-              <h3>${escapeHtml(item.title || "")}</h3>
-              <p>${escapeHtml(item.body || "")}</p>
+              <h3>${renderInlineMarkdown(item.title || "")}</h3>
+              <p>${renderInlineMarkdown(item.body || "")}</p>
             </article>`)
     .join("\n");
 }
@@ -249,7 +275,7 @@ function renderHomeNoteItems(items = []) {
 function renderHomeHeroTags(tags = []) {
   return tags
     .filter(Boolean)
-    .map((tag) => `              <li>${escapeHtml(tag)}</li>`)
+    .map((tag) => `              <li>${renderInlineMarkdown(tag)}</li>`)
     .join("\n");
 }
 
@@ -318,7 +344,7 @@ function localizeStaticText(html, locale, i18n) {
         return match;
       }
 
-      return `<${tag}${attrs}>${escapeHtml(value)}</${tag}>`;
+      return `<${tag}${attrs}>${renderInlineMarkdown(value)}</${tag}>`;
     }
   );
 
@@ -342,7 +368,7 @@ function buildHomePageHtml(template, locale, i18n, galleryData) {
   html = localizeStaticText(html, locale, i18n);
   html = updateMetaTag(html, /<html lang="[^"]*">/u, `<html lang="${escapeAttribute(locale)}">`);
   html = updateMetaTag(html, /<link rel="stylesheet" href="styles\.css" \/>/u, `<link rel="stylesheet" href="${withAssetVersion("/styles.css")}" />`);
-  html = updateMetaTag(html, /<script type="module" src="script\.js"><\/script>/u, `<script type="module" src="${withAssetVersion("/script.js")}"></script>`);
+  html = updateMetaTag(html, /<script type="module" src="\/?script\.js"><\/script>/u, `<script type="module" src="${withAssetVersion("/script.js")}"></script>`);
   html = updateMetaTag(html, /src="assets\/profile\.jpg"/gu, `src="${withAssetVersion("/assets/profile.jpg")}"`);
   html = setGalleryDataPreload(html, getStaticHomeDataPath());
   const mainHeroArtwork = getHomeHeroArtworks(galleryData)[0];
@@ -364,7 +390,7 @@ function buildHomePageHtml(template, locale, i18n, galleryData) {
     html = updateMetaTag(
       html,
       /<p id="gallery-summary">[\s\S]*?<\/p>/u,
-      `<p id="gallery-summary">${escapeHtml(archiveSummary)}</p>`
+      `<p id="gallery-summary">${renderInlineMarkdown(archiveSummary)}</p>`
     );
   }
   if (Array.isArray(translations.home?.hero?.tags)) {
@@ -418,7 +444,7 @@ function buildGalleryPageHtml(template, locale, i18n, galleryData, gallery = nul
   html = localizeStaticText(html, locale, i18n);
   html = updateMetaTag(html, /<html lang="[^"]*">/u, `<html lang="${escapeAttribute(locale)}">`);
   html = updateMetaTag(html, /<link rel="stylesheet" href="styles\.css" \/>/u, `<link rel="stylesheet" href="${withAssetVersion("/styles.css")}" />`);
-  html = updateMetaTag(html, /<script type="module" src="script\.js"><\/script>/u, `<script type="module" src="${withAssetVersion("/script.js")}"></script>`);
+  html = updateMetaTag(html, /<script type="module" src="\/?script\.js"><\/script>/u, `<script type="module" src="${withAssetVersion("/script.js")}"></script>`);
   html = updateMetaTag(html, /src="assets\/profile\.jpg"/gu, `src="${withAssetVersion("/assets/profile.jpg")}"`);
   html = setGalleryDataPreload(html, gallery ? getStaticSeriesDataPath(gallery.slug) : getStaticGalleryDataPath());
 

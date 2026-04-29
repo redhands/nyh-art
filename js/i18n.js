@@ -79,6 +79,21 @@ function getTranslationValue(locale, key) {
   return key.split(".").reduce((value, segment) => value?.[segment], translations[locale]);
 }
 
+function escapeHtml(value = "") {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll("\"", "&quot;");
+}
+
+function renderInlineMarkdown(value = "") {
+  return escapeHtml(value).replace(
+    /\*\*([^*\n][\s\S]*?[^*\n]|\S)\*\*/gu,
+    "<strong>$1</strong>"
+  );
+}
+
 export function getCurrentLocale() {
   return currentLocale;
 }
@@ -100,7 +115,7 @@ export function applyStaticTranslations() {
   document.documentElement.lang = currentLocale;
 
   document.querySelectorAll("[data-i18n]").forEach((element) => {
-    element.textContent = t(element.dataset.i18n);
+    element.innerHTML = renderInlineMarkdown(t(element.dataset.i18n));
   });
 
   elements.menuToggle?.setAttribute("aria-label", t("menu.button"));

@@ -1,21 +1,37 @@
 {
   "ko": {
     "hero": {
-      "eyebrow": "NYH의 감성 갤러리",
-      "title": "꿈결 조각 모음",
-      "body": "이 곳은 바다, 해파리, 돌고래와 별빛 같은 상징을 따라 마음의 풍경을 그려내는 온라인 전시 공간입니다. 화면 안을 천천히 흐르는 장면들을 따라가다 보면, 작가가 지나온 시간과 감정의 결을 함께 마주하게 됩니다.",
-      "tags": ["바다", "꿈", "별빛", "위로"]
+      "eyebrow": "NYH의 갤러리",
+      "title": "꿈을 꾸는 바다",
+      "body": "우리는 저마다의 바다와 우주를 품고 살아갑니다. 작가는 주로 일상 속 소중한 존재들과 꿈을 향해 나아가는 순간들을 그리고 있습니다. 복잡한 설명 대신, 그림이 전하는 편안함에 집중하여 관람객이 자연스럽게 감정을 마주할 수 있기를 바랍니다.",
+      "tags": ["바다", "우주", "꿈", "희망"]
     },
     "archive": {
       "eyebrow": "갤러리",
       "title": "작품 모음",
-      "summary": "현재 등록된 {count}점의 작품 중 화면 안에 오래 머무는 장면들을 랜덤으로 소개합니다. 카드를 누르면 작품을 크게 볼 수 있고, 전체 갤러리는 바로가기 버튼으로 이동할 수 있습니다."
+      "summary": "현재 등록된 {count}점의 작품 중 몇몇 장면들을 랜덤으로 소개합니다. 카드를 누르면 작품을 크게 볼 수 있고, 전체 갤러리는 바로가기 버튼으로 이동할 수 있습니다."
     },
     "about": {
       "eyebrow": "작가 소개",
-      "title": "흘러가는 순간을 그림으로 붙잡아 모으는 마음",
-      "body1": "세상 모든 것은 멈추지 않고 그저 흘러갑니다. 붙잡을 수 없는 시간의 무심함 속에서 꿈을 꾸는 찰나의 순간들을 흘려보내지 않고, 그림의 형태로 잡아 모아 기록해봅니다.",
-      "body2": "꿈결 같은 이미지의 조각모음들을 통해 그림을 보시는 분들도 마음 한 켠에 간직한 꿈을 떠올리고, 작품 속에서 작은 위로와 환기를 얻으시기를 소망합니다."
+      "title": "남영희 작가는",
+      "body1": "바다 생물과 반려동물을 통해 꿈과 희망, 그리고 일상의 따뜻한 쉼을 기록합니다. 작품을 마주하는 모든 분의 마음이 편안하고 따뜻해지길 바라며 작업하고 있습니다.",
+      "body2": [
+        "**개인전**",
+        "2026.01 초대 개인전 <꿈결조각모음>, 백희아트스페이스",
+        "2025.07 초대 개인전, 롯데백화점 일산점 샤롯데 아트스튜디오",
+        "2025.05 초대 개인전 <나는 꿈>, 슈갤러리",
+        "",
+        "**수상**",
+        "2024.05 이수그룹 x 픽스필즈 아트워크 공모전 우승",
+        "2023.09 티웨이 x 픽스필즈 아트워크 공모전 당선",
+        "",
+        "**페어 및 단체전**",
+        "2025.12 서울일러스트레이션페어 Sif v.20",
+        "2025.09 vivid22, (주)알파&슈갤러리",
+        "2025.07 옴니보어 아트쇼, 마루아트센터",
+        "2023~25 서울일러스트레이션페어, 광주ACE페어, 뱅크아트페어 등 13회 참가",
+        "2023~24 단체전 10회 구캔갤러리, 리수갤러리, 57th갤러리 등 참가"
+      ]
     },
     "notes": {
       "eyebrow": "작품 세계",
@@ -38,58 +54,90 @@
   },
   "zh": {
     "hero": {
-      "eyebrow": "NYH 的感性畫廊",
-      "title": "夢境碎片集",
-      "body": "這裡是一處沿著海、水母、海豚與星光等象徵描繪心靈風景的線上展覽空間。沿著畫面中緩緩流動的場景前行，也會遇見藝術家走過的時間與情感紋理。",
-      "tags": ["海", "夢", "星光", "慰藉"]
+      "eyebrow": "NYH 的画廊",
+      "title": "做梦的海",
+      "body": "我们每个人都怀抱着属于自己的海洋与宇宙。艺术家主要描绘日常中珍贵的存在，以及朝着梦想前行的瞬间。比起复杂的说明，更希望观众专注于画作所传递的安宁，并自然地面对自己的情感。",
+      "tags": ["海", "宇宙", "梦", "希望"]
     },
     "archive": {
-      "eyebrow": "畫廊",
-      "title": "作品集合",
-      "summary": "這裡會從目前收錄的 {count} 件作品中隨機展示一些久久停留在心中的片段。點擊卡片可以放大觀看，也可以透過下方連結進入完整畫廊。"
+      "eyebrow": "画廊",
+      "title": "作品合集",
+      "summary": "从目前已登记的 {count} 件作品中，随机介绍其中的几个场景。点击卡片即可放大观看作品，也可以通过快捷按钮进入完整画廊。"
     },
     "about": {
-      "eyebrow": "作家介紹",
-      "title": "把流逝的瞬間收集成繪畫的心",
-      "body1": "世上的一切都不會停下，只是不斷流逝。在無法抓住的時間冷靜流動之中，我不願讓那些如夢般短暫的瞬間就這樣流走，而是把它們收攏並以繪畫的形式記錄下來。",
-      "body2": "希望這些如夢般的圖像碎片，也能讓觀者想起自己心底珍藏的夢想，並從作品之中獲得一點點慰藉與換氣般的清新感。"
+      "eyebrow": "艺术家介绍",
+      "title": "南英姬艺术家",
+      "body1": "通过海洋生物与伴侣动物，记录梦想、希望，以及日常中温暖的休憩。艺术家希望每一位面对作品的人，都能感到安宁与温暖，并以此持续创作。",
+      "body2": [
+        "**个展**",
+        "2026.01 邀请个展 <梦境碎片集>，Baekhee Art Space",
+        "2025.07 邀请个展，乐天百货一山店 Charlotte Art Studio",
+        "2025.05 邀请个展 <我是梦>，Soo Gallery",
+        "",
+        "**获奖**",
+        "2024.05 ISU Group x Pixpills 艺术作品征集 优胜",
+        "2023.09 Tway x Pixpills 艺术作品征集 入选",
+        "",
+        "**艺术博览会及团体展**",
+        "2025.12 首尔插画博览会 SIF v.20",
+        "2025.09 vivid22，Alpha & Soo Gallery",
+        "2025.07 Omnivore Art Show，Maru Art Center",
+        "2023~25 参加首尔插画博览会、光州 ACE Fair、Bank Art Fair 等共 13 次",
+        "2023~24 参加团体展 10 次，包括 Gucan Gallery、Risu Gallery、57th Gallery 等"
+      ]
     },
     "notes": {
       "eyebrow": "作品世界",
-      "title": "構成作品的場景",
+      "title": "构成作品的场景",
       "items": [
         {
           "title": "海",
-          "body": "海既是藝術家被賦予的環境，也是包圍所有場景的巨大背景。畫面中的存在沿著這股流動緩慢前行，同時承載著時間與情感的紋理。"
+          "body": "海既是艺术家被赋予的环境，也是包围所有场景的巨大背景。画面中的存在缓缓穿行于这股流动之中，同时承载着生命的时间与内心的纹理。"
         },
         {
           "title": "水母",
-          "body": "水母象徵柔軟而有彈性的內心。它不逆流而行，而是順著水流漂動，那姿態就像一顆雖會搖晃卻仍繼續前行的心。"
+          "body": "水母象征柔软的内心。它不逆着水流前行，而是将身体交给流动，这样的姿态像极了即使摇晃也会继续向前的心。"
         },
         {
           "title": "海豚",
-          "body": "海豚象徵無限的愛意。它在畫面中作為包圍並陪伴人物的存在出現，靜靜傳遞著溫暖、安慰與溫柔的關係感。"
+          "body": "海豚象征无限的爱意。它在画面中作为环绕人物、与其共处的存在出现，静静传递温暖的安慰与亲密关系的感受。"
         }
       ]
     }
   },
   "en": {
     "hero": {
-      "eyebrow": "NYH's Poetic Gallery",
-      "title": "Dreamlike Fragments",
-      "body": "This is an online exhibition space that paints emotional landscapes through symbols such as the sea, jellyfish, dolphins, and starlight. As you follow the scenes drifting slowly across the screen, you encounter the artist's passing time and emotional textures.",
-      "tags": ["Sea", "Dream", "Starlight", "Comfort"]
+      "eyebrow": "NYH's Gallery",
+      "title": "The Dreaming Sea",
+      "body": "Each of us lives with our own sea and universe within us. The artist mainly paints precious beings found in everyday life and the moments of moving toward a dream. Rather than relying on complex explanations, the works focus on the comfort conveyed through images, inviting viewers to naturally encounter their own emotions.",
+      "tags": ["Sea", "Universe", "Dream", "Hope"]
     },
     "archive": {
       "eyebrow": "Gallery",
       "title": "Collection of Works",
-      "summary": "A rotating selection from the current {count} works is shown here first. Tap a card to view it larger, or move into the full gallery through the links below."
+      "summary": "A few scenes are randomly introduced from the {count} works currently registered. Tap a card to view the work in a larger size, or use the shortcut button to move to the full gallery."
     },
     "about": {
-      "eyebrow": "About",
-      "title": "Gathering fleeting moments into paintings",
-      "body1": "Everything in the world keeps flowing without pause. Within the indifference of time that cannot be held, these brief moments of dreaming are gathered and recorded in the form of paintings instead of being allowed to slip away.",
-      "body2": "Through these dreamlike fragments of imagery, I hope viewers also remember the dreams they keep within and find a small sense of comfort and renewal in the works."
+      "eyebrow": "About the Artist",
+      "title": "Artist Nam Younghee",
+      "body1": "Through sea creatures and companion animals, the artist records dreams, hope, and the warm rest found in everyday life. She creates with the wish that everyone who encounters her works may feel calm and warmth.",
+      "body2": [
+        "**Solo Exhibitions**",
+        "2026.01 Invitational Solo Exhibition <Dreamlike Fragments>, Baekhee Art Space",
+        "2025.07 Invitational Solo Exhibition, Charlotte Art Studio, Lotte Department Store Ilsan",
+        "2025.05 Invitational Solo Exhibition <I Am a Dream>, Soo Gallery",
+        "",
+        "**Awards**",
+        "2024.05 Winner, ISU Group x Pixpills Artwork Contest",
+        "2023.09 Selected, Tway x Pixpills Artwork Contest",
+        "",
+        "**Fairs and Group Exhibitions**",
+        "2025.12 Seoul Illustration Fair SIF v.20",
+        "2025.09 vivid22, Alpha & Soo Gallery",
+        "2025.07 Omnivore Art Show, Maru Art Center",
+        "2023~25 Participated in 13 fairs including Seoul Illustration Fair, Gwangju ACE Fair, and Bank Art Fair",
+        "2023~24 Participated in 10 group exhibitions including Gucan Gallery, Risu Gallery, and 57th Gallery"
+      ]
     },
     "notes": {
       "eyebrow": "World of the Works",
@@ -97,52 +145,68 @@
       "items": [
         {
           "title": "Sea",
-          "body": "The sea is both the environment given to the artist and the broad setting that embraces every scene. The beings within it move slowly through its currents, carrying the textures of time and feeling."
+          "body": "The sea is both the environment given to the artist and the vast background that surrounds every scene. The beings within the works pass slowly through its flow, carrying both the time of life and the texture of the heart."
         },
         {
           "title": "Jellyfish",
-          "body": "The jellyfish symbolizes a flexible heart. Moving with the current rather than resisting it, it resembles a mind that trembles yet continues forward."
+          "body": "The jellyfish symbolizes a flexible heart. Rather than resisting the waves, it entrusts itself to the current, resembling a heart that may tremble but still continues forward."
         },
         {
           "title": "Dolphin",
-          "body": "The dolphin symbolizes boundless affection. Appearing as a presence that surrounds and stays beside the figure, it quietly conveys warmth, comfort, and tenderness."
+          "body": "The dolphin symbolizes boundless affection. It appears as a presence that surrounds and stays with the figure, quietly conveying warm comfort and the feeling of a tender relationship."
         }
       ]
     }
   },
   "ja": {
     "hero": {
-      "eyebrow": "NYHの感性ギャラリー",
-      "title": "夢のかけら集め",
-      "body": "ここは海、クラゲ、イルカ、星明かりのような象徴をたどりながら、心の風景を描いていくオンライン展示空間です。画面の中をゆっくり流れていく場面を追っていくと、作家が通り過ぎてきた時間と感情の結び目に出会えます。",
-      "tags": ["海", "夢", "星明かり", "慰め"]
+      "eyebrow": "NYHのギャラリー",
+      "title": "夢を見る海",
+      "body": "私たちはそれぞれの海と宇宙を胸に抱いて生きています。作家は主に、日常の中にある大切な存在や、夢に向かって進んでいく瞬間を描いています。複雑な説明よりも、絵が伝える安らぎに焦点を当て、鑑賞者が自然に自分の感情と向き合えることを願っています。",
+      "tags": ["海", "宇宙", "夢", "希望"]
     },
     "archive": {
       "eyebrow": "ギャラリー",
-      "title": "作品コレクション",
-      "summary": "現在登録されている{count}点の作品の中から、長く心に残る場面をランダムに紹介しています。カードを押すと大きく表示され、下のリンクから全体ギャラリーにも進めます。"
+      "title": "作品集",
+      "summary": "現在登録されている {count} 点の作品の中から、いくつかの場面をランダムに紹介します。カードを押すと作品を大きく見ることができ、全体ギャラリーへはショートカットボタンから移動できます。"
     },
     "about": {
       "eyebrow": "作家紹介",
-      "title": "流れていく瞬間を絵として集める心",
-      "body1": "世の中のすべては止まらずにただ流れていきます。つかまえることのできない時間の無情さの中で、夢を見る刹那の瞬間を流してしまわず、絵という形で集めて記録しています。",
-      "body2": "夢のようなイメージのかけらを通して、ご覧になる方々も心の片隅にしまっている夢を思い出し、作品の中で小さな慰めと換気のような感覚を得ていただけたらと願っています。"
+      "title": "ナム・ヨンヒ作家は",
+      "body1": "海の生き物や伴侶動物を通して、夢と希望、そして日常の中の温かな休息を記録しています。作品に向き合うすべての方の心が安らぎ、温かくなることを願いながら制作しています。",
+      "body2": [
+        "**個展**",
+        "2026.01 招待個展 <夢のかけら集め>, Baekhee Art Space",
+        "2025.07 招待個展, ロッテ百貨店一山店 Charlotte Art Studio",
+        "2025.05 招待個展 <私は夢>, Soo Gallery",
+        "",
+        "**受賞**",
+        "2024.05 ISU Group x Pixpills アートワーク公募展 優勝",
+        "2023.09 Tway x Pixpills アートワーク公募展 入選",
+        "",
+        "**フェアおよびグループ展**",
+        "2025.12 Seoul Illustration Fair SIF v.20",
+        "2025.09 vivid22, Alpha & Soo Gallery",
+        "2025.07 Omnivore Art Show, Maru Art Center",
+        "2023~25 Seoul Illustration Fair, Gwangju ACE Fair, Bank Art Fair など計13回参加",
+        "2023~24 Gucan Gallery, Risu Gallery, 57th Gallery などグループ展10回参加"
+      ]
     },
     "notes": {
       "eyebrow": "作品世界",
-      "title": "作品を形づくる場面",
+      "title": "作品を構成する場面",
       "items": [
         {
           "title": "海",
-          "body": "海は作家に与えられた環境であり、すべての場面を抱きしめる大きな背景です。画面の中の存在たちはその流れの中をゆっくりと進み、時間と感情の質感をともに抱えています。"
+          "body": "海は作家に与えられた環境であり、すべての場面を包み込む大きな背景です。画面の中の存在たちはその流れの中をゆっくりと通り過ぎながら、人生の時間と心の質感をともに抱えています。"
         },
         {
           "title": "クラゲ",
-          "body": "クラゲはしなやかな心の象徴です。流れに逆らうのではなく身を任せて進む姿は、揺れながらもまた前へ進む心のかたちに似ています。"
+          "body": "クラゲはしなやかな心の象徴です。波に逆らうのではなく流れに身を任せて動く姿は、揺れながらもまた進んでいく心のかたちに似ています。"
         },
         {
           "title": "イルカ",
-          "body": "イルカは尽きることのない愛情を象徴します。人物を包み込み、ともに留まる存在として現れ、温かな慰めとやさしい関係の感覚を静かに伝えます。"
+          "body": "イルカは無限の愛情を象徴します。画面の中で人物を包み込み、ともに留まる存在として現れ、温かな慰めとやさしい関係の感覚を静かに伝えます。"
         }
       ]
     }
