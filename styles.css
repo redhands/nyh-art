@@ -1498,8 +1498,8 @@ html[lang="zh"] .gallery-group-header p {
   }
 
   .gallery-grid.gallery-grid-icon {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 0.24rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.55rem;
   }
 
   .gallery-card.thumbnail-size-icon {
