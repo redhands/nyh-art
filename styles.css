@@ -929,7 +929,7 @@ html[lang="zh"] .gallery-group-header p {
 .gallery-grid.gallery-grid-icon {
   grid-template-columns: repeat(9, minmax(0, 1fr));
   gap: 0.28rem;
-  grid-auto-rows: 4px;
+  grid-auto-rows: auto;
 }
 
 .gallery-card {
@@ -1003,12 +1003,18 @@ html[lang="zh"] .gallery-group-header p {
 }
 
 .gallery-card.thumbnail-size-icon > .thumbnail-frame {
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding: 0;
   border-radius: 0.54rem;
   background: rgba(255, 255, 255, 0.72);
 }
 
 .gallery-card.thumbnail-size-icon > .thumbnail-frame img {
+  width: 100%;
+  height: 100%;
   border-radius: 0.54rem;
   object-fit: contain;
 }
@@ -1297,8 +1303,7 @@ html[lang="zh"] .gallery-group-header p {
   transform: none;
 }
 
-.section,
-.gallery-group {
+.section {
   content-visibility: auto;
   contain-intrinsic-size: auto 42rem;
 }

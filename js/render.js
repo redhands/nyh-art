@@ -19,6 +19,7 @@ import { openLightboxForArtwork, bindReveal } from "./ui.js";
 const masonryStates = new Map();
 const puzzleOrders = new Map();
 let masonryResizeBound = false;
+let masonryItemResizeObserver = null;
 const PUZZLE_COOKIE_PREFIX = "nyh-puzzle-order-";
 
 function createArtworkThumbnail(artwork, eager = false) {
@@ -265,29 +266,55 @@ function relayoutAllMasonryGrids() {
   });
 }
 
+function scheduleMasonryItemLayout(grid, item) {
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => layoutMasonryItem(grid, item));
+  });
+}
+
 function bindMasonryGrid(grid) {
   if (!grid) return;
+  if (grid.classList.contains("gallery-grid-icon")) return;
 
   const items = Array.from(grid.children);
   masonryStates.set(grid, { grid, items });
 
+  if (!masonryItemResizeObserver && "ResizeObserver" in window) {
+    masonryItemResizeObserver = new ResizeObserver((entries) => {
+      entries.forEach((entry) => {
+        const item = entry.target.closest(".gallery-card");
+        const parentGrid = item?.closest(".gallery-grid");
+        if (!item || !parentGrid || parentGrid.classList.contains("gallery-grid-icon")) return;
+        scheduleMasonryItemLayout(parentGrid, item);
+      });
+    });
+  }
+
   items.forEach((item) => {
     const image = item.querySelector("img");
     if (!image) return;
+    masonryItemResizeObserver?.observe(item);
+    masonryItemResizeObserver?.observe(image);
 
     if (image.complete) {
-      layoutMasonryItem(grid, item);
+      if (image.decode) {
+        image.decode()
+          .catch(() => {})
+          .finally(() => scheduleMasonryItemLayout(grid, item));
+      } else {
+        scheduleMasonryItemLayout(grid, item);
+      }
       return;
     }
 
     image.addEventListener(
       "load",
       () => {
-        layoutMasonryItem(grid, item);
+        scheduleMasonryItemLayout(grid, item);
       },
       { once: true }
     );
-    image.addEventListener("error", () => layoutMasonryItem(grid, item), { once: true });
+    image.addEventListener("error", () => scheduleMasonryItemLayout(grid, item), { once: true });
   });
 
   if (!masonryResizeBound) {
@@ -396,6 +423,7 @@ export function renderGallery() {
 
   elements.galleryGroupsContainer.innerHTML = "";
   const fragment = document.createDocumentFragment();
+  const grids = [];
   let artworkIndex = 0;
 
   state.visibleGalleries.forEach((gallery) => {
@@ -527,12 +555,13 @@ export function renderGallery() {
       });
     }
 
-    bindMasonryGrid(grid);
+    grids.push(grid);
 
     fragment.appendChild(section);
   });
 
   elements.galleryGroupsContainer.appendChild(fragment);
+  grids.forEach((grid) => bindMasonryGrid(grid));
 }
 
 export function updateGallerySummary() {
