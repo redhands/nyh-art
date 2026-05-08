@@ -10,7 +10,7 @@ const distDir = path.join(rootDir, "dist");
 const siteBaseUrl = "https://nyh-art.com";
 const defaultGalleryDataUrl = "https://img.nyh-art.com/site-data/gallery.json";
 const staticDataBaseUrl = "https://img.nyh-art.com/site-data";
-const defaultOgImage = "https://img.nyh-art.com/ocean/2023-10-03-Cx7axmaOa1e.jpg";
+const defaultOgImage = `${siteBaseUrl}/assets/social-card.jpg`;
 const supportedLocales = ["ko", "en", "ja", "zh"];
 const assetVersion = new Date().toISOString().replaceAll(/[-:.TZ]/g, "");
 const ogLocaleMap = {
@@ -19,6 +19,28 @@ const ogLocaleMap = {
   ja: "ja_JP",
   zh: "zh_TW"
 };
+const homeTitleMap = {
+  ko: "남영희 | NYH's Artwork",
+  en: "Nam Younghee | NYH's Artwork",
+  ja: "ナムヨンヒ | NYH's Artwork",
+  zh: "南姈希 | NYH's Artwork"
+};
+const artistAlternateNames = [
+  "NYH",
+  "남영희",
+  "남영희 작가",
+  "남영희 일러스트",
+  "Nam Younghee",
+  "Nam Young-hee",
+  "Nam Younghee Artist",
+  "Nam Younghee Illustrator",
+  "ナムヨンヒ",
+  "ナムヨンヒ作家",
+  "ナム・ヨンヒ",
+  "南姈希",
+  "南姈希艺术家",
+  "南姈希藝術家"
+];
 
 const filesToCopy = [
   "index.html",
@@ -81,11 +103,6 @@ async function loadI18nData() {
 
 async function loadHomeContent() {
   const source = await readFile(path.join(rootDir, "data", "home-content.json"), "utf8");
-  return JSON.parse(source);
-}
-
-async function loadSearchKeywords() {
-  const source = await readFile(path.join(rootDir, "data", "search-keywords.json"), "utf8");
   return JSON.parse(source);
 }
 
@@ -186,18 +203,6 @@ async function writeGeneratedLocaleData(i18n) {
 
 function updateMetaTag(html, matcher, replacement) {
   return html.replace(matcher, replacement);
-}
-
-function updateKeywordsMeta(html, locale, searchKeywords) {
-  const keywords = Array.isArray(searchKeywords?.[locale])
-    ? searchKeywords[locale]
-    : searchKeywords?.ko || [];
-
-  return updateMetaTag(
-    html,
-    /<meta\s+name="keywords"[\s\S]*?\/>/u,
-    `<meta name="keywords" content="${escapeAttribute(keywords.join(", "))}" />`
-  );
 }
 
 function withAssetVersion(assetPath) {
@@ -323,6 +328,65 @@ function getLocalizedSeriesPath(locale, slug) {
   return `${getLocalePathPrefix(locale)}/series/${slug}/`;
 }
 
+function buildAlternateLinks(pathBuilder) {
+  const localeLinks = supportedLocales.map((locale) => {
+    const href = `${siteBaseUrl}${pathBuilder(locale)}`;
+    return `    <link rel="alternate" hreflang="${escapeAttribute(locale)}" href="${escapeAttribute(href)}" />`;
+  });
+  const defaultHref = `${siteBaseUrl}${pathBuilder("ko")}`;
+
+  return [
+    ...localeLinks,
+    `    <link rel="alternate" hreflang="x-default" href="${escapeAttribute(defaultHref)}" />`
+  ].join("\n");
+}
+
+function insertAlternateLinks(html, pathBuilder) {
+  return html.replace(
+    /(<link rel="canonical" href="[^"]*" \/>)/u,
+    `$1\n${buildAlternateLinks(pathBuilder)}`
+  );
+}
+
+function insertStructuredData(html, payload) {
+  const json = JSON.stringify(payload, null, 6).replaceAll("</", "<\\/");
+  return html.replace(
+    /<\/head>/u,
+    `    <script type="application/ld+json">\n${json}\n    </script>\n  </head>`
+  );
+}
+
+function buildArtistStructuredData(locale) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "@id": `${siteBaseUrl}/#artist`,
+    "name": "남영희",
+    "alternateName": artistAlternateNames,
+    "jobTitle": ["Artist", "Illustrator"],
+    "url": `${siteBaseUrl}${getLocalizedHomePath(locale)}`,
+    "sameAs": ["https://www.instagram.com/nyh_doodles"]
+  };
+}
+
+function setOpenGraphImageMeta(html, imageUrl, options = {}) {
+  const imageMeta = [
+    `<meta property="og:image" content="${escapeAttribute(imageUrl)}" />`,
+    `<meta property="og:image:secure_url" content="${escapeAttribute(imageUrl)}" />`,
+    `<meta property="og:image:type" content="image/jpeg" />`
+  ];
+  if (options.width && options.height) {
+    imageMeta.push(`<meta property="og:image:width" content="${escapeAttribute(options.width)}" />`);
+    imageMeta.push(`<meta property="og:image:height" content="${escapeAttribute(options.height)}" />`);
+  }
+
+  if (options.alt) {
+    imageMeta.push(`<meta property="og:image:alt" content="${escapeAttribute(options.alt)}" />`);
+  }
+
+  return html.replace(/<meta\s+property="og:image"[\s\S]*?\/>/u, imageMeta.join("\n    "));
+}
+
 function getStaticHomeDataPath() {
   return `${staticDataBaseUrl}/home.json`;
 }
@@ -380,7 +444,7 @@ function localizeStaticText(html, locale, i18n) {
 
 function buildHomePageHtml(template, locale, i18n, galleryData) {
   const translations = i18n.translations?.[locale] || {};
-  const pageTitle = "NYH's Artwork";
+  const pageTitle = homeTitleMap[locale] || homeTitleMap.ko;
   const pageDescription = translations.home?.hero?.body || "흘러가는 순간을 그림으로 붙잡아 모아둔 NYH의 온라인 갤러리";
   const totalArtworks = typeof galleryData?.total === "number" ? galleryData.total : 0;
   const archiveSummary = typeof translations.home?.archive?.summary === "function"
@@ -391,10 +455,11 @@ function buildHomePageHtml(template, locale, i18n, galleryData) {
   let html = template;
   html = localizeStaticText(html, locale, i18n);
   html = updateMetaTag(html, /<html lang="[^"]*">/u, `<html lang="${escapeAttribute(locale)}">`);
-  html = updateKeywordsMeta(html, locale, searchKeywords);
+  html = updateMetaTag(html, /<title>[\s\S]*?<\/title>/u, `<title>${escapeHtml(pageTitle)}</title>`);
   html = updateMetaTag(html, /<link rel="stylesheet" href="styles\.css" \/>/u, `<link rel="stylesheet" href="${withAssetVersion("/styles.css")}" />`);
   html = updateMetaTag(html, /<script type="module" src="\/?script\.js"><\/script>/u, `<script type="module" src="${withAssetVersion("/script.js")}"></script>`);
   html = updateMetaTag(html, /src="assets\/profile\.jpg"/gu, `src="${withAssetVersion("/assets/profile.jpg")}"`);
+  html = insertAlternateLinks(html, getLocalizedHomePath);
   html = setGalleryDataPreload(html, getStaticHomeDataPath());
   const mainHeroArtwork = getHomeHeroArtworks(galleryData)[0];
   if (mainHeroArtwork?.imageUrl) {
@@ -408,9 +473,15 @@ function buildHomePageHtml(template, locale, i18n, galleryData) {
   html = updateMetaTag(html, /<meta\s+name="description"[\s\S]*?\/>/u, `<meta name="description" content="${escapeAttribute(pageDescription)}" />`);
   html = updateMetaTag(html, /<link rel="canonical" href="[^"]*" \/>/u, `<link rel="canonical" href="${escapeAttribute(pageUrl)}" />`);
   html = updateMetaTag(html, /<meta property="og:locale" content="[^"]*" \/>/u, `<meta property="og:locale" content="${escapeAttribute(getOgLocale(locale))}" />`);
+  html = updateMetaTag(html, /<meta\s+property="og:title"[\s\S]*?\/>/u, `<meta property="og:title" content="${escapeAttribute(pageTitle)}" />`);
   html = updateMetaTag(html, /<meta property="og:url" content="[^"]*" \/>/u, `<meta property="og:url" content="${escapeAttribute(pageUrl)}" />`);
   html = updateMetaTag(html, /<meta\s+property="og:description"[\s\S]*?\/>/u, `<meta property="og:description" content="${escapeAttribute(pageDescription)}" />`);
-  html = updateMetaTag(html, /<meta\s+name="twitter:description"[\s\S]*?\/>/u, `<meta name="twitter:description" content="${escapeAttribute(pageDescription)}" />`);
+  html = setOpenGraphImageMeta(html, defaultOgImage, {
+    width: "1200",
+    height: "630",
+    alt: "남영희 작가의 작품 이미지"
+  });
+  html = insertStructuredData(html, buildArtistStructuredData(locale));
   if (archiveSummary) {
     html = updateMetaTag(
       html,
@@ -422,7 +493,7 @@ function buildHomePageHtml(template, locale, i18n, galleryData) {
     html = updateMetaTag(
       html,
       /<ul class="hero-notes" aria-label="[^"]*">[\s\S]*?<\/ul>/u,
-      `<ul class="hero-notes" aria-label="${escapeAttribute(translations.home?.archive?.eyebrow || "Gallery keywords")}">\n${renderHomeHeroTags(translations.home.hero.tags)}\n            </ul>`
+      `<ul class="hero-notes" aria-label="${escapeAttribute(translations.home?.archive?.eyebrow || "Gallery tags")}">\n${renderHomeHeroTags(translations.home.hero.tags)}\n            </ul>`
     );
   }
   if (Array.isArray(translations.home?.notes?.items)) {
@@ -468,7 +539,6 @@ function buildGalleryPageHtml(template, locale, i18n, galleryData, gallery = nul
   let html = template;
   html = localizeStaticText(html, locale, i18n);
   html = updateMetaTag(html, /<html lang="[^"]*">/u, `<html lang="${escapeAttribute(locale)}">`);
-  html = updateKeywordsMeta(html, locale, searchKeywords);
   html = updateMetaTag(html, /<link rel="stylesheet" href="styles\.css" \/>/u, `<link rel="stylesheet" href="${withAssetVersion("/styles.css")}" />`);
   html = updateMetaTag(html, /<script type="module" src="\/?script\.js"><\/script>/u, `<script type="module" src="${withAssetVersion("/script.js")}"></script>`);
   html = updateMetaTag(html, /src="assets\/profile\.jpg"/gu, `src="${withAssetVersion("/assets/profile.jpg")}"`);
@@ -488,6 +558,12 @@ function buildGalleryPageHtml(template, locale, i18n, galleryData, gallery = nul
     html,
     /<link rel="canonical" href="[^"]*" \/>/u,
     `<link rel="canonical" href="${escapeAttribute(pageUrl)}" />`
+  );
+  html = insertAlternateLinks(
+    html,
+    gallery
+      ? (alternateLocale) => getLocalizedSeriesPath(alternateLocale, gallery.slug)
+      : getLocalizedGalleryPath
   );
   html = updateMetaTag(
     html,
@@ -509,25 +585,12 @@ function buildGalleryPageHtml(template, locale, i18n, galleryData, gallery = nul
     /<meta property="og:url" content="[^"]*" \/>/u,
     `<meta property="og:url" content="${escapeAttribute(pageUrl)}" />`
   );
-  html = updateMetaTag(
+  html = setOpenGraphImageMeta(
     html,
-    /<meta\s+property="og:image"[\s\S]*?\/>/u,
-    `<meta property="og:image" content="${escapeAttribute(pageImage)}" />`
-  );
-  html = updateMetaTag(
-    html,
-    /<meta\s+name="twitter:title"[\s\S]*?\/>/u,
-    `<meta name="twitter:title" content="${escapeAttribute(pageTitle)}" />`
-  );
-  html = updateMetaTag(
-    html,
-    /<meta\s+name="twitter:description"[\s\S]*?\/>/u,
-    `<meta name="twitter:description" content="${escapeAttribute(pageDescription)}" />`
-  );
-  html = updateMetaTag(
-    html,
-    /<meta\s+name="twitter:image"[\s\S]*?\/>/u,
-    `<meta name="twitter:image" content="${escapeAttribute(pageImage)}" />`
+    pageImage,
+    pageImage === defaultOgImage
+      ? { width: "1200", height: "630", alt: "남영희 작가의 작품 이미지" }
+      : { alt: `${localizedGalleryTitle} 작품 이미지` }
   );
   html = updateMetaTag(
     html,
@@ -601,7 +664,7 @@ function buildGalleryPageHtml(template, locale, i18n, galleryData, gallery = nul
 }
 
 function buildSitemapXml(galleries) {
-  const urls = new Set([`${siteBaseUrl}/`]);
+  const urls = new Set();
 
   supportedLocales.forEach((locale) => {
     urls.add(`${siteBaseUrl}${getLocalizedHomePath(locale)}`);
@@ -662,7 +725,6 @@ async function rewriteModuleSpecifiers(filePath) {
 
 const galleryData = await loadGalleryData();
 const i18nData = applyHomeContent(await loadI18nData(), await loadHomeContent());
-const searchKeywords = await loadSearchKeywords();
 const galleries = Array.isArray(galleryData.galleries) ? galleryData.galleries : [];
 galleries.forEach((gallery) => assertValidGallerySlug(gallery.slug));
 const indexTemplate = await readFile(path.join(rootDir, "index.html"), "utf8");

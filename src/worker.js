@@ -39,16 +39,31 @@ function getPreferredLocale(request) {
   return "ko";
 }
 
-function buildLocalizedPath(pathname, locale) {
+function getSeriesQueryPath(searchParams, locale) {
+  const seriesSlug = searchParams.get("series") || "";
+  if (!/^[A-Za-z0-9][A-Za-z0-9_-]*$/u.test(seriesSlug)) {
+    return "";
+  }
+
+  return `/${locale}/series/${encodeURIComponent(seriesSlug)}/`;
+}
+
+function buildLocalizedPath(pathname, searchParams, locale) {
   if (pathname === "/" || pathname === "/index.html") {
     return `/${locale}/`;
   }
 
   if (pathname === "/gallery" || pathname === "/gallery/") {
+    const seriesPath = getSeriesQueryPath(searchParams, locale);
+    if (seriesPath) return seriesPath;
+
     return `/${locale}/gallery/`;
   }
 
   if (pathname === "/gallery.html") {
+    const seriesPath = getSeriesQueryPath(searchParams, locale);
+    if (seriesPath) return seriesPath;
+
     return `/${locale}/gallery/`;
   }
 
@@ -70,10 +85,11 @@ export default {
 
     if (!shouldBypassLocaleRedirect(url.pathname)) {
       const locale = getPreferredLocale(request);
-      const localizedPath = buildLocalizedPath(url.pathname, locale);
+      const localizedPath = buildLocalizedPath(url.pathname, url.searchParams, locale);
 
       if (localizedPath) {
         url.pathname = localizedPath;
+        url.search = "";
         return Response.redirect(url.toString(), 302);
       }
     }

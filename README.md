@@ -171,21 +171,6 @@ showInArchive: true
 npm run check
 ```
 
-## 검색 키워드 편집
-
-언어별 `<meta name="keywords">` 값은 [data/search-keywords.json](/Users/redhands/Devel/nyh-art/data/search-keywords.json)에서 수정합니다.
-
-```json
-{
-  "ko": ["남영희", "일러스트"],
-  "en": ["Nam Younghee", "illustration"],
-  "ja": ["ナム・ヨンヒ", "イラスト"],
-  "zh": ["南英熙", "插畫"]
-}
-```
-
-배열에 적은 순서대로 쉼표로 합쳐져 각 언어 페이지의 검색 키워드 메타 태그에 들어갑니다.
-
 ### 작품 파일 (`파일명.txt`)
 
 지원 키 예시:
